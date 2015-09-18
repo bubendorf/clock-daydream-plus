@@ -20,9 +20,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.ContentObserver;
 import android.graphics.Typeface;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
@@ -125,17 +127,15 @@ public class DigitalClock extends LinearLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        mTimeDisplayHoursThin= (TextView) findViewById(R.id.timeDisplayHoursThin);
         mTimeDisplayHours = (TextView) findViewById(R.id.timeDisplayHours);
         mTimeDisplayMinutes = (TextView) findViewById(R.id.timeDisplayMinutes);
-        mTimeDisplayHours.setTypeface(mRobotoBold);
-        mTimeDisplayHoursThin.setTypeface(mRobotoThin);
         mTimeDisplayMinutes.setTypeface(mRobotoThin);
         mAmPm = new AmPm(this, mRobotoCondensed);
         mCalendar = Calendar.getInstance();
 
         setDateFormat();
     }
+
 
     @Override
     protected void onAttachedToWindow() {
@@ -203,7 +203,7 @@ public class DigitalClock extends LinearLayout {
         StringBuilder fullTimeStr = new StringBuilder();
         CharSequence newTime = DateFormat.format(mHoursFormat, mCalendar);
         mTimeDisplayHours.setText(newTime);
-        mTimeDisplayHoursThin.setText(newTime);
+//        mTimeDisplayHoursThin.setText(newTime);
         fullTimeStr.append(newTime);
         newTime = DateFormat.format(MINUTES, mCalendar);
         fullTimeStr.append(newTime);
@@ -232,4 +232,6 @@ public class DigitalClock extends LinearLayout {
         mTimeZoneId = id;
         updateTime();
     }
+
+
 }

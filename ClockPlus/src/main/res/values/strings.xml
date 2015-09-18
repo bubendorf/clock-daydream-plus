@@ -49,8 +49,8 @@
         <item>digital2</item>
     </string-array>
 
-    <!-- Header for a Clock Dream Setting referring to choosing small, medium or big size -->
-    <string name="clock_size">Size</string>
+    <!-- Header for a Clock Dream Setting -->
+    <string name="clock_size">Daydream Size</string>
 
     <!--
      Entries listed in the ListPreference when invoking the clock style
@@ -60,6 +60,8 @@
         <item>Small</item>
         <item>Medium</item>
         <item>Large</item>
+        <item>X-Large</item>
+        <item>2X-Large</item>
     </string-array>
 
     <!--
@@ -70,10 +72,9 @@
         <item>small</item>
         <item>medium</item>
         <item>large</item>
+        <item>xlarge</item>
+        <item>2xlarge</item>
     </string-array>
-
-
-
 
     <string name="desk_clock_help_url" translatable="false"></string>
     <!-- Label for the screen saver activity displayed on-screen when that activity must be represented to the user. -->

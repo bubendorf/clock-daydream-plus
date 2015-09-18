@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2007 The Android Open Source Project
+<!--
+     Copyright (C) 2007 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -15,6 +16,31 @@
 -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!--
+     Entries listed in the ListPreference when invoking the clock style
+     preference.
+-->
+    <string-array name="clock_size_entries">
+        <item>Small</item>
+        <item>Medium</item>
+        <item>Large</item>
+        <item>X-Large</item>
+        <item>2X-Large</item>
+    </string-array>
+
+    <!--
+         Values that are retrieved from the ListPreference. These must match
+         the clock_style_entries above.
+    -->
+    <string-array name="clock_size_values" translatable="false">
+        <item>small</item>
+        <item>medium</item>
+        <item>large</item>
+        <item>xlarge</item>
+        <item>2xarge</item>
+    </string-array>
+
     <!-- Default clock size. -->
     <string name="default_clock_size">large</string>
 </resources>

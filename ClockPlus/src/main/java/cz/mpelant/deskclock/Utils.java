@@ -27,6 +27,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
@@ -77,12 +78,8 @@ public class Utils {
     public static final String CLOCK_SIZE_SMALL = "small";
     public static final String CLOCK_SIZE_MEDIUM = "medium";
     public static final String CLOCK_SIZE_LARGE = "large";
-
-    public enum eTextSize {
-        Small,
-        Medium,
-        Large,
-    }
+    public static final String CLOCK_SIZE_XLARGE = "xlarge";
+    public static final String CLOCK_SIZE_2XLARGE = "2xlarge";
 
     /**
      * time format constants
@@ -237,15 +234,10 @@ public class Utils {
             digitalClock.setVisibility(View.VISIBLE);
             analogClock.setVisibility(View.GONE);
             returnView = digitalClock;
-            
-            if(style.equals(CLOCK_TYPE_DIGITAL)){
-                digitalClock.findViewById(R.id.timeDisplayHoursThin).setVisibility(View.GONE);
-                digitalClock.findViewById(R.id.timeDisplayHours).setVisibility(View.VISIBLE);
-            }else {
-                digitalClock.findViewById(R.id.timeDisplayHoursThin).setVisibility(View.VISIBLE);
-                digitalClock.findViewById(R.id.timeDisplayHours).setVisibility(View.GONE);
-            }
         }
+
+        TextView timeDisplayHours = (TextView)digitalClock.findViewById(R.id.timeDisplayHours);
+        Utils.setHourStyle(timeDisplayHours);
 
         return returnView;
     }
@@ -399,9 +391,9 @@ public class Utils {
     public static void hideSystemUiAndRetry(final View view) {
         hideSystemUI(view);
 
-        new CountDownTimer(2000, 2000) {
-            public void onTick(long millisUntilFinished) {}
-            public void onFinish() { hideSystemUI(view); }
+        new CountDownTimer(4000, 2000) {
+            public void onTick(long millisUntilFinished) { hideSystemUI(view); }
+            public void onFinish() {}
         }.start();
     }
 
@@ -438,6 +430,12 @@ public class Utils {
             case CLOCK_SIZE_LARGE:
                 resizeRatio = (float)1.15;
                 break;
+            case CLOCK_SIZE_XLARGE:
+                resizeRatio = (float)1.25;
+                break;
+            case CLOCK_SIZE_2XLARGE:
+                resizeRatio = (float)1.5;
+                break;
             default:
                 resizeRatio = 1;
         }
@@ -470,7 +468,21 @@ public class Utils {
         }
     }
 
+    public static void setHourStyle(TextView timeDisplayHours) {
+        Context context = timeDisplayHours.getContext();
 
+        final Typeface robotoThin = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Thin.ttf");
+        final Typeface robotoBold = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Bold.ttf");
 
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        String defaultClockStyle = context.getResources().getString(R.string.default_clock_style);
+        String style = sharedPref.getString(ScreensaverSettingsActivity.KEY_CLOCK_STYLE, defaultClockStyle);
 
+        if (style != null ) {
+            if (style.equals(Utils.CLOCK_TYPE_DIGITAL2))
+                timeDisplayHours.setTypeface(robotoThin);
+            else
+                timeDisplayHours.setTypeface(robotoBold);
+        }
+    }
 }

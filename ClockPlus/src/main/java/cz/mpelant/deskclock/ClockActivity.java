@@ -4,12 +4,16 @@ package cz.mpelant.deskclock;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.View.OnLongClickListener;
+import android.view.ViewGroup;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class ClockActivity extends BaseScreenOnActivity {
     private static final int SCREENSAVER_DELAY = 1000 * 30;
@@ -31,11 +35,11 @@ public class ClockActivity extends BaseScreenOnActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_clock_frame);
+        setContentView(R.layout.desk_clock_saver);
         mDigitalClock = findViewById(R.id.digital_clock);
         mAnalogClock = findViewById(R.id.analog_clock);
         ((View)mAnalogClock.getParent().getParent()).setOnLongClickListener(new OnLongClickListener() {
-            
+
             @Override
             public boolean onLongClick(View v) {
                 startScreenSaverRunnable.run();
@@ -44,12 +48,16 @@ public class ClockActivity extends BaseScreenOnActivity {
         });
         mDate = (TextView) findViewById(R.id.date);
         mNextAlarm = (TextView) findViewById(R.id.nextAlarm);
-        setClockStyle();
     }
     
 
     private void setClockStyle() {
         Utils.setClockStyle(this, mDigitalClock, mAnalogClock, ScreensaverSettingsActivity.KEY_CLOCK_STYLE);
+
+//        String size = PreferenceManager.getDefaultSharedPreferences(this).getString(
+//                ScreensaverSettingsActivity.KEY_CLOCK_SIZE,
+//                ScreensaverSettingsActivity.SIZE_DEFAULT);
+//        Utils.resizeContent((ViewGroup) findViewById(R.id.main_clock), size);
     }
 
     @Override

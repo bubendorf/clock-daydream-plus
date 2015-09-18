@@ -28,5 +28,7 @@
     <dimen name="time_margin_top">8dip</dimen>
     <dimen name="dialpad_font_size">24sp</dimen>
     <dimen name="actionbar_tab_padding">32dip</dimen>
+    <dimen name="big_font_size">180dp</dimen>
+    <dimen name="label_font_size">27dp</dimen>
 
 </resources>
