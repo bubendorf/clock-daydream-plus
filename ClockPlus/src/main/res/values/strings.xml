@@ -50,10 +50,10 @@
     </string-array>
 
     <!-- Header for a Clock Dream Setting -->
-    <string name="clock_size">Daydream Size</string>
+    <string name="clock_size">Size</string>
 
     <!--
-     Entries listed in the ListPreference when invoking the clock style
+     Entries listed in the ListPreference when invoking the clock size
      preference.
 -->
     <string-array name="clock_size_entries">
@@ -76,7 +76,6 @@
         <item>2xlarge</item>
     </string-array>
 
-    <string name="desk_clock_help_url" translatable="false"></string>
     <!-- Label for the screen saver activity displayed on-screen when that activity must be represented to the user. -->
     <string name="screensaver_settings">Dream settings</string>
     <!-- Title for check box to pick intensity of display diminuation during dream mode -->
@@ -107,15 +106,16 @@
     <string name="battery_charging">Charging</string>
     <string name="_usb_">" (USB)"</string>
     <string name="_ac_">" (AC)"</string>
-    <string name="show_battery_status">Show battery status</string>
+    <string name="battery_status_summary">Show battery status</string>
     <string name="battery_status">Battery status</string>
+    <string name="slide_effect_summary">Will slide the clock on screen to prevent damaging it</string>
+    <string name="slide_effect">Use slide effect</string>
     <string name="adjust_brightness">Adjust brightness</string>
     <string name="brightness">Brightness</string>
     <string name="show_notif_summary">Show system notification</string>
     <string name="show_notif">System notifications</string>
-    <string name="enable_loc_listener_tip">Check Clock Plus app if you want to see notifications in the daydream.
-    </string>
+    <string name="enable_loc_listener_tip">Check Clock Plus app if you want to see notifications in the daydream</string>
     <string name="force_rotation">Force automatic orientation</string>
-    <string name="force_rotation_summary">(Experimental) this should fix the issue when the screen doesn\'t rotate automatically</string>
-
+    <string name="force_rotation_summary">Always allow landscape mode</string>
+    <string name="misc">Misc</string>
 </resources>

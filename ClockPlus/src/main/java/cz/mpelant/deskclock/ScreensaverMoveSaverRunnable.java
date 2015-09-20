@@ -27,12 +27,11 @@ public class ScreensaverMoveSaverRunnable implements Runnable {
     static final long SLIDE_TIME = 10000;
     static final long FADE_TIME = 3000;
 
-    static final boolean SLIDE = false;
+    static boolean mSlideEffect = true;
 
     private View mContentView, mSaverView;
     private TextView mDate;
     private TextView mBattery;
-    private View mBatteryContainer;
     private NotificationLayout mNotifLayout;
     private View mTest;
     private TextView mNextAlarm;
@@ -51,11 +50,14 @@ public class ScreensaverMoveSaverRunnable implements Runnable {
         };
     }
 
+    public void setSlideEffect(boolean useSlideEffect) {
+        mSlideEffect = useSlideEffect;
+    }
+
     public void registerViews(View contentView, View saverView) {
         mContentView = contentView;
         mDate = (TextView) contentView.findViewById(R.id.date);
         mBattery = (TextView) contentView.findViewById(R.id.battery);
-        mBatteryContainer = contentView.findViewById(R.id.batteryContainer);
         mNotifLayout = (NotificationLayout) contentView.findViewById(R.id.notifLayout);
         mNextAlarm = (TextView) contentView.findViewById(R.id.nextAlarm);
         mSaverView = saverView;
@@ -104,7 +106,7 @@ public class ScreensaverMoveSaverRunnable implements Runnable {
                 Animator fadeout = ObjectAnimator.ofFloat(mSaverView, "alpha", 1f, 0f);
                 Animator fadein = ObjectAnimator.ofFloat(mSaverView, "alpha", 0f, 1f);
 
-                if (SLIDE) {
+                if (mSlideEffect) {
                     s.play(xMove).with(yMove);
                     s.setDuration(SLIDE_TIME);
 
@@ -140,7 +142,7 @@ public class ScreensaverMoveSaverRunnable implements Runnable {
             long now = System.currentTimeMillis();
             long adjust = (now % MOVE_DELAY);
             delay = delay + (MOVE_DELAY - adjust) // minute aligned
-                    - (SLIDE ? 0 : FADE_TIME) // start moving before the fade
+                    - (mSlideEffect ? 0 : FADE_TIME) // start moving before the fade
             ;
         }
 
@@ -154,10 +156,10 @@ public class ScreensaverMoveSaverRunnable implements Runnable {
             Utils.setDateTextView(mDate.getContext(), mDate);
 
             if (isPrefEnabled(ScreensaverSettingsActivity.KEY_BATTERY, true)) {
-                mBatteryContainer.setVisibility(View.VISIBLE);
+                mBattery.setVisibility(View.VISIBLE);
                 Utils.setBatteryStatus(mDate.getContext(), mBattery);
             } else {
-                mBatteryContainer.setVisibility(View.GONE);
+                mBattery.setVisibility(View.GONE);
             }
 
             if (Build.VERSION.SDK_INT >= 18) {
@@ -216,8 +218,6 @@ public class ScreensaverMoveSaverRunnable implements Runnable {
                 }
 
             }
-
-            ;
         }.start();
     }
 

@@ -43,6 +43,7 @@ public class Screensaver extends DreamService {
     public Screensaver() {
         if (DEBUG)
             Log.d(TAG, "Screensaver allocated");
+
         mMoveSaverRunnable = new ScreensaverMoveSaverRunnable(mHandler);
     }
 
@@ -134,6 +135,9 @@ public class Screensaver extends DreamService {
         if (Build.VERSION.SDK_INT >= 19) {
             Utils.hideSystemUiAndRetry(mContentView);
         }
+        boolean useSlideEffect = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(
+                ScreensaverSettingsActivity.KEY_SLIDE_EFFECT, false);
+        mMoveSaverRunnable.setSlideEffect(useSlideEffect);
         mMoveSaverRunnable.registerViews(mContentView, mSaverView);
         mHandler.post(mMoveSaverRunnable);
     }

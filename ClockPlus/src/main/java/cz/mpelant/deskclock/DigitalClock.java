@@ -44,15 +44,15 @@ public class DigitalClock extends LinearLayout {
     private final static String HOURS_24 = "kk";
     private final static String HOURS = "h";
     private final static String MINUTES = ":mm";
+    private final String mAmString, mPmString;
 
     private Calendar mCalendar;
     private String mHoursFormat;
-    private TextView mTimeDisplayHours, mTimeDisplayHoursThin, mTimeDisplayMinutes;
-    private AmPm mAmPm;
+    private TextView mTimeDisplayHours, mTimeDisplayMinutes;
+    private TextView mAmPm;
     private ContentObserver mFormatChangeObserver;
     private boolean mLive = true;
     private boolean mAttached;
-    private final Typeface mRobotoThin, mRobotoBold, mRobotoCondensed;
     private String mTimeZoneId;
 
 
@@ -74,30 +74,12 @@ public class DigitalClock extends LinearLayout {
         }
     };
 
-    static class AmPm {
-        private final TextView mAmPm;
-        private final String mAmString, mPmString;
+    private void setShowAmPm(boolean show) {
+        mAmPm.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
 
-        AmPm(View parent, Typeface typeface) {
-            mAmPm = (TextView) parent.findViewById(R.id.am_pm);
-            mAmPm.setTypeface(typeface);
-
-            String[] ampm = new DateFormatSymbols().getAmPmStrings();
-            mAmString = ampm[0];
-            mPmString = ampm[1];
-        }
-
-        void setShowAmPm(boolean show) {
-            mAmPm.setVisibility(show ? View.VISIBLE : View.GONE);
-        }
-
-        void setIsMorning(boolean isMorning) {
-            mAmPm.setText(isMorning ? mAmString : mPmString);
-        }
-
-        CharSequence getAmPmText() {
-            return mAmPm.getText();
-        }
+    private void setIsMorning(boolean isMorning) {
+        mAmPm.setText(isMorning ? mAmString : mPmString);
     }
 
     private class FormatChangeObserver extends ContentObserver {
@@ -118,9 +100,10 @@ public class DigitalClock extends LinearLayout {
 
     public DigitalClock(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mRobotoThin = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Thin.ttf");
-        mRobotoBold = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Bold.ttf");
-        mRobotoCondensed = Typeface.createFromAsset(context.getAssets(), "fonts/RobotoCondensed-Bold.ttf");
+
+        String[] ampm = new DateFormatSymbols().getAmPmStrings();
+        mAmString = ampm[0];
+        mPmString = ampm[1];
     }
 
     @Override
@@ -129,8 +112,7 @@ public class DigitalClock extends LinearLayout {
 
         mTimeDisplayHours = (TextView) findViewById(R.id.timeDisplayHours);
         mTimeDisplayMinutes = (TextView) findViewById(R.id.timeDisplayMinutes);
-        mTimeDisplayMinutes.setTypeface(mRobotoThin);
-        mAmPm = new AmPm(this, mRobotoCondensed);
+        mAmPm = (TextView) findViewById(R.id.am_pm);
         mCalendar = Calendar.getInstance();
 
         setDateFormat();
@@ -210,9 +192,9 @@ public class DigitalClock extends LinearLayout {
         mTimeDisplayMinutes.setText(newTime);
 
         boolean isMorning = mCalendar.get(Calendar.AM_PM) == 0;
-        mAmPm.setIsMorning(isMorning);
+        setIsMorning(isMorning);
         if (!Alarms.get24HourMode(getContext())) {
-            fullTimeStr.append(mAmPm.getAmPmText());
+            fullTimeStr.append(mAmPm.getText());
         }
 
         // Update accessibility string.
@@ -221,7 +203,8 @@ public class DigitalClock extends LinearLayout {
 
     private void setDateFormat() {
         mHoursFormat = Alarms.get24HourMode(getContext()) ? HOURS_24 : HOURS;
-        mAmPm.setShowAmPm(!Alarms.get24HourMode(getContext()));
+
+        setShowAmPm(!Alarms.get24HourMode(getContext()));
     }
 
     void setLive(boolean live) {

@@ -16,111 +16,78 @@
 -->
 
 <!-- Special "screen saver mode" with just the time/date on black. -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:dc="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="#FF000000"
-              android:orientation="vertical"
-              android:gravity="center">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dc="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FF000000"
+    android:orientation="vertical"
+    android:gravity="center">
 
     <!-- Extra layout to let the clock float in the window -->
-
     <LinearLayout
-            android:id="@+id/main_clock"
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/screensaver_margin"
-            android:layout_marginRight="@dimen/screensaver_margin"
-            android:layout_marginTop="@dimen/time_margin_top"
-            android:layout_marginBottom="@dimen/screensaver_margin">
+        android:id="@+id/main_clock"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center">
 
-        <include
-            layout="@layout/desk_clock_time_date"
-            android:id="@+id/digital_clock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/digital_margin_bottom"
-            />
+        <include layout="@layout/desk_clock_time_date"/>
 
         <cz.mpelant.deskclock.AnalogClock
             android:id="@+id/analog_clock"
             android:layout_width="@dimen/analog_clock_diameter"
             android:layout_height="@dimen/analog_clock_diameter"
-            android:layout_gravity="center"
             dc:jewelRadius="5dp"
             dc:jewelOffset="23dp"
             dc:jewelColor="@color/clock_white"
             android:dial="@drawable/clock_analog_dial_mipmap"
             android:hand_hour="@drawable/clock_analog_hour_mipmap"
-            android:hand_minute="@drawable/clock_analog_minute_mipmap"
-            android:layout_marginBottom="@dimen/time_margin_bottom"/>
+            android:hand_minute="@drawable/clock_analog_minute_mipmap"/>
 
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center" >
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:singleLine="true">
 
-            <TextView android:id="@+id/date"
+            <TextView
+                android:id="@+id/date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/clock_white"
-                style="@style/label"
-                android:gravity="center"
-                android:visibility="visible"
-                />
-            <TextView android:id="@+id/nextAlarm"
+                style="@style/label_not_caps"
+                android:singleLine="true"/>
+
+            <TextView
+                android:id="@+id/nextAlarm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawablePadding="2dip"
                 android:drawableLeft="@drawable/ic_alarm_small"
-                android:drawableStart="@drawable/ic_alarm_small"
                 android:textColor="@color/clock_gray"
-                style="@style/label"
-                android:layout_marginLeft="8dip"
-                android:layout_marginStart="8dip"
-                android:gravity="center"
+                style="@style/label_not_caps"
                 android:visibility="gone"
-                />
+                android:paddingLeft="@dimen/clock_padding"
+                android:gravity="center"
+                android:singleLine="true"/>
         </LinearLayout>
 
-        <LinearLayout
-                android:id="@+id/batteryContainer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center">
+        <TextView
+            android:id="@+id/battery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/clock_gray"
+            style="@style/label_not_caps"
+            android:singleLine="true"/>
 
-            <TextView
-                    android:layout_width="1dp"
-                    android:layout_height="wrap_content"
-                    android:text=" "/>
+        <cz.mpelant.deskclock.notification.NotificationLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/notifLayout"
+            android:singleLine="true"/>
 
-            <TextView
-                    android:id="@+id/battery"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-        </LinearLayout>
-
-        <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:layout_gravity="center">
-
-
-            <cz.mpelant.deskclock.notification.NotificationLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:id="@+id/notifLayout"
-                    />
-
-        </LinearLayout>
     </LinearLayout>
-
 </LinearLayout>

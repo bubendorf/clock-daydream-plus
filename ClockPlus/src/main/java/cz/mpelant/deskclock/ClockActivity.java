@@ -32,10 +32,23 @@ public class ClockActivity extends BaseScreenOnActivity {
         }
     };
 
+
+    
+
+    private void setClockStyle() {
+        Utils.setClockStyle(this, mDigitalClock, mAnalogClock, ScreensaverSettingsActivity.KEY_CLOCK_STYLE);
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onResume() {
         setContentView(R.layout.desk_clock_saver);
+
+        String size = PreferenceManager.getDefaultSharedPreferences(this).getString(
+                ScreensaverSettingsActivity.KEY_CLOCK_SIZE,
+                ScreensaverSettingsActivity.SIZE_DEFAULT);
+        Utils.resizeContent((ViewGroup) findViewById(R.id.main_clock), size);
+
+
         mDigitalClock = findViewById(R.id.digital_clock);
         mAnalogClock = findViewById(R.id.analog_clock);
         ((View)mAnalogClock.getParent().getParent()).setOnLongClickListener(new OnLongClickListener() {
@@ -48,22 +61,11 @@ public class ClockActivity extends BaseScreenOnActivity {
         });
         mDate = (TextView) findViewById(R.id.date);
         mNextAlarm = (TextView) findViewById(R.id.nextAlarm);
-    }
-    
 
-    private void setClockStyle() {
-        Utils.setClockStyle(this, mDigitalClock, mAnalogClock, ScreensaverSettingsActivity.KEY_CLOCK_STYLE);
-
-//        String size = PreferenceManager.getDefaultSharedPreferences(this).getString(
-//                ScreensaverSettingsActivity.KEY_CLOCK_SIZE,
-//                ScreensaverSettingsActivity.SIZE_DEFAULT);
-//        Utils.resizeContent((ViewGroup) findViewById(R.id.main_clock), size);
-    }
-
-    @Override
-    public void onResume() {
         setClockStyle();
         updateViews();
+
+
         mHandler.postDelayed(startScreenSaverRunnable, SCREENSAVER_DELAY);
         super.onResume();
     }

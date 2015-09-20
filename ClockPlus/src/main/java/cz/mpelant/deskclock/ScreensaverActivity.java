@@ -35,8 +35,7 @@ public class ScreensaverActivity extends BaseScreenOnActivity {
     static final String TAG = "DeskClock/ScreensaverAc";
 
     // This value must match android:defaultValue of
-    // android:key="screensaver_clock_style" in dream_settings.xml
-    static final String DEFAULT_CLOCK_STYLE = "digital";
+    // android:key="screensaver_clock_style" in preferences.xml  static final String DEFAULT_CLOCK_STYLE = "digital";
 
     private View mContentView, mSaverView;
     private View mAnalogClock, mDigitalClock;
@@ -70,6 +69,10 @@ public class ScreensaverActivity extends BaseScreenOnActivity {
 
         mDateFormat = getString(R.string.abbrev_wday_month_day_no_year);
         mDateFormatForAccessibility = getString(R.string.full_wday_month_day_no_year);
+
+        boolean useSlideEffect = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(
+                ScreensaverSettingsActivity.KEY_SLIDE_EFFECT, false);
+        mMoveSaverRunnable.setSlideEffect(useSlideEffect);
 
         layoutClockSaver();
         mHandler.post(mMoveSaverRunnable);
@@ -120,7 +123,6 @@ public class ScreensaverActivity extends BaseScreenOnActivity {
 
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void layoutClockSaver() {
         setContentView(R.layout.desk_clock_saver);
         mDigitalClock = findViewById(R.id.digital_clock);

@@ -52,7 +52,6 @@
         <item name="android:background">@drawable/header_bg_bar</item>
         <item name="android:backgroundStacked">@null</item>
         <item name="android:backgroundSplit">@null</item>
-        <item name="android:displayOptions"></item>
     </style>
 
     <style name="DeskClockDropDownListView" parent="@android:style/Widget.Holo.ListView.DropDown">
@@ -148,8 +147,7 @@
     </style>
 
     <style name="ampm">
-        <item name="android:textSize">@dimen/label_font_size</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/ampm_font_size</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:fontFamily">sans-serif-condensed</item>
     </style>

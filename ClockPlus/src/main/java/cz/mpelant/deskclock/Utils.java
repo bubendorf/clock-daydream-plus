@@ -37,6 +37,7 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
+import android.transition.Visibility;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
@@ -87,28 +88,6 @@ public class Utils {
     public final static String HOURS_24 = "kk";
     public final static String HOURS = "h";
     public final static String MINUTES = ":mm";
-
-    public static void prepareHelpMenuItem(Context context, MenuItem helpMenuItem) {
-        String helpUrlString = context.getResources().getString(R.string.desk_clock_help_url);
-        if (TextUtils.isEmpty(helpUrlString)) {
-            // The help url string is empty or null, so set the help menu item to be invisible.
-            helpMenuItem.setVisible(false);
-            return;
-        }
-        // The help url string exists, so first add in some extra query parameters. 87
-        final Uri fullUri = uriWithAddedParameters(context, Uri.parse(helpUrlString));
-
-        // Then, create an intent that will be fired when the user
-        // selects this help menu item.
-        Intent intent = new Intent(Intent.ACTION_VIEW, fullUri);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-
-        // Set the intent to the help menu item, show the help menu item in the overflow
-        // menu, and make it visible.
-        helpMenuItem.setIntent(intent);
-        helpMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-        helpMenuItem.setVisible(true);
-    }
 
     /**
      * Adds two query parameters into the Uri, namely the language code and the version code
@@ -266,16 +245,18 @@ public class Utils {
     }
 
     /** Clock views can call this to refresh their alarm to the next upcoming value. **/
+    @SuppressWarnings("deprecation")
     public static void refreshAlarm(Context context, View clock) {
         String nextAlarm = Settings.System.getString(context.getContentResolver(), Settings.System.NEXT_ALARM_FORMATTED);
         TextView nextAlarmView;
         nextAlarmView = (TextView) clock.findViewById(R.id.nextAlarm);
-        if (!TextUtils.isEmpty(nextAlarm) && nextAlarmView != null) {
-            nextAlarmView.setText(context.getString(R.string.control_set_alarm_with_existing, nextAlarm));
-            nextAlarmView.setContentDescription(context.getResources().getString(R.string.next_alarm_description, nextAlarm));
-            nextAlarmView.setVisibility(View.VISIBLE);
-        } else {
-            nextAlarmView.setVisibility(View.GONE);
+
+        if (nextAlarmView != null) {
+            if (!TextUtils.isEmpty(nextAlarm)) {
+                nextAlarmView.setText(context.getString(R.string.control_set_alarm_with_existing, nextAlarm));
+                nextAlarmView.setContentDescription(context.getResources().getString(R.string.next_alarm_description, nextAlarm));
+                nextAlarmView.setVisibility(View.VISIBLE);
+            } else nextAlarmView.setVisibility(View.GONE);
         }
     }
 
@@ -294,6 +275,7 @@ public class Utils {
         }
     }
 
+    @SuppressWarnings("deprecation")
     public static void setAlarmTextView(Context context, TextView alarm) {
         String nextAlarm = Settings.System.getString(context.getContentResolver(), Settings.System.NEXT_ALARM_FORMATTED);
         if (nextAlarm==null || nextAlarm.isEmpty()) {
@@ -312,6 +294,10 @@ public class Utils {
         IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         Intent batteryStatus = context.registerReceiver(null, ifilter);
 
+        if (batteryStatus == null) {
+            return;
+        }
+
         // Are we charging / charged?
         int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
         boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING || status == BatteryManager.BATTERY_STATUS_FULL;
@@ -328,7 +314,7 @@ public class Utils {
 
         String text = "";
         if (status == BatteryManager.BATTERY_STATUS_FULL) {
-            text += context.getString(R.string.battery_full);
+            batteryView.setVisibility(View.GONE);
         } else {
             if (isCharging) {
                 text += context.getString(R.string.battery_charging);
@@ -339,8 +325,10 @@ public class Utils {
                 text += ", ";
             }
             text += (int)batteryPct + "%";
+            batteryView.setText(text);
+            batteryView.setVisibility(View.VISIBLE);
         }
-        batteryView.setText(text);
+
 
     }
 
@@ -366,9 +354,9 @@ public class Utils {
         PackageManager manager = context.getPackageManager();
         Intent intent = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER);
 
-        for (int i = 0; i < clockImpls.length; i++) {
+        for (String[] clockImpl : clockImpls) { // int i = 0; i < clockImpls.length; i++) {
 
-            ComponentName c = new ComponentName(clockImpls[i][1], clockImpls[i][2]);
+            ComponentName c = new ComponentName(clockImpl[1], clockImpl[2]);
             intent.setComponent(c);
 
             if (isCallable(intent, context))
@@ -391,7 +379,7 @@ public class Utils {
     public static void hideSystemUiAndRetry(final View view) {
         hideSystemUI(view);
 
-        new CountDownTimer(4000, 2000) {
+        new CountDownTimer(20000, 2000) {
             public void onTick(long millisUntilFinished) { hideSystemUI(view); }
             public void onFinish() {}
         }.start();
@@ -424,17 +412,17 @@ public class Utils {
         float resizeRatio;
 
         switch (size) {
-            case CLOCK_SIZE_SMALL:
-                resizeRatio = (float)0.85;
+            case CLOCK_SIZE_MEDIUM:
+                resizeRatio = (float)1.75;
                 break;
             case CLOCK_SIZE_LARGE:
-                resizeRatio = (float)1.15;
+                resizeRatio = (float)2.5;
                 break;
             case CLOCK_SIZE_XLARGE:
-                resizeRatio = (float)1.25;
+                resizeRatio = (float)5;
                 break;
             case CLOCK_SIZE_2XLARGE:
-                resizeRatio = (float)1.5;
+                resizeRatio = (float)7.5;
                 break;
             default:
                 resizeRatio = 1;
@@ -458,10 +446,22 @@ public class Utils {
                 if (child != null) {
                     // DO SOMETHING WITH VIEW
                     if (child instanceof TextView)  {
-                        float textSize = ((TextView) child).getTextSize();
-                        float newTextSize = textSize * resizeRatio;
+                        float textSize;
+                        float newTextSize;
+                        int paddingLeft, paddingRight, paddingTop, paddingBottom;
 
-                        ((TextView) child).setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
+                        TextView tv = ((TextView) child);
+
+                        textSize = ((TextView) child).getTextSize();
+                        newTextSize = textSize * resizeRatio;
+                        tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
+
+                        paddingLeft = (int) (resizeRatio * tv.getPaddingLeft());
+                        paddingRight = (int) (resizeRatio * tv.getPaddingRight());
+                        paddingTop = (int) (resizeRatio * tv.getPaddingTop());
+                        paddingBottom = (int) (resizeRatio * tv.getPaddingBottom());
+
+                        tv.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
                     }
                 }
             }
@@ -478,11 +478,9 @@ public class Utils {
         String defaultClockStyle = context.getResources().getString(R.string.default_clock_style);
         String style = sharedPref.getString(ScreensaverSettingsActivity.KEY_CLOCK_STYLE, defaultClockStyle);
 
-        if (style != null ) {
-            if (style.equals(Utils.CLOCK_TYPE_DIGITAL2))
-                timeDisplayHours.setTypeface(robotoThin);
-            else
-                timeDisplayHours.setTypeface(robotoBold);
-        }
+        if (style.equals(Utils.CLOCK_TYPE_DIGITAL2))
+            timeDisplayHours.setTypeface(robotoThin);
+        else
+            timeDisplayHours.setTypeface(robotoBold);
     }
 }
