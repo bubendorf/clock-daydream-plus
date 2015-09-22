@@ -16,6 +16,7 @@
 
 package cz.mpelant.deskclock;
 
+import android.app.ActionBar;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.*;
@@ -37,11 +38,10 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
-import android.transition.Visibility;
 import android.util.TypedValue;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Gallery;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -216,7 +216,9 @@ public class Utils {
         }
 
         TextView timeDisplayHours = (TextView)digitalClock.findViewById(R.id.timeDisplayHours);
-        Utils.setHourStyle(timeDisplayHours);
+        TextView timeDisplayMinutes = (TextView)digitalClock.findViewById(R.id.timeDisplayMinutes);
+        TextView timeAmPm = (TextView)digitalClock.findViewById(R.id.am_pm);
+        Utils.setTimeFont(timeDisplayHours, timeDisplayMinutes, timeAmPm);
 
         return returnView;
     }
@@ -403,13 +405,12 @@ public class Utils {
     }
 
 
-    /**
-     * <p>Resize the TextView fields to requested size.
-     * There is no mechanism to prevent overflow off the screen.
-     * Size can be small, medium or large.</p>
-     */
-    public static void resizeContent(ViewGroup parent, String size) {
+    public float getSizeRatio(Context context) {
         float resizeRatio;
+
+        String size = PreferenceManager.getDefaultSharedPreferences(context).getString(
+                ScreensaverSettingsActivity.KEY_CLOCK_SIZE,
+                ScreensaverSettingsActivity.SIZE_DEFAULT);
 
         switch (size) {
             case CLOCK_SIZE_MEDIUM:
@@ -423,6 +424,34 @@ public class Utils {
                 break;
             case CLOCK_SIZE_2XLARGE:
                 resizeRatio = (float)7.5;
+                break;
+            default:
+                resizeRatio = 1;
+        }
+
+        return resizeRatio;
+    }
+
+    /**
+     * <p>Resize the TextView fields to requested size.
+     * There is no mechanism to prevent overflow off the screen.
+     * Size can be small, medium or large.</p>
+     */
+    public static void resizeContent(ViewGroup parent, String size) {
+        float resizeRatio;
+
+        switch (size) {
+            case CLOCK_SIZE_MEDIUM:
+                resizeRatio = (float)1.75;
+                break;
+            case CLOCK_SIZE_LARGE:
+                resizeRatio = (float)2.25;
+                break;
+            case CLOCK_SIZE_XLARGE:
+                resizeRatio = (float)4.5;
+                break;
+            case CLOCK_SIZE_2XLARGE:
+                resizeRatio = (float)6.75;
                 break;
             default:
                 resizeRatio = 1;
@@ -468,19 +497,23 @@ public class Utils {
         }
     }
 
-    public static void setHourStyle(TextView timeDisplayHours) {
+    public static void setTimeFont(TextView timeDisplayHours, TextView timeDisplayMinutes, TextView timeDisplayAmPm) {
         Context context = timeDisplayHours.getContext();
 
         final Typeface robotoThin = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Thin.ttf");
         final Typeface robotoBold = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Bold.ttf");
+        final Typeface robotoRegular = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Regular.ttf");
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         String defaultClockStyle = context.getResources().getString(R.string.default_clock_style);
         String style = sharedPref.getString(ScreensaverSettingsActivity.KEY_CLOCK_STYLE, defaultClockStyle);
 
-        if (style.equals(Utils.CLOCK_TYPE_DIGITAL2))
-            timeDisplayHours.setTypeface(robotoThin);
-        else
+        if (style.equals(Utils.CLOCK_TYPE_DIGITAL))
             timeDisplayHours.setTypeface(robotoBold);
+        else
+            timeDisplayHours.setTypeface(robotoThin);
+
+        timeDisplayMinutes.setTypeface(robotoThin);
+        timeDisplayAmPm.setTypeface(robotoRegular);
     }
 }

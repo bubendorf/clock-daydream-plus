@@ -53,7 +53,7 @@
     <dimen name="digital_margin_bottom">4dip</dimen>
     <dimen name="notif_size">24dp</dimen>
     <dimen name="notif_margin">5dp</dimen>
-    <dimen name="clock_padding">1.25mm</dimen>
+    <dimen name="clock_padding">0.8mm</dimen>
 
     <!-- Size of notification text (see TextAppearance.StatusBar.EventContent) -->
     <dimen name="notification_text_size">14dp</dimen>

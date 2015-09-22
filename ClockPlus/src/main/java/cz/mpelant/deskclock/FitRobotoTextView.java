@@ -23,45 +23,32 @@ import android.widget.TextView;
 /**
  * Displays text with no padding at the top.
  */
-public class ZeroTopBottomPaddingTextView extends TextView {
-    private static final float NORMAL_FONT_PADDING_TOP_RATIO = 0.328f;
-    // the bold fontface has less empty space on the top
-    private static final float BOLD_FONT_PADDING_TOP_RATIO = 0.208f;
+public class FitRobotoTextView extends TextView {
+    private static final float NORMAL_FONT_PADDING_TOP_RATIO = 0.2f;
+    private static final float NORMAL_FONT_PADDING_BOTTOM_RATIO = 0.23f;
 
-    private static final float NORMAL_FONT_PADDING_BOTTOM_RATIO = 0.25f;
-    // the bold fontface has less empty space on the top
-    private static final float BOLD_FONT_PADDING_BOTTOM_RATIO = 0.208f;
-
-    public ZeroTopBottomPaddingTextView(Context context) {
+    public FitRobotoTextView(Context context) {
         this(context, null);
     }
 
-    public ZeroTopBottomPaddingTextView(Context context, AttributeSet attrs) {
+    public FitRobotoTextView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public ZeroTopBottomPaddingTextView(Context context, AttributeSet attrs, int defStyle) {
+    public FitRobotoTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        if (isInEditMode())
-            return;
 
         setIncludeFontPadding(false);
 
-//        updatePadding();//TODO: comment if buggy
+        updatePadding();//TODO: comment if buggy
     }
 
-    public void updatePadding() {
+    private void updatePadding() {
         float paddingTopRatio, paddingBottomRatio;
         int paddingLeft, paddingRight, paddingTop, paddingBottom;
 
-        if (getTypeface() != null && getTypeface().isBold()) {
-            paddingTopRatio = BOLD_FONT_PADDING_TOP_RATIO;
-            paddingBottomRatio = BOLD_FONT_PADDING_BOTTOM_RATIO;
-        }
-        else {
-            paddingTopRatio = NORMAL_FONT_PADDING_TOP_RATIO;
-            paddingBottomRatio = NORMAL_FONT_PADDING_BOTTOM_RATIO;
-        }
+        paddingTopRatio = NORMAL_FONT_PADDING_TOP_RATIO;
+        paddingBottomRatio = NORMAL_FONT_PADDING_BOTTOM_RATIO;
 
         paddingLeft = getPaddingLeft();
         paddingRight = getPaddingRight();

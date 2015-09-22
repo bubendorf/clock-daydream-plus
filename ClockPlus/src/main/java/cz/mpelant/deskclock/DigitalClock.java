@@ -53,7 +53,6 @@ public class DigitalClock extends LinearLayout {
     private ContentObserver mFormatChangeObserver;
     private boolean mLive = true;
     private boolean mAttached;
-    private String mTimeZoneId;
 
 
     /* called by system on minute ticks */
@@ -159,27 +158,9 @@ public class DigitalClock extends LinearLayout {
                 mFormatChangeObserver);
     }
 
-
-    void updateTime(Calendar c) {
-        mCalendar = c;
-        updateTime();
-    }
-
-    public void updateTime(int hour, int minute) {
-        // set the alarm text
-        final Calendar c = Calendar.getInstance();
-        c.set(Calendar.HOUR_OF_DAY, hour);
-        c.set(Calendar.MINUTE, minute);
-        mCalendar = c;
-        updateTime();
-    }
-
     private void updateTime() {
         if (mLive) {
             mCalendar.setTimeInMillis(System.currentTimeMillis());
-        }
-        if (mTimeZoneId != null) {
-            mCalendar.setTimeZone(TimeZone.getTimeZone(mTimeZoneId));
         }
 
         StringBuilder fullTimeStr = new StringBuilder();
@@ -207,14 +188,6 @@ public class DigitalClock extends LinearLayout {
         setShowAmPm(!Alarms.get24HourMode(getContext()));
     }
 
-    void setLive(boolean live) {
-        mLive = live;
-    }
-
-    public void setTimeZone(String id) {
-        mTimeZoneId = id;
-        updateTime();
-    }
 
 
 }

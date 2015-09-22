@@ -23,34 +23,27 @@
     android:id="@+id/digital_clock"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:singleLine="true">
+    android:singleLine="true"
+    android:baselineAligned="true"
+    android:textColor="@color/clock_white">
 
-    <TextView
+    <cz.mpelant.deskclock.FitRobotoTextView
         android:id="@+id/timeDisplayHours"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:singleLine="true"
-        style="@style/big_thin"
-        android:textColor="@color/clock_white"
-        android:includeFontPadding="false"/>
+        style="@style/big_thin"/>
 
-    <TextView
+    <cz.mpelant.deskclock.FitRobotoTextView
         android:id="@+id/timeDisplayMinutes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/big_thin"
-        android:singleLine="true"
-        android:textColor="@color/clock_white"
-        android:includeFontPadding="false"/>
+        style="@style/big_thin"/>
 
-    <TextView
+    <cz.mpelant.deskclock.FitRobotoTextView
         android:id="@+id/am_pm"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         style="@style/ampm"
-        android:singleLine="true"
-        android:textColor="@color/clock_white"
-        android:includeFontPadding="false"
         android:paddingLeft="@dimen/clock_padding"/>
 
 </cz.mpelant.deskclock.DigitalClock>

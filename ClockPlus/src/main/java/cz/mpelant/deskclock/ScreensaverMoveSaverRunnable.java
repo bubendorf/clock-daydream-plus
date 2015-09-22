@@ -26,6 +26,10 @@ public class ScreensaverMoveSaverRunnable implements Runnable {
     static final long MOVE_DELAY = 60000; // DeskClock.SCREEN_SAVER_MOVE_DELAY;
     static final long SLIDE_TIME = 10000;
     static final long FADE_TIME = 3000;
+    static final float MAX_SPACE_RATIO = 0.8f; //Safety measure to resize the content in case
+                                                // the content couldn't move.
+    static final float SHRINKING_RATIO = 0.85f; // Percentage of the original to shrink and
+                                                // expand before and after moving.
 
     static boolean mSlideEffect = true;
 
@@ -39,6 +43,7 @@ public class ScreensaverMoveSaverRunnable implements Runnable {
     private NotifCompact mNotifCompact;
 
     private static TimeInterpolator mSlowStartWithBrakes;
+    private static float mSizeRatio;
 
     public ScreensaverMoveSaverRunnable(Handler handler) {
         mHandler = handler;
@@ -83,21 +88,26 @@ public class ScreensaverMoveSaverRunnable implements Runnable {
             final int nextx = (int) (Math.random() * xrange);
             final int nexty = (int) (Math.random() * yrange);
 
+            AnimatorSet s = new AnimatorSet();
+
             if (mSaverView.getAlpha() == 0f) {
                 // jump right there
                 mSaverView.setX(nextx);
                 mSaverView.setY(nexty);
-                ObjectAnimator.ofFloat(mSaverView, "alpha", 0f, 1f).setDuration(FADE_TIME).start();
+
+                schickIfTooBig(s);
+                Animator appear = ObjectAnimator.ofFloat(mSaverView, "alpha", 0f, 1f).setDuration(FADE_TIME);
+                s.play(appear);
             } else {
-                AnimatorSet s = new AnimatorSet();
+
                 Animator xMove = ObjectAnimator.ofFloat(mSaverView, "x", mSaverView.getX(), nextx);
                 Animator yMove = ObjectAnimator.ofFloat(mSaverView, "y", mSaverView.getY(), nexty);
 
-                Animator xShrink = ObjectAnimator.ofFloat(mSaverView, "scaleX", 1f, 0.85f);
-                Animator xGrow = ObjectAnimator.ofFloat(mSaverView, "scaleX", 0.85f, 1f);
+                Animator xShrink = ObjectAnimator.ofFloat(mSaverView, "scaleX", mSizeRatio, mSizeRatio * SHRINKING_RATIO);
+                Animator xGrow = ObjectAnimator.ofFloat(mSaverView, "scaleX", mSizeRatio * SHRINKING_RATIO, mSizeRatio);
 
-                Animator yShrink = ObjectAnimator.ofFloat(mSaverView, "scaleY", 1f, 0.85f);
-                Animator yGrow = ObjectAnimator.ofFloat(mSaverView, "scaleY", 0.85f, 1f);
+                Animator yShrink = ObjectAnimator.ofFloat(mSaverView, "scaleY", mSizeRatio, mSizeRatio * SHRINKING_RATIO);
+                Animator yGrow = ObjectAnimator.ofFloat(mSaverView, "scaleY", mSizeRatio * SHRINKING_RATIO, mSizeRatio);
                 AnimatorSet shrink = new AnimatorSet();
                 shrink.play(xShrink).with(yShrink);
                 AnimatorSet grow = new AnimatorSet();
@@ -136,8 +146,8 @@ public class ScreensaverMoveSaverRunnable implements Runnable {
                     s.play(fadein).after(FADE_TIME);
                     s.play(grow).after(FADE_TIME);
                 }
-                s.start();
             }
+            s.start();
 
             long now = System.currentTimeMillis();
             long adjust = (now % MOVE_DELAY);
@@ -149,6 +159,45 @@ public class ScreensaverMoveSaverRunnable implements Runnable {
         mHandler.removeCallbacks(this);
         mHandler.postDelayed(this, delay);
     }
+
+    private void initialSizing() {
+        float xSpaceRatio;      // requested ratio between mSaverView and mContentView weight
+        float ySpaceRatio;      // requested ratio between mSaverView and mContentView height
+        float maxBetweenXAndY;
+
+        xSpaceRatio = (float) mSaverView.getWidth() * mSizeRatio / mContentView.getWidth();
+        ySpaceRatio = (float) mSaverView.getHeight() * mSizeRatio / mContentView.getHeight();
+        maxBetweenXAndY = xSpaceRatio > ySpaceRatio ? xSpaceRatio : ySpaceRatio;
+
+        if (maxBetweenXAndY > MAX_SPACE_RATIO) {
+            if (xSpaceRatio > ySpaceRatio)
+                mSizeRatio = MAX_SPACE_RATIO * mContentView.getWidth() / mSaverView.getWidth();
+            else
+                mSizeRatio = MAX_SPACE_RATIO * mContentView.getHeight() / mSaverView.getHeight();
+        }
+
+        Animator xShrink = ObjectAnimator.ofFloat(mSaverView, "scaleX", 1f, mSizeRatio);
+        Animator yShrink = ObjectAnimator.ofFloat(mSaverView, "scaleY", 1f, mSizeRatio);
+        AnimatorSet resize = new AnimatorSet();
+        resize.play(xShrink).with(yShrink);
+    }
+
+    private void schickIfTooBig(AnimatorSet s) {
+        final float xRatio = (float) mSaverView.getWidth() / mContentView.getWidth();
+        final float yRatio = (float) mSaverView.getHeight() / mContentView.getHeight();
+        final float biggerRatio = xRatio > yRatio ? xRatio : yRatio;
+
+        if (biggerRatio > MAX_SPACE_RATIO) {
+            mSizeRatio = MAX_SPACE_RATIO / biggerRatio;
+
+            Animator xShrink = ObjectAnimator.ofFloat(mSaverView, "scaleX", 1, mSizeRatio);
+            Animator yShrink = ObjectAnimator.ofFloat(mSaverView, "scaleY", 1, mSizeRatio);
+
+            s.play(xShrink).with(yShrink);
+        }
+    }
+
+
 
     private void handleUpdate() {
         try {
