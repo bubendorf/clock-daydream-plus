@@ -21,10 +21,14 @@
      These resources are around just to allow their values to be customized
      for different hardware and product builds.
 -->
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <dimen name="big_font_size">14mm</dimen>
-    <dimen name="label_font_size">2mm</dimen>
-    <dimen name="ampm_font_size">4mm</dimen>
+    <dimen name="time_margin_right">8dip</dimen>
+    <dimen name="time_margin_bottom">14dip</dimen>
+    <dimen name="time_margin_top">32dip</dimen>
+    <dimen name="widget_big_font_size">130dp</dimen>
+    <dimen name="medium_font_size">100dp</dimen>
+    <dimen name="widget_medium_font_size">70dp</dimen>
+    <dimen name="body_font_size">24sp</dimen>
 
 </resources>

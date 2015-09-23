@@ -111,13 +111,15 @@ public class Screensaver extends DreamService {
                 ScreensaverSettingsActivity.SIZE_DEFAULT);
         Utils.resizeContent((ViewGroup) mSaverView, size);
 
-        boolean dim = brightness < ScreensaverSettingsActivity.BRIGHTNESS_NIGHT;
-        if (dim) {
-            WindowManager.LayoutParams lp = getWindow().getAttributes();
-            lp.screenBrightness = 0.01f;
-            getWindow().setAttributes(lp);
-        }
-        setScreenBright(!dim);
+//        boolean dim = brightness < ScreensaverSettingsActivity.BRIGHTNESS_NIGHT;
+//        if (dim) {
+//            WindowManager.LayoutParams lp = getWindow().getAttributes();
+//            lp.screenBrightness = 0.01f;
+//            getWindow().setAttributes(lp);
+//        }
+//        setScreenBright(!dim);
+
+        Utils.setBrightness(getWindow(), mSaverView, mMoveSaverRunnable, this);
 
     }
 
@@ -136,8 +138,10 @@ public class Screensaver extends DreamService {
             Utils.hideSystemUiAndRetry(mContentView);
         }
         boolean useSlideEffect = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(
-                ScreensaverSettingsActivity.KEY_SLIDE_EFFECT, false);
+                ScreensaverSettingsActivity.KEY_SLIDE_EFFECT,
+                ScreensaverSettingsActivity.KEY_SLIDE_EFFECT_DEFAULT);
         mMoveSaverRunnable.setSlideEffect(useSlideEffect);
+
         mMoveSaverRunnable.registerViews(mContentView, mSaverView);
         mHandler.post(mMoveSaverRunnable);
     }

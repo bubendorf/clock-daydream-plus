@@ -33,7 +33,9 @@
         android:layout_height="wrap_content"
         android:gravity="center">
 
-        <include layout="@layout/desk_clock_time_date"/>
+        <include layout="@layout/desk_clock_time_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
         <cz.mpelant.deskclock.AnalogClock
             android:id="@+id/analog_clock"

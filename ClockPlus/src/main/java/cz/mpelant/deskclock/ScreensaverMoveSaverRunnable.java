@@ -5,6 +5,12 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.TimeInterpolator;
+import android.app.Activity;
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -22,8 +28,8 @@ import java.util.List;
  * Runnable for use with screensaver and dream, to move the clock every minute.
  * registerViews() must be called prior to posting.
  */
-public class ScreensaverMoveSaverRunnable implements Runnable {
-    static final long MOVE_DELAY = 60000; // DeskClock.SCREEN_SAVER_MOVE_DELAY;
+public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListener {
+    static final long MOVE_DELAY = 15000; // DeskClock.SCREEN_SAVER_MOVE_DELAY;
     static final long SLIDE_TIME = 10000;
     static final long FADE_TIME = 3000;
     static final float MAX_SPACE_RATIO = 0.8f; //Safety measure to resize the content in case
@@ -44,19 +50,35 @@ public class ScreensaverMoveSaverRunnable implements Runnable {
 
     private static TimeInterpolator mSlowStartWithBrakes;
     private static float mSizeRatio;
+    private float mNextAlpha;
+    private float mLastAlpha;
+    private SensorManager mSensorManager;
+    private Sensor mLight;
+    private boolean mInitSensor;
+
+    private boolean mUseAutoBrightness = false;
+    private float mAdjustBrightness;
 
     public ScreensaverMoveSaverRunnable(Handler handler) {
         mHandler = handler;
+        mInitSensor = false;
         mSlowStartWithBrakes = new TimeInterpolator() {
             @Override
             public float getInterpolation(float x) {
                 return (float) (Math.cos((Math.pow(x, 3) + 1) * Math.PI) / 2.0f) + 0.5f;
             }
         };
+        // Get an instance of the sensor service, and use that to get an instance of
+        // a particular sensor.
     }
 
     public void setSlideEffect(boolean useSlideEffect) {
         mSlideEffect = useSlideEffect;
+    }
+
+    public void setAutoBrightness(boolean useAutoBrightness, float adjFactor) {
+        mUseAutoBrightness = useAutoBrightness;
+        mAdjustBrightness = adjFactor;
     }
 
     public void registerViews(View contentView, View saverView) {
@@ -66,7 +88,48 @@ public class ScreensaverMoveSaverRunnable implements Runnable {
         mNotifLayout = (NotificationLayout) contentView.findViewById(R.id.notifLayout);
         mNextAlarm = (TextView) contentView.findViewById(R.id.nextAlarm);
         mSaverView = saverView;
+        mSensorManager = (SensorManager) mContentView.getContext().getSystemService(Context.SENSOR_SERVICE);
+        mLight = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+
+        mNextAlpha = (float)96 / 255;
+        mLastAlpha = (float)0 / 255;
         handleUpdate();
+    }
+
+    public void unregister() {
+        mSensorManager.unregisterListener(this);
+    }
+
+    @Override
+    public final void onAccuracyChanged(Sensor sensor, int accuracy) {
+        // Do something here if sensor accuracy changes.
+    }
+
+    @Override
+    public final void onSensorChanged(SensorEvent event) {
+        float luxLight = event.values[0];
+        int currentBrightness = 255;
+        // Do something with this sensor data.
+
+        if (luxLight < SensorManager.LIGHT_NO_MOON) {
+            currentBrightness = 40;
+        } else if (luxLight < SensorManager.LIGHT_FULLMOON) {
+            currentBrightness = 60;
+        } else if (luxLight < SensorManager.LIGHT_CLOUDY) {
+            currentBrightness = 80;
+        } else if (luxLight < SensorManager.LIGHT_SUNRISE) {
+            currentBrightness = 120;
+        } else if (luxLight < SensorManager.LIGHT_OVERCAST) {
+            currentBrightness = 180;
+        } else if (luxLight < SensorManager.LIGHT_SHADE) {
+            currentBrightness = 220;
+        } else if (luxLight < SensorManager.LIGHT_SUNLIGHT) {
+            currentBrightness = 255;
+        } else if (luxLight < SensorManager.LIGHT_SUNLIGHT_MAX) {
+            currentBrightness = 255;
+        }
+
+        mNextAlpha = (float) currentBrightness / 255 * mAdjustBrightness;
     }
 
     @Override
@@ -77,6 +140,12 @@ public class ScreensaverMoveSaverRunnable implements Runnable {
             mHandler.postDelayed(this, delay);
             return;
         }
+
+        if (mUseAutoBrightness && !mInitSensor) {
+            mSensorManager.registerListener(this, mLight, SensorManager.SENSOR_DELAY_NORMAL);
+            mInitSensor = true;
+        }
+
 
         final float xrange = mContentView.getWidth() - mSaverView.getWidth();
         final float yrange = mContentView.getHeight() - mSaverView.getHeight();
@@ -96,7 +165,7 @@ public class ScreensaverMoveSaverRunnable implements Runnable {
                 mSaverView.setY(nexty);
 
                 schickIfTooBig(s);
-                Animator appear = ObjectAnimator.ofFloat(mSaverView, "alpha", 0f, 1f).setDuration(FADE_TIME);
+                Animator appear = ObjectAnimator.ofFloat(mSaverView, "alpha", 0f, mNextAlpha).setDuration(FADE_TIME);
                 s.play(appear);
             } else {
 
@@ -108,16 +177,19 @@ public class ScreensaverMoveSaverRunnable implements Runnable {
 
                 Animator yShrink = ObjectAnimator.ofFloat(mSaverView, "scaleY", mSizeRatio, mSizeRatio * SHRINKING_RATIO);
                 Animator yGrow = ObjectAnimator.ofFloat(mSaverView, "scaleY", mSizeRatio * SHRINKING_RATIO, mSizeRatio);
+
                 AnimatorSet shrink = new AnimatorSet();
                 shrink.play(xShrink).with(yShrink);
                 AnimatorSet grow = new AnimatorSet();
                 grow.play(xGrow).with(yGrow);
 
-                Animator fadeout = ObjectAnimator.ofFloat(mSaverView, "alpha", 1f, 0f);
-                Animator fadein = ObjectAnimator.ofFloat(mSaverView, "alpha", 0f, 1f);
+                Animator fadeout = ObjectAnimator.ofFloat(mSaverView, "alpha", mLastAlpha, 0f);
+                Animator fadein = ObjectAnimator.ofFloat(mSaverView, "alpha", 0f, mNextAlpha);
+                Animator adjbrigh = ObjectAnimator.ofFloat(mSaverView, "alpha", mLastAlpha, mNextAlpha);
+
 
                 if (mSlideEffect) {
-                    s.play(xMove).with(yMove);
+                    s.play(xMove).with(yMove).with(adjbrigh);
                     s.setDuration(SLIDE_TIME);
 
                     s.play(shrink.setDuration(SLIDE_TIME / 2));
@@ -148,6 +220,8 @@ public class ScreensaverMoveSaverRunnable implements Runnable {
                 }
             }
             s.start();
+
+            mLastAlpha = mNextAlpha;
 
             long now = System.currentTimeMillis();
             long adjust = (now % MOVE_DELAY);
@@ -195,6 +269,10 @@ public class ScreensaverMoveSaverRunnable implements Runnable {
 
             s.play(xShrink).with(yShrink);
         }
+        else
+            mSizeRatio = 1;
+
+
     }
 
 

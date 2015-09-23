@@ -29,6 +29,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
+import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
@@ -36,12 +37,14 @@ import android.os.CountDownTimer;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.service.dreams.DreamService;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Gallery;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -515,5 +518,118 @@ public class Utils {
 
         timeDisplayMinutes.setTypeface(robotoThin);
         timeDisplayAmPm.setTypeface(robotoRegular);
+    }
+
+    public static void setBrightnessOld(Window window, View saverView, float luxLight) {
+        boolean brightnessAuto = PreferenceManager.getDefaultSharedPreferences(saverView.getContext()).getBoolean(
+                ScreensaverSettingsActivity.KEY_BRIGHTNESS_AUTO,
+                ScreensaverSettingsActivity.KEY_BRIGHTNESS_AUTO_DEFAULT);
+
+        int brightness = PreferenceManager.getDefaultSharedPreferences(saverView.getContext()).getInt(
+                ScreensaverSettingsActivity.KEY_BRIGHTNESS,
+                ScreensaverSettingsActivity.BRIGHTNESS_DEFAULT);
+
+        if (brightnessAuto && luxLight > 0) {
+            // adjusting +- 25% by user preference (adjFactor always betweem 0.75 and 1.25)
+            float adjFactor = ((float)brightness / ScreensaverSettingsActivity.BRIGHTNESS_MAX - 0.5f) / 2 + 1;
+
+            if (luxLight < SensorManager.LIGHT_NO_MOON) {
+                brightness = 40;
+            } else if (luxLight < SensorManager.LIGHT_FULLMOON) {
+                brightness = 60;
+            } else if (luxLight < SensorManager.LIGHT_CLOUDY) {
+                brightness = 80;
+            } else if (luxLight < SensorManager.LIGHT_SUNRISE) {
+                brightness = 120;
+            } else if (luxLight < SensorManager.LIGHT_OVERCAST) {
+                brightness = 180;
+            } else if (luxLight < SensorManager.LIGHT_SHADE) {
+                brightness = 220;
+            } else if (luxLight < SensorManager.LIGHT_SUNLIGHT) {
+                brightness = 255;
+            } else if (luxLight < SensorManager.LIGHT_SUNLIGHT_MAX) {
+                brightness = 255;
+            }
+
+            brightness = (int)(brightness * adjFactor);
+            brightness = brightness > ScreensaverSettingsActivity.BRIGHTNESS_MAX ?
+                    ScreensaverSettingsActivity.BRIGHTNESS_MAX : brightness;
+            brightness = brightness < 0 ? 0 : brightness;
+        }
+
+        Utils.dimView(brightness, saverView);
+
+
+        boolean dim = brightness < ScreensaverSettingsActivity.BRIGHTNESS_NIGHT;
+        if (dim) {
+            WindowManager.LayoutParams lp = window.getAttributes();
+            lp.buttonBrightness = 0;
+            lp.screenBrightness = 0.01f;
+            window.setAttributes(lp);
+        }
+    }
+
+    public static void setBrightness(Window window, View saverView,
+                                     ScreensaverMoveSaverRunnable moveSaverRunnable) {
+        setBrightness(window, saverView, moveSaverRunnable, null);
+    }
+
+
+    /**
+     * Will set the brightness settings
+     * If called from daydream, it will set setScreenBright if needed
+     * If the option for auto brightness is set it will initialise moveSaverRunnable
+     * will full brightness and an adjustment ratio. The moveSaver will take care of dimming the
+     * screen
+     */
+    public static void setBrightness(Window window, View saverView,
+                                     ScreensaverMoveSaverRunnable moveSaverRunnable,
+                                     DreamService dream) {
+        boolean brightnessAuto = PreferenceManager.getDefaultSharedPreferences(saverView.getContext()).getBoolean(
+                ScreensaverSettingsActivity.KEY_BRIGHTNESS_AUTO,
+                ScreensaverSettingsActivity.KEY_BRIGHTNESS_AUTO_DEFAULT);
+
+        int brightness;
+
+        brightness = PreferenceManager.getDefaultSharedPreferences(saverView.getContext()).getInt(
+                ScreensaverSettingsActivity.KEY_BRIGHTNESS,
+                ScreensaverSettingsActivity.BRIGHTNESS_DEFAULT);
+        boolean useAutoBrightness = PreferenceManager.getDefaultSharedPreferences(saverView.getContext()).getBoolean(
+                ScreensaverSettingsActivity.KEY_BRIGHTNESS_AUTO,
+                ScreensaverSettingsActivity.KEY_BRIGHTNESS_AUTO_DEFAULT);
+
+
+        boolean dim = brightness < ScreensaverSettingsActivity.BRIGHTNESS_NIGHT;
+        if (dim) {
+            WindowManager.LayoutParams lp = window.getAttributes();
+            lp.buttonBrightness = 0;
+            lp.screenBrightness = 0.01f;
+            window.setAttributes(lp);
+        }
+        if (dream != null) {
+            dream.setScreenBright(!dim);
+        }
+
+        if (moveSaverRunnable != null){
+
+
+            float adjFactor = 1;
+            if (useAutoBrightness) {
+                adjFactor = getAdjustmentFactorFromBrightness(brightness);
+                brightness = ScreensaverSettingsActivity.BRIGHTNESS_MAX;
+            }
+
+            Utils.dimView(brightness, saverView);
+
+            moveSaverRunnable.setAutoBrightness(useAutoBrightness, adjFactor);
+        }
+    }
+
+    /**
+     * adjusting +- 25% by user preference (adjFactor always betweem 0.75 and 1.25)
+     * The brightness slider is used to make this adjustement
+     */
+    private static float getAdjustmentFactorFromBrightness(int brightness) {
+        return ((float)brightness / ScreensaverSettingsActivity.BRIGHTNESS_MAX - 0.5f) / 2 + 1;
     }
 }

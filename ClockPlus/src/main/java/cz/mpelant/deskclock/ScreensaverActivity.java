@@ -16,13 +16,12 @@
 
 package cz.mpelant.deskclock;
 
-import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.BatteryManager;
-import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -74,9 +73,10 @@ public class ScreensaverActivity extends BaseScreenOnActivity {
                 ScreensaverSettingsActivity.KEY_SLIDE_EFFECT, false);
         mMoveSaverRunnable.setSlideEffect(useSlideEffect);
 
+
+
         layoutClockSaver();
         mHandler.post(mMoveSaverRunnable);
-
     }
 
     @Override
@@ -103,23 +103,14 @@ public class ScreensaverActivity extends BaseScreenOnActivity {
     private void setClockStyle() {
         Utils.setClockStyle(this, mDigitalClock, mAnalogClock, ScreensaverSettingsActivity.KEY_CLOCK_STYLE);
         mSaverView = findViewById(R.id.main_clock);
-        int brightness = PreferenceManager.getDefaultSharedPreferences(this).getInt(
-                ScreensaverSettingsActivity.KEY_BRIGHTNESS,
-                ScreensaverSettingsActivity.BRIGHTNESS_DEFAULT);
-        Utils.dimView(brightness, mSaverView);
+
 
         String size = PreferenceManager.getDefaultSharedPreferences(this).getString(
                 ScreensaverSettingsActivity.KEY_CLOCK_SIZE,
                 ScreensaverSettingsActivity.SIZE_DEFAULT);
         Utils.resizeContent((ViewGroup) mSaverView, size);
 
-        boolean dim = brightness < ScreensaverSettingsActivity.BRIGHTNESS_NIGHT;
-        if (dim) {
-            WindowManager.LayoutParams lp = getWindow().getAttributes();
-            lp.buttonBrightness = 0;
-            lp.screenBrightness = 0.01f;
-            getWindow().setAttributes(lp);
-        }
+        Utils.setBrightness(getWindow(), mSaverView, mMoveSaverRunnable);
 
     }
 

@@ -32,6 +32,8 @@ import android.widget.Toast;
 
 import static java.lang.System.arraycopy;
 
+//TODO: Gray out the auto-brightness when not supported.
+
 /**
  * Settings for the Alarm Clock Dream (cz.mpelant.cz.mpelant.deskclock.Screensaver).
  */
@@ -41,8 +43,11 @@ public class ScreensaverSettingsActivity extends PreferenceActivity implements P
     static final String KEY_CLOCK_SIZE = "screensaver_clock_size";
     //    static final String KEY_NIGHT_MODE = "screensaver_night_mode";
     static final String KEY_BRIGHTNESS = "brightness";
-    static final int BRIGHTNESS_DEFAULT = 192;
     static final int BRIGHTNESS_NIGHT = 96;
+    static final int BRIGHTNESS_DEFAULT = 192;
+    static final int BRIGHTNESS_MAX = 255;
+    static final String KEY_BRIGHTNESS_AUTO = "light_sensor";
+    static final boolean KEY_BRIGHTNESS_AUTO_DEFAULT = false;
     static final String SIZE_DEFAULT = "medium";
     static final String KEY_NOTIF_LISTENER = "notif_listener";
     static final String KEY_NOTIF_GMAIL = "notif_gmail";
@@ -52,6 +57,7 @@ public class ScreensaverSettingsActivity extends PreferenceActivity implements P
     static final String KEY_HIDE_ACTIVITY = "hide_activity";
     static final String KEY_BATTERY = "battery";
     static final String KEY_SLIDE_EFFECT = "slide";
+    static final boolean KEY_SLIDE_EFFECT_DEFAULT = true;
     static final String KEY_ABOUT = "about";
     static final long TIP_DELAY = 1000 * 3600 * 24; // 24h
     public static final int REQUEST_CODE_NOTIF = 1;
@@ -107,6 +113,9 @@ public class ScreensaverSettingsActivity extends PreferenceActivity implements P
                     break;
                 case Configuration.SCREENLAYOUT_SIZE_NORMAL:
                     nbEntries = 3;
+                    break;
+                case Configuration.SCREENLAYOUT_SIZE_LARGE:
+                    nbEntries = 4;
                     break;
                 default:
                     nbEntries = 5;

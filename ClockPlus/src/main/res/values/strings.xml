@@ -117,5 +117,7 @@
     <string name="enable_loc_listener_tip">Check Clock Plus app if you want to see notifications in the daydream</string>
     <string name="force_rotation">Force automatic orientation</string>
     <string name="force_rotation_summary">Always allow landscape mode</string>
+    <string name="light_sensor">Automatic brightness</string>
+    <string name="light_sensor_summary">Use light sensor to set brightness</string>
     <string name="misc">Misc</string>
 </resources>

@@ -44,6 +44,11 @@
         clockns:min="1"
         clockns:unitsLeft=""
         clockns:unitsRight=""/>
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="light_sensor"
+        android:summary="@string/light_sensor_summary"
+        android:title="@string/light_sensor"/>
 
     <PreferenceCategory android:title="@string/notification_icons">
         <CheckBoxPreference
