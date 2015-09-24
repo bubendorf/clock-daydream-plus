@@ -16,7 +16,6 @@
 
 package cz.mpelant.deskclock;
 
-import android.app.ActionBar;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.*;
@@ -29,7 +28,6 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
-import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
@@ -520,55 +518,6 @@ public class Utils {
         timeDisplayAmPm.setTypeface(robotoRegular);
     }
 
-    public static void setBrightnessOld(Window window, View saverView, float luxLight) {
-        boolean brightnessAuto = PreferenceManager.getDefaultSharedPreferences(saverView.getContext()).getBoolean(
-                ScreensaverSettingsActivity.KEY_BRIGHTNESS_AUTO,
-                ScreensaverSettingsActivity.KEY_BRIGHTNESS_AUTO_DEFAULT);
-
-        int brightness = PreferenceManager.getDefaultSharedPreferences(saverView.getContext()).getInt(
-                ScreensaverSettingsActivity.KEY_BRIGHTNESS,
-                ScreensaverSettingsActivity.BRIGHTNESS_DEFAULT);
-
-        if (brightnessAuto && luxLight > 0) {
-            // adjusting +- 25% by user preference (adjFactor always betweem 0.75 and 1.25)
-            float adjFactor = ((float)brightness / ScreensaverSettingsActivity.BRIGHTNESS_MAX - 0.5f) / 2 + 1;
-
-            if (luxLight < SensorManager.LIGHT_NO_MOON) {
-                brightness = 40;
-            } else if (luxLight < SensorManager.LIGHT_FULLMOON) {
-                brightness = 60;
-            } else if (luxLight < SensorManager.LIGHT_CLOUDY) {
-                brightness = 80;
-            } else if (luxLight < SensorManager.LIGHT_SUNRISE) {
-                brightness = 120;
-            } else if (luxLight < SensorManager.LIGHT_OVERCAST) {
-                brightness = 180;
-            } else if (luxLight < SensorManager.LIGHT_SHADE) {
-                brightness = 220;
-            } else if (luxLight < SensorManager.LIGHT_SUNLIGHT) {
-                brightness = 255;
-            } else if (luxLight < SensorManager.LIGHT_SUNLIGHT_MAX) {
-                brightness = 255;
-            }
-
-            brightness = (int)(brightness * adjFactor);
-            brightness = brightness > ScreensaverSettingsActivity.BRIGHTNESS_MAX ?
-                    ScreensaverSettingsActivity.BRIGHTNESS_MAX : brightness;
-            brightness = brightness < 0 ? 0 : brightness;
-        }
-
-        Utils.dimView(brightness, saverView);
-
-
-        boolean dim = brightness < ScreensaverSettingsActivity.BRIGHTNESS_NIGHT;
-        if (dim) {
-            WindowManager.LayoutParams lp = window.getAttributes();
-            lp.buttonBrightness = 0;
-            lp.screenBrightness = 0.01f;
-            window.setAttributes(lp);
-        }
-    }
-
     public static void setBrightness(Window window, View saverView,
                                      ScreensaverMoveSaverRunnable moveSaverRunnable) {
         setBrightness(window, saverView, moveSaverRunnable, null);
@@ -589,17 +538,20 @@ public class Utils {
                 ScreensaverSettingsActivity.KEY_BRIGHTNESS_AUTO,
                 ScreensaverSettingsActivity.KEY_BRIGHTNESS_AUTO_DEFAULT);
 
-        int brightness;
+        int brightness, auto_brightness_adj;
 
         brightness = PreferenceManager.getDefaultSharedPreferences(saverView.getContext()).getInt(
                 ScreensaverSettingsActivity.KEY_BRIGHTNESS,
                 ScreensaverSettingsActivity.BRIGHTNESS_DEFAULT);
+        auto_brightness_adj = PreferenceManager.getDefaultSharedPreferences(saverView.getContext()).getInt(
+                ScreensaverSettingsActivity.KEY_BRIGHTNESS_AUTO_ADJ,
+                ScreensaverSettingsActivity.KEY_BRIGHTNESS_AUTO_ADJ_DEFAULT);
         boolean useAutoBrightness = PreferenceManager.getDefaultSharedPreferences(saverView.getContext()).getBoolean(
                 ScreensaverSettingsActivity.KEY_BRIGHTNESS_AUTO,
                 ScreensaverSettingsActivity.KEY_BRIGHTNESS_AUTO_DEFAULT);
 
 
-        boolean dim = brightness < ScreensaverSettingsActivity.BRIGHTNESS_NIGHT;
+        boolean dim = brightness < SeekBarPreference.BRIGHTNESS_NIGHT;
         if (dim) {
             WindowManager.LayoutParams lp = window.getAttributes();
             lp.buttonBrightness = 0;
@@ -612,24 +564,27 @@ public class Utils {
 
         if (moveSaverRunnable != null){
 
-
-            float adjFactor = 1;
-            if (useAutoBrightness) {
-                adjFactor = getAdjustmentFactorFromBrightness(brightness);
+            if (useAutoBrightness)
                 brightness = ScreensaverSettingsActivity.BRIGHTNESS_MAX;
-            }
 
+            //TODO: with auto brightness, it should be dynamic!
             Utils.dimView(brightness, saverView);
 
-            moveSaverRunnable.setAutoBrightness(useAutoBrightness, adjFactor);
+            moveSaverRunnable.setAutoBrightness(useAutoBrightness,
+                    (float)auto_brightness_adj / 100);
         }
     }
 
     /**
-     * adjusting +- 25% by user preference (adjFactor always betweem 0.75 and 1.25)
+     * adjusting +- 25% by user preference (adjFactor always betweem 0.50 and 2.0)
      * The brightness slider is used to make this adjustement
      */
     private static float getAdjustmentFactorFromBrightness(int brightness) {
-        return ((float)brightness / ScreensaverSettingsActivity.BRIGHTNESS_MAX - 0.5f) / 2 + 1;
+        float adjFactor;
+        adjFactor = (float)brightness / ScreensaverSettingsActivity.BRIGHTNESS_MAX * 2;
+
+        Log.v("getAdjustmentFactorFromBrightness -> " + adjFactor);
+
+        return adjFactor;
     }
 }

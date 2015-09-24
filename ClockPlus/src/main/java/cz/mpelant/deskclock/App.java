@@ -8,3 +8,5 @@ public class App extends Application {
 }
 
 //TODO: Do I need to include all Roboto font?
+//TODO: Sizing issue on GS
+//TODO: Icon not there on Nexus 6

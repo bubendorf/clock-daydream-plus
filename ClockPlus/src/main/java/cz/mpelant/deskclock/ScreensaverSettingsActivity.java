@@ -42,12 +42,13 @@ public class ScreensaverSettingsActivity extends PreferenceActivity implements P
     static final String KEY_CLOCK_STYLE = "screensaver_clock_style";
     static final String KEY_CLOCK_SIZE = "screensaver_clock_size";
     //    static final String KEY_NIGHT_MODE = "screensaver_night_mode";
-    static final String KEY_BRIGHTNESS = "brightness";
-    static final int BRIGHTNESS_NIGHT = 96;
-    static final int BRIGHTNESS_DEFAULT = 192;
-    static final int BRIGHTNESS_MAX = 255;
     static final String KEY_BRIGHTNESS_AUTO = "light_sensor";
     static final boolean KEY_BRIGHTNESS_AUTO_DEFAULT = false;
+    static final String KEY_BRIGHTNESS = "brightness";
+    static final int BRIGHTNESS_DEFAULT = 192;
+    static final int BRIGHTNESS_MAX = 255;
+    static final String KEY_BRIGHTNESS_AUTO_ADJ = "auto_brightness_adj";
+    static final int KEY_BRIGHTNESS_AUTO_ADJ_DEFAULT = 100;
     static final String SIZE_DEFAULT = "medium";
     static final String KEY_NOTIF_LISTENER = "notif_listener";
     static final String KEY_NOTIF_GMAIL = "notif_gmail";
@@ -88,10 +89,54 @@ public class ScreensaverSettingsActivity extends PreferenceActivity implements P
         }
 
         private void initPreferences() {
+            setAutoBrightnessCheckbox();
             setAvailableSizes();
             setNotificationListener();
             setHideActivityListener();
             setVersion();
+        }
+
+        private void setAutoBrightnessCheckbox() {
+            final Preference pref_auto_bright, pref_adjust_bright, pref_adjust_bright_auto;
+            pref_auto_bright = findPreference(KEY_BRIGHTNESS_AUTO);
+            pref_adjust_bright = findPreference(KEY_BRIGHTNESS);
+            pref_adjust_bright_auto = findPreference(KEY_BRIGHTNESS_AUTO_ADJ);
+
+            if (pref_auto_bright != null) {
+                CheckBoxPreference check = (CheckBoxPreference) pref_auto_bright;
+                PreferenceScreen screen = getPreferenceScreen();
+
+                if (check.isChecked()) {
+                    screen.removePreference(pref_adjust_bright);
+                }
+                else {
+                    screen.removePreference(pref_adjust_bright_auto);
+                }
+
+
+                try {
+                    pref_auto_bright.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                        @Override
+                        public boolean onPreferenceClick(Preference preference) {
+                            CheckBoxPreference check = (CheckBoxPreference) preference;
+                            PreferenceScreen screen = getPreferenceScreen();
+
+                            if (check.isChecked()) {
+                                screen.removePreference(pref_adjust_bright);
+                                screen.addPreference(pref_adjust_bright_auto);
+                            }
+                            else {
+                                screen.removePreference(pref_adjust_bright_auto);
+                                screen.addPreference(pref_adjust_bright);
+                            }
+
+                            return true;
+                        }
+                    });
+                }catch (NoClassDefFoundError error){//weird SGSIII error - pref should be null because it is only in xml-v18
+                    error.printStackTrace();
+                }
+            }
         }
 
         private void setAvailableSizes() {

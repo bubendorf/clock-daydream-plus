@@ -112,6 +112,8 @@
     <string name="slide_effect">Use slide effect</string>
     <string name="adjust_brightness">Adjust brightness</string>
     <string name="brightness">Brightness</string>
+    <string name="auto_brightness_fine_adj">Fine adjust brightness</string>
+    <string name="auto_brightness_fine_adj_summary">Further adjust the brightness in case automatic brightness isn\'t accurate enough</string>
     <string name="show_notif_summary">Show system notification</string>
     <string name="show_notif">System notifications</string>
     <string name="enable_loc_listener_tip">Check Clock Plus app if you want to see notifications in the daydream</string>

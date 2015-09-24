@@ -89,12 +89,16 @@
     <string name="battery_status">Batterie</string>
     <string name="adjust_brightness">Ajuster la luminosité</string>
     <string name="brightness">Luminosité</string>
+    <string name="auto_brightness_fine_adj">Ajustement fin de la liminosité</string>
+    <string name="auto_brightness_fine_adj_summary">Ajustement plus précis de la liminosité dans le cas où l\'ajustement automatique n\'est pas au point</string>
     <string name="show_notif_summary">Afficher les notifications système</string>
     <string name="show_notif">Notifications</string>
-    <string name="enable_loc_listener_tip">Sélectionnez Clock Plus si vous voulez voir les nofitications dans l\'écran de veille.</string>
+    <string name="enable_loc_listener_tip">Sélectionnez Clock Plus si vous voulez voir les nofitications dans l\'écran de veille</string>
     <string name="force_rotation">Forcer l\'orientation automatique</string>
     <string name="force_rotation_summary">Toujours permettre l\'orientation automatique</string>
     <string name="slide_effect_summary">Déplacer l\'horloge à l\'écran pour ne pas l\'endomager</string>
     <string name="slide_effect">Effet de glissement de l\'horloge</string>
     <string name="misc">Divers</string>
+    <string name="light_sensor">Liminosité automatique</string>
+    <string name="light_sensor_summary">Utiliser le capteur de lumière pour ajuster la luminosité</string>
 </resources>

@@ -29,7 +29,7 @@ import java.util.List;
  * registerViews() must be called prior to posting.
  */
 public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListener {
-    static final long MOVE_DELAY = 15000; // DeskClock.SCREEN_SAVER_MOVE_DELAY;
+    static final long MOVE_DELAY = 60000; // DeskClock.SCREEN_SAVER_MOVE_DELAY;
     static final long SLIDE_TIME = 10000;
     static final long FADE_TIME = 3000;
     static final float MAX_SPACE_RATIO = 0.8f; //Safety measure to resize the content in case
@@ -50,8 +50,8 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
 
     private static TimeInterpolator mSlowStartWithBrakes;
     private static float mSizeRatio;
-    private float mNextAlpha;
-    private float mLastAlpha;
+    private float mNextAlpha = 0;
+    private float mLastAlpha = 0;
     private SensorManager mSensorManager;
     private Sensor mLight;
     private boolean mInitSensor;
@@ -68,8 +68,9 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
                 return (float) (Math.cos((Math.pow(x, 3) + 1) * Math.PI) / 2.0f) + 0.5f;
             }
         };
-        // Get an instance of the sensor service, and use that to get an instance of
-        // a particular sensor.
+        mNextAlpha = ScreensaverSettingsActivity.BRIGHTNESS_DEFAULT /
+                ScreensaverSettingsActivity.BRIGHTNESS_MAX;
+
     }
 
     public void setSlideEffect(boolean useSlideEffect) {
@@ -91,8 +92,6 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
         mSensorManager = (SensorManager) mContentView.getContext().getSystemService(Context.SENSOR_SERVICE);
         mLight = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
 
-        mNextAlpha = (float)96 / 255;
-        mLastAlpha = (float)0 / 255;
         handleUpdate();
     }
 
@@ -111,25 +110,35 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
         int currentBrightness = 255;
         // Do something with this sensor data.
 
-        if (luxLight < SensorManager.LIGHT_NO_MOON) {
-            currentBrightness = 40;
-        } else if (luxLight < SensorManager.LIGHT_FULLMOON) {
-            currentBrightness = 60;
-        } else if (luxLight < SensorManager.LIGHT_CLOUDY) {
-            currentBrightness = 80;
-        } else if (luxLight < SensorManager.LIGHT_SUNRISE) {
-            currentBrightness = 120;
-        } else if (luxLight < SensorManager.LIGHT_OVERCAST) {
-            currentBrightness = 180;
-        } else if (luxLight < SensorManager.LIGHT_SHADE) {
-            currentBrightness = 220;
-        } else if (luxLight < SensorManager.LIGHT_SUNLIGHT) {
-            currentBrightness = 255;
-        } else if (luxLight < SensorManager.LIGHT_SUNLIGHT_MAX) {
-            currentBrightness = 255;
+        if (luxLight <= SensorManager.LIGHT_NO_MOON) {
+            mNextAlpha = 0.05f;
+        } else if (luxLight <= SensorManager.LIGHT_FULLMOON) {
+            mNextAlpha = 0.10f;
+        } else if (luxLight <= 2) {
+            mNextAlpha = 0.15f;
+        } else if (luxLight <= 4) {
+            mNextAlpha = 0.2f;
+        } else if (luxLight <= 6) {
+            mNextAlpha = 0.25f;
+        } else if (luxLight <= 10) {
+            mNextAlpha = 0.5f;
+        } else if (luxLight <= SensorManager.LIGHT_CLOUDY) {
+            mNextAlpha = 0.6f;
+        } else if (luxLight <= SensorManager.LIGHT_SUNRISE) {
+            mNextAlpha = 0.7f;
+        } else if (luxLight <= SensorManager.LIGHT_OVERCAST) {
+            mNextAlpha = 0.8f;
+        } else if (luxLight <= SensorManager.LIGHT_SHADE) {
+            mNextAlpha = 0.9f;
+        } else if (luxLight <= SensorManager.LIGHT_SUNLIGHT) {
+            mNextAlpha = 1;
+        } else if (luxLight <= SensorManager.LIGHT_SUNLIGHT_MAX) {
+            mNextAlpha = 1;
         }
 
-        mNextAlpha = (float) currentBrightness / 255 * mAdjustBrightness;
+        mNextAlpha *= mAdjustBrightness;
+
+        Log.v("onSensorChanged -> luxLight: " + luxLight + " mNextAlpha: " + mNextAlpha);
     }
 
     @Override
@@ -149,7 +158,7 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
 
         final float xrange = mContentView.getWidth() - mSaverView.getWidth();
         final float yrange = mContentView.getHeight() - mSaverView.getHeight();
-        Log.v("xrange: " + xrange + " yrange: " + yrange);
+        Log.v("xrange: " + xrange + " yrange: " + yrange + " mNextAlpha: " + mNextAlpha);
 
         if (xrange == 0 && yrange == 0) {
             delay = 500; // back in a split second

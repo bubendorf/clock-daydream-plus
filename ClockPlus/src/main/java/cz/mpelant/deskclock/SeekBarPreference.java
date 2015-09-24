@@ -14,13 +14,15 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-public class BrightnessPreference extends Preference implements OnSeekBarChangeListener {
+public class SeekBarPreference extends Preference implements OnSeekBarChangeListener {
 
     private final String TAG = getClass().getName();
 
     private static final String ANDROIDNS = "http://schemas.android.com/apk/res/android";
     private static final String CLOCKNS = "http://martinpelant.com";
     private static final int DEFAULT_VALUE = 80;
+    public static final int BRIGHTNESS_NIGHT = 96;
+
 
     private int mMaxValue = 255;
     private int mMinValue = 1;
@@ -28,17 +30,18 @@ public class BrightnessPreference extends Preference implements OnSeekBarChangeL
     private int mCurrentValue;
     private String mUnitsLeft = "";
     private String mUnitsRight = "";
+    private String mMode;  // brightness or percentage or integer
     private SeekBar mSeekBar;
 
     private TextView mStatusText;
     private View mTitle;
 
-    public BrightnessPreference(Context context, AttributeSet attrs) {
+    public SeekBarPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         initPreference(context, attrs);
     }
 
-    public BrightnessPreference(Context context, AttributeSet attrs, int defStyle) {
+    public SeekBarPreference(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         initPreference(context, attrs);
     }
@@ -57,6 +60,8 @@ public class BrightnessPreference extends Preference implements OnSeekBarChangeL
         mUnitsLeft = getAttributeStringValue(attrs, CLOCKNS, "unitsLeft", "");
         String units = getAttributeStringValue(attrs, CLOCKNS, "units", "");
         mUnitsRight = getAttributeStringValue(attrs, CLOCKNS, "unitsRight", units);
+
+        mMode = getAttributeStringValue(attrs, CLOCKNS, "mode", "zero100");
 
         try {
             String newInterval = attrs.getAttributeValue(CLOCKNS, "interval");
@@ -120,8 +125,6 @@ public class BrightnessPreference extends Preference implements OnSeekBarChangeL
 
     /**
      * Update a SeekBarPreference view with our current state
-     * 
-     * @param view
      */
     protected void updateView(View view) {
         Log.i("updateView");
@@ -129,11 +132,9 @@ public class BrightnessPreference extends Preference implements OnSeekBarChangeL
             RelativeLayout layout = (RelativeLayout) view;
 
             mStatusText = (TextView) layout.findViewById(R.id.seekBarPrefValue);
-            mTitle = (TextView) view.findViewById(android.R.id.title);
-            
-            mStatusText.setText(String.valueOf(mCurrentValue));
-            if(mCurrentValue<ScreensaverSettingsActivity.BRIGHTNESS_NIGHT)
-                mStatusText.append(" (" + getContext().getString(R.string.night_mode_title)+")");
+            mTitle = view.findViewById(android.R.id.title);
+
+            displayCurrentValue();
             
             mStatusText.setMinimumWidth(30);
 
@@ -144,7 +145,7 @@ public class BrightnessPreference extends Preference implements OnSeekBarChangeL
 
             TextView unitsLeft = (TextView) layout.findViewById(R.id.seekBarPrefUnitsLeft);
             unitsLeft.setText(mUnitsLeft);
-            Utils.dimView(mCurrentValue, mTitle);
+
         } catch (Exception e) {
             Log.e("Error updating seek bar preference" + e);
         }
@@ -170,10 +171,7 @@ public class BrightnessPreference extends Preference implements OnSeekBarChangeL
 
         // change accepted, store it
         mCurrentValue = newValue;
-        mStatusText.setText(String.valueOf(newValue));
-        if(mCurrentValue<ScreensaverSettingsActivity.BRIGHTNESS_NIGHT)
-            mStatusText.append(" (" + getContext().getString(R.string.night_mode_title)+")");
-        Utils.dimView(mCurrentValue, mTitle);
+        displayCurrentValue();
         persistInt(newValue);
 
     }
@@ -189,10 +187,7 @@ public class BrightnessPreference extends Preference implements OnSeekBarChangeL
 
     @Override
     protected Object onGetDefaultValue(TypedArray ta, int index) {
-
-        int defaultValue = ta.getInt(index, DEFAULT_VALUE);
-        return defaultValue;
-
+        return ta.getInt(index, DEFAULT_VALUE);
     }
 
     @Override
@@ -214,4 +209,26 @@ public class BrightnessPreference extends Preference implements OnSeekBarChangeL
 
     }
 
+    public void displayCurrentValue() {
+        mStatusText.setText(String.valueOf(mCurrentValue));
+
+        switch (mMode) {
+            case "integer":
+                break;
+
+            case "brightness":
+                if(mCurrentValue<BRIGHTNESS_NIGHT)
+                    mStatusText.append(" (" + getContext().getString(R.string.night_mode_title)+")");
+                Utils.dimView(mCurrentValue, mTitle);
+                break;
+
+            case "percentage":
+                mStatusText.append("%");
+                break;
+
+        }
+
+
+
+    }
 }
