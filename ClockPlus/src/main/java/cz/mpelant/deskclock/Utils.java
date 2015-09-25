@@ -23,6 +23,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -438,8 +439,17 @@ public class Utils {
      * There is no mechanism to prevent overflow off the screen.
      * Size can be small, medium or large.</p>
      */
-    public static void resizeContent(ViewGroup parent, String size) {
+    public static void resizeContent(ViewGroup parent) {
         float resizeRatio;
+        int orientation = parent.getResources().getConfiguration().orientation;
+
+        String size = PreferenceManager.getDefaultSharedPreferences(parent.getContext()).getString(
+                ScreensaverSettingsActivity.KEY_CLOCK_SIZE,
+                ScreensaverSettingsActivity.SIZE_DEFAULT);
+
+        boolean landscapeBigger = PreferenceManager.getDefaultSharedPreferences(parent.getContext()).getBoolean(
+                ScreensaverSettingsActivity.KEY_LANDSCAPE_BIGGER,
+                ScreensaverSettingsActivity.KEY_LANDSCAPE_BIGGER_DEFAULT);
 
         switch (size) {
             case CLOCK_SIZE_MEDIUM:
@@ -457,6 +467,9 @@ public class Utils {
             default:
                 resizeRatio = 1;
         }
+
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE && landscapeBigger)
+            resizeRatio *= 1.5;
 
         // First adjustment in size
         resizeContent(parent, resizeRatio);
@@ -558,6 +571,7 @@ public class Utils {
             lp.screenBrightness = 0.01f;
             window.setAttributes(lp);
         }
+
         if (dream != null) {
             dream.setScreenBright(!dim);
         }
@@ -570,21 +584,36 @@ public class Utils {
             //TODO: with auto brightness, it should be dynamic!
             Utils.dimView(brightness, saverView);
 
-            moveSaverRunnable.setAutoBrightness(useAutoBrightness,
-                    (float)auto_brightness_adj / 100);
+            if (useAutoBrightness)
+                moveSaverRunnable.setAutoBrightness(true, (float)auto_brightness_adj / 100);
         }
     }
 
     /**
-     * adjusting +- 25% by user preference (adjFactor always betweem 0.50 and 2.0)
-     * The brightness slider is used to make this adjustement
+     * Gets version code of given application.
      */
-    private static float getAdjustmentFactorFromBrightness(int brightness) {
-        float adjFactor;
-        adjFactor = (float)brightness / ScreensaverSettingsActivity.BRIGHTNESS_MAX * 2;
+    public static int getVersionCode(Context context) {
+        PackageInfo pinfo;
+        try {
+            pinfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            return pinfo.versionCode;
+        } catch (NameNotFoundException e) {
+            android.util.Log.e(context.getApplicationInfo().name, "Version code not available.");
+        }
+        return 0;
+    }
 
-        Log.v("getAdjustmentFactorFromBrightness -> " + adjFactor);
-
-        return adjFactor;
+    /**
+     * Gets version name of given application.
+     */
+    public static String getVersionName(Context context) {
+        PackageInfo pinfo;
+        try {
+            pinfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            return pinfo.versionName;
+        } catch (NameNotFoundException e) {
+            android.util.Log.e(context.getApplicationInfo().name, "Version name not available.");
+        }
+        return null;
     }
 }

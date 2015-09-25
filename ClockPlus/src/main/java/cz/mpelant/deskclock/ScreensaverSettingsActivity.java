@@ -17,22 +17,16 @@
 package cz.mpelant.deskclock;
 
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.*;
-import android.util.Log;
 import android.widget.Toast;
 
 import static java.lang.System.arraycopy;
-
-//TODO: Gray out the auto-brightness when not supported.
 
 /**
  * Settings for the Alarm Clock Dream (cz.mpelant.cz.mpelant.deskclock.Screensaver).
@@ -41,6 +35,8 @@ public class ScreensaverSettingsActivity extends PreferenceActivity implements P
 
     static final String KEY_CLOCK_STYLE = "screensaver_clock_style";
     static final String KEY_CLOCK_SIZE = "screensaver_clock_size";
+    static final String KEY_LANDSCAPE_BIGGER = "landscape_bigger";
+    static final boolean KEY_LANDSCAPE_BIGGER_DEFAULT = false;
     //    static final String KEY_NIGHT_MODE = "screensaver_night_mode";
     static final String KEY_BRIGHTNESS_AUTO = "light_sensor";
     static final boolean KEY_BRIGHTNESS_AUTO_DEFAULT = false;
@@ -105,6 +101,16 @@ public class ScreensaverSettingsActivity extends PreferenceActivity implements P
             if (pref_auto_bright != null) {
                 CheckBoxPreference check = (CheckBoxPreference) pref_auto_bright;
                 PreferenceScreen screen = getPreferenceScreen();
+
+                boolean mHasLightSensor =
+                        getPreferenceScreen().getContext().getPackageManager().
+                                hasSystemFeature(PackageManager.FEATURE_SENSOR_LIGHT);
+
+                if (!mHasLightSensor) {
+                    check.setChecked(false);
+                    check.setEnabled(false);
+                }
+
 
                 if (check.isChecked()) {
                     screen.removePreference(pref_adjust_bright);
@@ -212,8 +218,8 @@ public class ScreensaverSettingsActivity extends PreferenceActivity implements P
             Preference pref;
             pref = findPreference(KEY_ABOUT);
 
-            String versionName = getVersionName(getActivity());
-            int versionNumber = getVersionCode(getActivity());
+            String versionName = Utils.getVersionName(getActivity());
+            int versionNumber = Utils.getVersionCode(getActivity());
             pref.setSummary("Version" + " " + versionName + " (" + String.valueOf(versionNumber) + ")");
         }
     }
@@ -232,32 +238,6 @@ public class ScreensaverSettingsActivity extends PreferenceActivity implements P
         return true;
     }
 
-    /**
-     * Gets version code of given application.
-     */
-    public static int getVersionCode(Context context) {
-        PackageInfo pinfo;
-        try {
-            pinfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            return pinfo.versionCode;
-        } catch (NameNotFoundException e) {
-            Log.e(context.getApplicationInfo().name, "Version code not available.");
-        }
-        return 0;
-    }
 
-    /**
-     * Gets version name of given application.
-     */
-    public static String getVersionName(Context context) {
-        PackageInfo pinfo;
-        try {
-            pinfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            return pinfo.versionName;
-        } catch (NameNotFoundException e) {
-            Log.e(context.getApplicationInfo().name, "Version name not available.");
-        }
-        return null;
-    }
 
 }

@@ -104,11 +104,7 @@ public class ScreensaverActivity extends BaseScreenOnActivity {
         Utils.setClockStyle(this, mDigitalClock, mAnalogClock, ScreensaverSettingsActivity.KEY_CLOCK_STYLE);
         mSaverView = findViewById(R.id.main_clock);
 
-
-        String size = PreferenceManager.getDefaultSharedPreferences(this).getString(
-                ScreensaverSettingsActivity.KEY_CLOCK_SIZE,
-                ScreensaverSettingsActivity.SIZE_DEFAULT);
-        Utils.resizeContent((ViewGroup) mSaverView, size);
+        Utils.resizeContent((ViewGroup) mSaverView);
 
         Utils.setBrightness(getWindow(), mSaverView, mMoveSaverRunnable);
 

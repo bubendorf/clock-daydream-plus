@@ -106,10 +106,7 @@ public class Screensaver extends DreamService {
                 ScreensaverSettingsActivity.BRIGHTNESS_DEFAULT);
         Utils.dimView(brightness, mSaverView);
 
-        String size = PreferenceManager.getDefaultSharedPreferences(this).getString(
-                ScreensaverSettingsActivity.KEY_CLOCK_SIZE,
-                ScreensaverSettingsActivity.SIZE_DEFAULT);
-        Utils.resizeContent((ViewGroup) mSaverView, size);
+        Utils.resizeContent((ViewGroup) mSaverView);
 
 //        boolean dim = brightness < ScreensaverSettingsActivity.BRIGHTNESS_NIGHT;
 //        if (dim) {

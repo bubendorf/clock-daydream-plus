@@ -101,4 +101,6 @@
     <string name="misc">Divers</string>
     <string name="light_sensor">Liminosité automatique</string>
     <string name="light_sensor_summary">Utiliser le capteur de lumière pour ajuster la luminosité</string>
+    <string name="landscape_bigger">Mode paysage gros</string>
+    <string name="landscape_bigger_summary">L\'horloge sera plus grosse en mode paysage</string>
 </resources>

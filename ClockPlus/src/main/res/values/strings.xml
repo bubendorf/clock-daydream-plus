@@ -121,5 +121,7 @@
     <string name="force_rotation_summary">Always allow landscape mode</string>
     <string name="light_sensor">Automatic brightness</string>
     <string name="light_sensor_summary">Use light sensor to set brightness</string>
+    <string name="landscape_bigger">Bigger widescreen</string>
+    <string name="landscape_bigger_summary">Clock will show bigger in widescreen mode</string>
     <string name="misc">Misc</string>
 </resources>

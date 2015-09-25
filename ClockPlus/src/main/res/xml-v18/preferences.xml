@@ -37,6 +37,12 @@
 
     <CheckBoxPreference
         android:defaultValue="false"
+        android:key="landscape_bigger"
+        android:summary="@string/landscape_bigger_summary"
+        android:title="@string/landscape_bigger"/>
+
+    <CheckBoxPreference
+        android:defaultValue="false"
         android:key="light_sensor"
         android:summary="@string/light_sensor_summary"
         android:title="@string/light_sensor"/>

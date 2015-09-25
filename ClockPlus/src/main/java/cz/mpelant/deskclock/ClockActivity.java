@@ -39,14 +39,12 @@ public class ClockActivity extends BaseScreenOnActivity {
         Utils.setClockStyle(this, mDigitalClock, mAnalogClock, ScreensaverSettingsActivity.KEY_CLOCK_STYLE);
     }
 
+    // TODO: It doesn't detect cable plugged in and out
     @Override
     public void onResume() {
         setContentView(R.layout.desk_clock_saver);
 
-        String size = PreferenceManager.getDefaultSharedPreferences(this).getString(
-                ScreensaverSettingsActivity.KEY_CLOCK_SIZE,
-                ScreensaverSettingsActivity.SIZE_DEFAULT);
-        Utils.resizeContent((ViewGroup) findViewById(R.id.main_clock), size);
+        Utils.resizeContent((ViewGroup) findViewById(R.id.main_clock));
 
 
         mDigitalClock = findViewById(R.id.digital_clock);

@@ -17,7 +17,6 @@
 
 <!-- digital clock & date, together -->
 
-
 <cz.mpelant.deskclock.DigitalClock
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/digital_clock"
@@ -31,18 +30,21 @@
         android:id="@+id/timeDisplayHours"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:singleLine="true"
         style="@style/big_thin"/>
 
     <cz.mpelant.deskclock.FitRobotoTextView
         android:id="@+id/timeDisplayMinutes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:singleLine="true"
         style="@style/big_thin"/>
 
     <cz.mpelant.deskclock.FitRobotoTextView
         android:id="@+id/am_pm"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:singleLine="true"
         style="@style/ampm"
         android:paddingLeft="@dimen/clock_padding"/>
 

@@ -50,7 +50,7 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
 
     private static TimeInterpolator mSlowStartWithBrakes;
     private static float mSizeRatio;
-    private float mNextAlpha = 0;
+    private float mNextAlpha;
     private float mLastAlpha = 0;
     private SensorManager mSensorManager;
     private Sensor mLight;
@@ -68,7 +68,7 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
                 return (float) (Math.cos((Math.pow(x, 3) + 1) * Math.PI) / 2.0f) + 0.5f;
             }
         };
-        mNextAlpha = ScreensaverSettingsActivity.BRIGHTNESS_DEFAULT /
+        mNextAlpha = (float) ScreensaverSettingsActivity.BRIGHTNESS_DEFAULT /
                 ScreensaverSettingsActivity.BRIGHTNESS_MAX;
 
     }
@@ -106,7 +106,14 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
 
     @Override
     public final void onSensorChanged(SensorEvent event) {
-        float luxLight = event.values[0];
+        if (event.sensor.getType() == Sensor.TYPE_LIGHT)
+            handleLightSensorChanges(event.values);
+    }
+
+    // TODO: slow down the frequency after 1h
+    // TODO: accellerate frequency 1h before wakeup alarm
+    private void handleLightSensorChanges(float[] values) {
+        float luxLight = values[0];
         int currentBrightness = 255;
         // Do something with this sensor data.
 
@@ -140,6 +147,7 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
 
         Log.v("onSensorChanged -> luxLight: " + luxLight + " mNextAlpha: " + mNextAlpha);
     }
+
 
     @Override
     public void run() {
