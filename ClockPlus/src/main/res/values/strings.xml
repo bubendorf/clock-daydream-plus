@@ -20,7 +20,7 @@
     <!--  -->
     <!-- Label shown on launcher icon -->
     <!-- Label for the this application displayed on-screen when this application must be represented to the user. -->
-    <string name="app_name">Clock plus</string>
+    <string name="app_name">Clock time</string>
 
     <!-- Label on the main screen control used to set alarm when there is already an existing alarm [CHAR LIMIT=30] -->
     <string name="control_set_alarm_with_existing"><xliff:g id="time">%s</xliff:g></string>

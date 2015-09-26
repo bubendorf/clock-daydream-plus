@@ -17,7 +17,7 @@
 
 <!-- digital clock & date, together -->
 
-<cz.mpelant.deskclock.DigitalClock
+<ca.mlaflamme.clocktime.DigitalClock
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/digital_clock"
     android:layout_width="wrap_content"
@@ -26,21 +26,21 @@
     android:baselineAligned="true"
     android:textColor="@color/clock_white">
 
-    <cz.mpelant.deskclock.FitRobotoTextView
+    <ca.mlaflamme.clocktime.FitRobotoTextView
         android:id="@+id/timeDisplayHours"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:singleLine="true"
         style="@style/big_thin"/>
 
-    <cz.mpelant.deskclock.FitRobotoTextView
+    <ca.mlaflamme.clocktime.FitRobotoTextView
         android:id="@+id/timeDisplayMinutes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:singleLine="true"
         style="@style/big_thin"/>
 
-    <cz.mpelant.deskclock.FitRobotoTextView
+    <ca.mlaflamme.clocktime.FitRobotoTextView
         android:id="@+id/am_pm"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
@@ -48,4 +48,4 @@
         style="@style/ampm"
         android:paddingLeft="@dimen/clock_padding"/>
 
-</cz.mpelant.deskclock.DigitalClock>
+</ca.mlaflamme.clocktime.DigitalClock>

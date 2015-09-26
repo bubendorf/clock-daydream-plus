@@ -25,7 +25,7 @@
     public static *** w(...);
 }
 
--assumenosideeffects class cz.mpelant.deskclock.Log {
+-assumenosideeffects class ca.mlaflamme.clocktime.Log {
     public static *** d(...);
     public static *** e(...);
     public static *** i(...);
