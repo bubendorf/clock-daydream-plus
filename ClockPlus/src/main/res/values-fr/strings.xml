@@ -97,7 +97,7 @@
     <string name="force_rotation">Forcer l\'orientation automatique</string>
     <string name="force_rotation_summary">Toujours permettre l\'orientation automatique</string>
     <string name="slide_effect_summary">Déplacer l\'horloge à l\'écran pour ne pas l\'endomager</string>
-    <string name="slide_effect">Effet de glissement de l\'horloge</string>
+    <string name="slide_effect">Effet de déplacement de l\'horloge</string>
     <string name="misc">Divers</string>
     <string name="light_sensor">Liminosité automatique</string>
     <string name="light_sensor_summary">Utiliser le capteur de lumière pour ajuster la luminosité</string>
