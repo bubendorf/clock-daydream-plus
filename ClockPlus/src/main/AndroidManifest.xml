@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ca.mlaflamme.clocktime">
+    package="cz.mpelant.deskclock">
 
     <uses-sdk android:minSdkVersion="17"/>
 

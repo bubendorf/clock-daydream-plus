@@ -47,7 +47,7 @@
         android:summary="@string/light_sensor_summary"
         android:title="@string/light_sensor"/>
 
-    <ca.mlaflamme.clocktime.SeekBarPreference
+    <cz.mpelant.deskclock.SeekBarPreference
         android:defaultValue="192"
         android:key="brightness"
         android:max="255"
@@ -56,7 +56,7 @@
         clockns:min="1"
         clockns:mode="brightness"/>
 
-    <ca.mlaflamme.clocktime.SeekBarPreference
+    <cz.mpelant.deskclock.SeekBarPreference
         android:defaultValue="100"
         android:key="auto_brightness_adj"
         android:max="200"

@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-        <ca.mlaflamme.clocktime.AnalogClock
+        <cz.mpelant.deskclock.AnalogClock
             android:id="@+id/analog_clock"
             android:layout_width="@dimen/analog_clock_diameter"
             android:layout_height="@dimen/analog_clock_diameter"
@@ -86,7 +86,7 @@
             style="@style/label_not_caps"
             android:singleLine="true"/>
 
-        <ca.mlaflamme.clocktime.notification.NotificationLayout
+        <cz.mpelant.deskclock.notification.NotificationLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/notifLayout"
