@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  Copyright (C) 2007 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+ -->
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+
+    <!-- Label shown on launcher icon -->
+    <!-- Label for the this application displayed on-screen when this application must be represented to the user. -->
+    <string name="app_name">Horloge time</string>
+
+    <!-- Label on the main screen control used to set alarm when there is already an existing alarm [CHAR LIMIT=30] -->
+    <string name="control_set_alarm_with_existing"><xliff:g id="time">%s</xliff:g></string>
+
+    <!-- Settings strings -->
+    <!-- Header for a Clock Dream Setting referring to choosing analog or digital style -->
+    <string name="clock_style">Style</string>
+
+    <!--
+         Entries listed in the ListPreference when invoking the clock style
+         preference.
+    -->
+    <string-array name="clock_style_entries2">
+        <item>Analogue</item>
+        <item>Digitale (heures en gras)</item>
+        <item>Digitale</item>
+    </string-array>
+
+
+
+    <!-- Header for a Clock Dream Setting -->
+    <string name="clock_size">Taille</string>
+
+    <!--
+     Entries listed in the ListPreference when invoking the clock size
+     preference.
+-->
+    <string-array name="clock_size_entries">
+        <item>Petit</item>
+        <item>Moyen</item>
+        <item>Grand</item>
+        <item>Très Grand</item>
+        <item>TT-Grand</item>
+    </string-array>
+
+    <!-- Label for the screen saver activity displayed on-screen when that activity must be represented to the user. -->
+    <string name="screensaver_settings" msgid="7013450738357352801">"Paramètres de l\'écran de veille interactif"</string>
+    <!-- Title for check box to pick intensity of display diminuation during dream mode -->
+    <string name="night_mode_title">Mode nuit</string>
+    <!-- Describes intensity of display diminuation during dream mode -->
+    <string name="night_mode_summary">Affichage très faible (pour les pièces sombre)</string>
+
+    <!-- Description of field showing the next alarm time in the clock page, for accessibility. -->
+    <string name="next_alarm_description">Prochaine alarme : <xliff:g id="alarm_time" example="Wed 8:00am">%s</xliff:g></string>
+
+    <!--  -->
+
+    <string name="tip_unread_gmail">Aide : cherche et affiche les messages non lus dans Gmail (tag \"is:unread\")</string>
+    <string name="notification_icons">Icônes de notification</string>
+    <string name="show_unread_gmail_icon">Icône de messages Gmail non lus</string>
+    <string name="gmail">Gmail</string>
+    <string name="show_unread_texts_icon">Icône de messages SMS non lus</string>
+    <string name="sms">SMS</string>
+    <string name="show_missed_calls_icon">Icône d\'appels manqués</string>
+    <string name="calls">Appels</string>
+    <string name="hide_this_app_from_the_launcher">Cacher l\'icône des applications</string>
+    <string name="hide_icon">Cacher l\'icône</string>
+    <string name="about">À propos</string>
+    <string name="restart_required">Il est peut-être nécessaire de redémarrer votre appareil pour que cette action prenne effet</string>
+    <string name="action_not_available_in_this_android">Cette action n\'est pas disponible sur cette version d\'Android</string>
+    <!-- v1.2 -->
+    <string name="battery_full">Chargé</string>
+    <string name="battery_charging">Chargement</string>
+    <string name="_usb_">" (USB)"</string>
+    <string name="_ac_">" (CA)"</string>
+    <string name="battery_status_summary">Afficher l\'état de la batterie</string>
+    <string name="battery_status">Batterie</string>
+    <string name="adjust_brightness">Ajuster la luminosité</string>
+    <string name="brightness">Luminosité</string>
+    <string name="auto_brightness_fine_adj">Ajustement fin de la luminosité</string>
+    <string name="auto_brightness_fine_adj_summary">Ajustement plus précis de la liminosité dans le cas où l\'ajustement automatique n\'est pas au point</string>
+    <string name="show_notif_summary">Afficher les notifications système</string>
+    <string name="show_notif">Notifications</string>
+    <string name="enable_loc_listener_tip">Sélectionnez Horloge time si vous voulez voir les nofitications dans l\'écran de veille</string>
+    <string name="force_rotation">Forcer l\'orientation automatique</string>
+    <string name="force_rotation_summary">Toujours permettre l\'orientation automatique</string>
+    <string name="slide_effect_summary">Déplacer l\'horloge à l\'écran pour ne pas l\'endomager</string>
+    <string name="slide_effect">Effet de déplacement de l\'horloge</string>
+    <string name="misc">Divers</string>
+    <string name="light_sensor">Luminosité automatique</string>
+    <string name="light_sensor_summary">Utiliser le capteur de lumière pour ajuster la luminosité</string>
+    <string name="landscape_bigger">Mode paysage gros</string>
+    <string name="landscape_bigger_summary">L\'horloge sera plus grosse en mode paysage</string>
+</resources>

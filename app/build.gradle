@@ -1,0 +1,41 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.0"
+    defaultConfig {
+        applicationId "ca.mlaflamme.clocktime"
+        minSdkVersion 18
+        targetSdkVersion 23
+        versionName '1.4'
+        versionCode 11
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    productFlavors {
+        api17Only {
+            minSdkVersion 17
+            applicationId 'ca.mlaflamme.clocktime'
+            targetSdkVersion 17
+            versionCode 11
+            versionName '1.4'
+        }
+        api18AndUp {
+            minSdkVersion 18
+            applicationId 'ca.mlaflamme.clocktime'
+            targetSdkVersion 23
+            versionCode 11
+            versionName '1.4'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:23.+'
+    compile 'com.google.android.gms:play-services-ads:8.1.0'
+}
