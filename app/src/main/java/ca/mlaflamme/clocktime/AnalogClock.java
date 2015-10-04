@@ -20,21 +20,19 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.text.format.DateUtils;
-import android.text.format.Time;
 import android.util.AttributeSet;
 import android.view.View;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.TimeZone;
 
 /**
  * This widget display an analogic clock with two hands for hours and
@@ -77,12 +75,11 @@ public class AnalogClock extends View {
                        int defStyle) {
         super(context, attrs, defStyle);
         mContext = context;
-        Resources r = mContext.getResources();
 
-        mDial = r.getDrawable(R.drawable.clock_analog_dial_mipmap);
-        mHourHand = r.getDrawable(R.drawable.clock_analog_hour_mipmap);
-        mMinuteHand = r.getDrawable(R.drawable.clock_analog_minute_mipmap);
-        mSecondHand = r.getDrawable(R.drawable.clock_analog_second_mipmap);
+        mDial = ContextCompat.getDrawable(context, R.drawable.clock_analog_dial_mipmap);
+        mHourHand = ContextCompat.getDrawable(context, R.drawable.clock_analog_hour_mipmap);
+        mMinuteHand = ContextCompat.getDrawable(context, R.drawable.clock_analog_minute_mipmap);
+        mSecondHand = ContextCompat.getDrawable(context, R.drawable.clock_analog_second_mipmap);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.AnalogClock);
         mDotRadius = a.getDimension(R.styleable.AnalogClock_jewelRadius, 0);
@@ -98,6 +95,8 @@ public class AnalogClock extends View {
 
         mDialWidth = mDial.getIntrinsicWidth();
         mDialHeight = mDial.getIntrinsicHeight();
+
+        a.recycle();
     }
 
     @Override
@@ -270,7 +269,7 @@ public class AnalogClock extends View {
     };
 
     private void updateContentDescription(Calendar calendar) {
-        final int flags = DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_24HOUR;
+        final int flags = DateUtils.FORMAT_SHOW_TIME;
         String contentDescription = DateUtils.formatDateTime(mContext,
                 calendar.getTimeInMillis(), flags);
         setContentDescription(contentDescription);

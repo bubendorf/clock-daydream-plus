@@ -19,23 +19,16 @@ package ca.mlaflamme.clocktime;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.service.notification.StatusBarNotification;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
-import android.widget.TextView;
-
-import java.util.List;
-
-import ca.mlaflamme.clocktime.notification.NotificationInfo;
-import ca.mlaflamme.clocktime.notification.NotificationLayout;
 
 public class ScreensaverActivity extends BaseScreenOnActivity {
     static final boolean DEBUG = BuildConfig.DEBUG;
@@ -45,8 +38,6 @@ public class ScreensaverActivity extends BaseScreenOnActivity {
     // android:key="screensaver_clock_style" in preferences_1_1.xml  static final String DEFAULT_CLOCK_STYLE = "digital";
 
     private View mContentView, mSaverView;
-    private View mAnalogClock, mDigitalClock;
-    private NotificationLayout mNotifLayout;
     private final Handler mHandler = new Handler();
     private final ScreensaverMoveSaverRunnable mMoveSaverRunnable;
     private String mDateFormat;
@@ -74,7 +65,7 @@ public class ScreensaverActivity extends BaseScreenOnActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
     }
 
     @Override
@@ -87,7 +78,7 @@ public class ScreensaverActivity extends BaseScreenOnActivity {
         boolean useSlideEffect = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(
                 ScreensaverSettingsActivity.KEY_SLIDE_EFFECT, false);
         mMoveSaverRunnable.setSlideEffect(useSlideEffect);
-
+        mMoveSaverRunnable.setNotificationReceiver(getApplicationContext());
 
 
         layoutClockSaver();
@@ -123,7 +114,9 @@ public class ScreensaverActivity extends BaseScreenOnActivity {
     }
 
     private void setClockStyle() {
-        Utils.setClockStyle(this, mDigitalClock, mAnalogClock, ScreensaverSettingsActivity.KEY_CLOCK_STYLE);
+        String style = Utils.getClockStyle(this);
+        Utils.setAnalogOrDigitalView(this.getWindow(), style, false);
+
         mSaverView = findViewById(R.id.main_clock);
 
         Utils.resizeContent((ViewGroup) mSaverView);
@@ -133,9 +126,6 @@ public class ScreensaverActivity extends BaseScreenOnActivity {
     }
 
     private void layoutClockSaver() {
-        setContentView(R.layout.desk_clock_saver);
-        mDigitalClock = findViewById(R.id.digital_clock);
-        mAnalogClock = findViewById(R.id.analog_clock);
         setClockStyle();
         mContentView = (View) mSaverView.getParent();
         mContentView.forceLayout();
@@ -143,7 +133,6 @@ public class ScreensaverActivity extends BaseScreenOnActivity {
         mSaverView.setAlpha(0);
 
         mMoveSaverRunnable.registerViews(mContentView, mSaverView);
-        mNotifLayout = (NotificationLayout) mContentView.findViewById(R.id.notifLayout);
 
         Utils.hideSystemUiAndRetry(mContentView);
         Utils.updateDate(mDateFormat, mDateFormatForAccessibility, mContentView);

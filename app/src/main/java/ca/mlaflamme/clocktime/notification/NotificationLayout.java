@@ -10,14 +10,6 @@ import ca.mlaflamme.clocktime.R;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * NotificationLayout.java
- *
- * @author eMan s.r.o.
- * @project clock-daydream-plus
- * @package ca.mlaflamme.clocktime
- * @since 9/1/13
- */
 public class NotificationLayout extends LinearLayout {
     private Set<NotificationInfo> mNotificationInfos;
     private Set<NotificationInfo> mTmpNotificationInfos;
@@ -40,8 +32,8 @@ public class NotificationLayout extends LinearLayout {
 
     private void init() {
         setOrientation(VERTICAL);
-        mNotificationInfos = new HashSet<NotificationInfo>();
-        mTmpNotificationInfos = new HashSet<NotificationInfo>();
+        mNotificationInfos = new HashSet<>();
+        mTmpNotificationInfos = new HashSet<>();
         setGravity(Gravity.CENTER_HORIZONTAL);
     }
 
@@ -58,7 +50,6 @@ public class NotificationLayout extends LinearLayout {
      * adds new notification
      * can be called from background thread
      * must call notifyDatasetChanged for the change to take effect
-     * @param notif
      */
     public void addNotification(NotificationInfo notif) {
 

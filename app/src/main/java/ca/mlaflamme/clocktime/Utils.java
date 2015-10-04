@@ -16,6 +16,7 @@
 
 package ca.mlaflamme.clocktime;
 
+import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -48,7 +49,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -209,19 +209,17 @@ public class Utils {
      * For screensavers to set whether the digital or analog clock should be displayed.
      * Returns the view to be displayed.
      */
-    public static View setClockStyle(Context context, View digitalClock, View analogClock, String clockStyleKey) {
+    public static void setClockStyle(Context context, View digitalClock, View analogClock, String clockStyleKey) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         String defaultClockStyle = context.getResources().getString(R.string.default_clock_style);
         String style = sharedPref.getString(clockStyleKey, defaultClockStyle);
-        View returnView;
+
         if (style.equals(CLOCK_TYPE_ANALOG)) {
             digitalClock.setVisibility(View.GONE);
             analogClock.setVisibility(View.VISIBLE);
-            returnView = analogClock;
         } else {
             digitalClock.setVisibility(View.VISIBLE);
             analogClock.setVisibility(View.GONE);
-            returnView = digitalClock;
         }
 
         TextView timeDisplayHours = (TextView)digitalClock.findViewById(R.id.timeDisplayHours);
@@ -229,7 +227,32 @@ public class Utils {
         TextView timeAmPm = (TextView)digitalClock.findViewById(R.id.am_pm);
         Utils.setTimeFont(timeDisplayHours, timeDisplayMinutes, timeAmPm);
 
-        return returnView;
+    }
+
+    public static String getClockStyle(Context context) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        String defaultClockStyle = context.getResources().getString(R.string.default_clock_style);
+
+        return sharedPref.getString("screensaver_clock_style", defaultClockStyle);
+    }
+
+    public static  void setAnalogOrDigitalView(Window window, String style, boolean mainClockFrameOnly) {
+        if (style.equals(CLOCK_TYPE_ANALOG)) {
+            if (mainClockFrameOnly)
+                window.setContentView(R.layout.main_clock_frame_analog);
+            else
+                window.setContentView(R.layout.desk_clock_saver_analog);
+        } else {
+            if (mainClockFrameOnly)
+                window.setContentView(R.layout.main_clock_frame_digital);
+            else
+                window.setContentView(R.layout.desk_clock_saver_digital);
+
+            TextView timeDisplayHours = (TextView)window.findViewById(R.id.timeDisplayHours);
+            TextView timeDisplayMinutes = (TextView)window.findViewById(R.id.timeDisplayMinutes);
+            TextView timeAmPm = (TextView)window.findViewById(R.id.am_pm);
+            Utils.setTimeFont(timeDisplayHours, timeDisplayMinutes, timeAmPm, style);
+        }
     }
 
     /**
@@ -298,7 +321,7 @@ public class Utils {
     }
 
     public static void setDateTextView(Context context, TextView dateView) {
-        dateView.setText(new SimpleDateFormat(context.getString(R.string.abbrev_wday_month_day_no_year)).format(new Date()));
+        dateView.setText(DateFormat.getDateFormat(context).format(new Date()));
     }
 
     public static void setBatteryStatus(Context context, TextView batteryView) {
@@ -362,7 +385,6 @@ public class Utils {
                         "com.asus.deskclock.DeskClock"},
         };
 
-        PackageManager manager = context.getPackageManager();
         Intent intent = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER);
 
         for (String[] clockImpl : clockImpls) { // int i = 0; i < clockImpls.length; i++) {
@@ -538,6 +560,22 @@ public class Utils {
         timeDisplayAmPm.setTypeface(robotoRegular);
     }
 
+    public static void setTimeFont(TextView timeDisplayHours, TextView timeDisplayMinutes, TextView timeDisplayAmPm, String style) {
+        Context context = timeDisplayHours.getContext();
+
+        final Typeface robotoThin = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Thin.ttf");
+        final Typeface robotoBold = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Bold.ttf");
+        final Typeface robotoRegular = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Regular.ttf");
+
+        if (style.equals(Utils.CLOCK_TYPE_DIGITAL))
+            timeDisplayHours.setTypeface(robotoBold);
+        else
+            timeDisplayHours.setTypeface(robotoThin);
+
+        timeDisplayMinutes.setTypeface(robotoThin);
+        timeDisplayAmPm.setTypeface(robotoRegular);
+    }
+
     public static void setBrightness(Window window, View saverView,
                                      ScreensaverMoveSaverRunnable moveSaverRunnable) {
         setBrightness(window, saverView, moveSaverRunnable, null);
@@ -554,16 +592,11 @@ public class Utils {
     public static void setBrightness(Window window, View saverView,
                                      ScreensaverMoveSaverRunnable moveSaverRunnable,
                                      DreamService dream) {
-        boolean brightnessAuto = PreferenceManager.getDefaultSharedPreferences(saverView.getContext()).getBoolean(
-                ScreensaverSettingsActivity.KEY_BRIGHTNESS_AUTO,
-                ScreensaverSettingsActivity.KEY_BRIGHTNESS_AUTO_DEFAULT);
 
-        int brightness, auto_brightness_adj;
-
-        brightness = PreferenceManager.getDefaultSharedPreferences(saverView.getContext()).getInt(
+        int brightness = PreferenceManager.getDefaultSharedPreferences(saverView.getContext()).getInt(
                 ScreensaverSettingsActivity.KEY_BRIGHTNESS,
                 ScreensaverSettingsActivity.BRIGHTNESS_DEFAULT);
-        auto_brightness_adj = PreferenceManager.getDefaultSharedPreferences(saverView.getContext()).getInt(
+        int auto_brightness_adj = PreferenceManager.getDefaultSharedPreferences(saverView.getContext()).getInt(
                 ScreensaverSettingsActivity.KEY_BRIGHTNESS_AUTO_ADJ,
                 ScreensaverSettingsActivity.KEY_BRIGHTNESS_AUTO_ADJ_DEFAULT);
         boolean useAutoBrightness = PreferenceManager.getDefaultSharedPreferences(saverView.getContext()).getBoolean(
@@ -624,6 +657,7 @@ public class Utils {
         return null;
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     public static List<NotificationInfo> getNotifications(StatusBarNotification[] notifs) {
         List<NotificationInfo> notifications = new ArrayList<>();
         for (StatusBarNotification notif : notifs) {
@@ -633,9 +667,7 @@ public class Utils {
                         (notif.getNotification().flags & Notification.FLAG_ONGOING_EVENT) == 0) {
                     notifications.add(new NotificationInfo(null, notif.getPackageName(), notif.getNotification()));
                 }
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
-            } catch (IconNotFoundException e) {
+            } catch (NameNotFoundException | IconNotFoundException e) {
                 e.printStackTrace();
             }
 
@@ -643,6 +675,7 @@ public class Utils {
         return notifications;
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     public static NotificationInfo getNotificationInfo(Context context, StatusBarNotification notif) {
         NotificationInfo notification = null;
 
@@ -651,22 +684,18 @@ public class Utils {
                     (notif.getNotification().flags & Notification.FLAG_ONGOING_EVENT) == 0) {
                 notification = new NotificationInfo(context, notif.getPackageName(), notif.getNotification());
             }
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        } catch (IconNotFoundException e) {
+        } catch (NameNotFoundException | IconNotFoundException e) {
             e.printStackTrace();
         }
 
         return notification;
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     public static boolean isInterestingNotification(StatusBarNotification notif) {
 
-        if (notif.getNotification().priority > Notification.PRIORITY_MIN &&
-                (notif.getNotification().flags & Notification.FLAG_ONGOING_EVENT) == 0)
-            return true;
-        else
-            return false;
+        return notif.getNotification().priority > Notification.PRIORITY_MIN &&
+                (notif.getNotification().flags & Notification.FLAG_ONGOING_EVENT) == 0;
 
     }
 }

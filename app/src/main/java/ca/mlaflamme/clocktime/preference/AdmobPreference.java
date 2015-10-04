@@ -1,25 +1,16 @@
-package ca.mlaflamme.clocktime.preference;
+/*package ca.mlaflamme.clocktime.preference;
 
-import android.app.Activity;
 import android.content.Context;
 import android.preference.Preference;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 
-import ca.mlaflamme.clocktime.Log;
-import ca.mlaflamme.clocktime.R;
-
-/**
- * Created by mathi on 2015-09-26.
- */
 public class AdmobPreference extends Preference
 {
     private static final String ADSNS = "http://schemas.android.com/apk/res-auto";
@@ -68,3 +59,4 @@ public class AdmobPreference extends Preference
     }
 
 }
+*/

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:showIn="@layout/desk_clock_saver">
+
+
+    <TextView
+        android:id="@+id/battery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/clock_gray"
+        style="@style/label_not_caps"
+        android:singleLine="true" />
+
+    <ca.mlaflamme.clocktime.notification.NotificationLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/notifLayout"
+        android:singleLine="true" />
+
+
+</merge>

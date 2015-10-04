@@ -5,8 +5,6 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.TimeInterpolator;
-import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +13,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.service.notification.StatusBarNotification;
@@ -25,8 +22,6 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 import ca.mlaflamme.clocktime.notification.NotificationInfo;
 import ca.mlaflamme.clocktime.notification.NotificationLayout;
-
-import java.util.List;
 
 /**
  * Runnable for use with screensaver and dream, to move the clock every minute.
@@ -41,13 +36,14 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
     static final float SHRINKING_RATIO = 0.85f; // Percentage of the original to shrink and
                                                 // expand before and after moving.
 
+    public static final String ACTION_NLS_CONTROL = "ca.mlaflamme.clocktime.NOTIFICATION_LISTENER_SERVICE";
+    public static final String ACTION_NLS_RESPONSE = "ca.mlaflamme.clocktime.NOTIFICATION_LISTENER";
     static boolean mSlideEffect = true;
 
     private View mContentView, mSaverView;
     private TextView mDate;
     private TextView mBattery;
     private NotificationLayout mNotifLayout;
-    private View mTest;
     private TextView mNextAlarm;
     private final Handler mHandler;
 
@@ -56,12 +52,13 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
     private float mNextAlpha;
     private float mLastAlpha = 0;
     private SensorManager mSensorManager;
-    private NotificationReceiver mReceiver;
+    private NotificationReceiver mNotificationReceiver;
     private Sensor mLight;
     private boolean mInitSensor;
 
     private boolean mUseAutoBrightness = false;
     private float mAdjustBrightness;
+    private Context mAppContext;
 
     public ScreensaverMoveSaverRunnable(Handler handler) {
         mHandler = handler;
@@ -85,6 +82,19 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
         mAdjustBrightness = adjFactor;
     }
 
+    public void setNotificationReceiver(Context context) {
+        mAppContext = context;
+
+        mNotificationReceiver = new NotificationReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ACTION_NLS_RESPONSE);
+        mAppContext.registerReceiver(mNotificationReceiver, filter);
+
+        Intent i = new Intent(ACTION_NLS_CONTROL);
+        i.putExtra("command", "start_broadcast_notif");
+        mAppContext.sendBroadcast(i);
+    }
+
     public void registerViews(View contentView, View saverView) {
         mContentView = contentView;
         mDate = (TextView) contentView.findViewById(R.id.date);
@@ -95,22 +105,15 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
         mSensorManager = (SensorManager) mContentView.getContext().getSystemService(Context.SENSOR_SERVICE);
         mLight = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
 
-        initNotificationReceiver();
-        handleUpdate();
-        startReceivingNotif();
-    }
 
-    private void initNotificationReceiver() {
-        mReceiver = new NotificationReceiver();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("ca.mlaflamme.clocktime.NOTIFICATION_LISTENER");
-        mContentView.getContext().registerReceiver(mReceiver, filter);
+        handleUpdate();
     }
 
     public void unregister() {
         stopReceivingNotif();
-        mSensorManager.unregisterListener(this);
-        mContentView.getContext().unregisterReceiver(mReceiver);
+
+        if (mSensorManager != null)
+            mSensorManager.unregisterListener(this);
     }
 
     @Override
@@ -128,7 +131,6 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
     // TODO: accellerate frequency 1h before wakeup alarm
     private void handleLightSensorChanges(float[] values) {
         float luxLight = values[0];
-        int currentBrightness = 255;
         // Do something with this sensor data.
 
         if (luxLight <= SensorManager.LIGHT_NO_MOON) {
@@ -264,27 +266,6 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
         mHandler.postDelayed(this, delay);
     }
 
-    private void initialSizing() {
-        float xSpaceRatio;      // requested ratio between mSaverView and mContentView weight
-        float ySpaceRatio;      // requested ratio between mSaverView and mContentView height
-        float maxBetweenXAndY;
-
-        xSpaceRatio = (float) mSaverView.getWidth() * mSizeRatio / mContentView.getWidth();
-        ySpaceRatio = (float) mSaverView.getHeight() * mSizeRatio / mContentView.getHeight();
-        maxBetweenXAndY = xSpaceRatio > ySpaceRatio ? xSpaceRatio : ySpaceRatio;
-
-        if (maxBetweenXAndY > MAX_SPACE_RATIO) {
-            if (xSpaceRatio > ySpaceRatio)
-                mSizeRatio = MAX_SPACE_RATIO * mContentView.getWidth() / mSaverView.getWidth();
-            else
-                mSizeRatio = MAX_SPACE_RATIO * mContentView.getHeight() / mSaverView.getHeight();
-        }
-
-        Animator xShrink = ObjectAnimator.ofFloat(mSaverView, "scaleX", 1f, mSizeRatio);
-        Animator yShrink = ObjectAnimator.ofFloat(mSaverView, "scaleY", 1f, mSizeRatio);
-        AnimatorSet resize = new AnimatorSet();
-        resize.play(xShrink).with(yShrink);
-    }
 
     private void schickIfTooBig(AnimatorSet s) {
         final float xRatio = (float) mSaverView.getWidth() / mContentView.getWidth();
@@ -319,42 +300,21 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
                 mBattery.setVisibility(View.GONE);
             }
 
-            //notifChange();
-
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
-    private void startReceivingNotif() {
-        Intent i = new Intent("ca.mlaflamme.clocktime.NOTIFICATION_LISTENER_SERVICE");
-        i.putExtra("command", "start_broadcast_notif");
-        mContentView.getContext().sendBroadcast(i);
-    }
-
     private void stopReceivingNotif() {
-        Intent i = new Intent("ca.mlaflamme.clocktime.NOTIFICATION_LISTENER_SERVICE");
-        i.putExtra("command", "stop_broadcast_notif");
-        mContentView.getContext().sendBroadcast(i);
-    }
-
-/*
-    private void notifChange() {
-        if (NotificationListener.instance != null) {
-            Log.d("notif listener is running");
-            List<NotificationInfo> notifications = NotificationListener.instance.getNotifications();
-            Log.d("got " + notifications.size() + " icons");
-            mNotifLayout.clear();
-            for (NotificationInfo notificationInfo : notifications) {
-                mNotifLayout.addNotification(notificationInfo);
-            }
-            mNotifLayout.notifyDatasetChanged();
+        if (mAppContext != null && mNotificationReceiver != null) {
+            Intent i = new Intent(ACTION_NLS_CONTROL);
+            i.putExtra("command", "stop_broadcast_notif");
+            mAppContext.sendBroadcast(i);
+            mAppContext.unregisterReceiver(mNotificationReceiver);
         }
     }
-*/
+
     public boolean isPrefEnabled(String prefName, boolean defValue) {
         return PreferenceManager.getDefaultSharedPreferences(mDate.getContext()).getBoolean(prefName, defValue);
     }

@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="ca.mlaflamme.clocktime">
-
-    <uses-sdk android:minSdkVersion="17"/>
 
     <uses-feature
         android:name="android.hardware.touchscreen"
@@ -55,7 +52,7 @@
         <activity
             android:name=".ScreensaverSettingsActivity"
             android:excludeFromRecents="true"
-            android:exported="true"
+            android:exported="false"
             android:label="@string/screensaver_settings"
             android:taskAffinity=""
             android:theme="@android:style/Theme.Holo">
@@ -68,7 +65,7 @@
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
             android:excludeFromRecents="true"
             android:taskAffinity=""
-            android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar">
+            android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
 
                 <!-- TODO: is ACTION_POWER_DISCONNECTED required? -->
@@ -82,14 +79,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <service
-            android:name=".NotificationListener"
-            android:label="@string/app_name"
-            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
-            <intent-filter>
-                <action android:name="android.service.notification.NotificationListenerService"/>
-            </intent-filter>
-        </service>
 
         <!--
             <meta-data android:name="com.google.android.backup.api_key"

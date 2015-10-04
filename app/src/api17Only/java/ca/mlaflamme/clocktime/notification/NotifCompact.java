@@ -13,16 +13,8 @@ import ca.mlaflamme.clocktime.GmailContract;
 import ca.mlaflamme.clocktime.Log;
 import ca.mlaflamme.clocktime.R;
 
-/**
- * NotifCompact.java
- *
- * @author eMan s.r.o.
- * @project clock-daydream-plus
- * @package ca.mlaflamme.clocktime
- * @since 9/1/13
- */
 public class NotifCompact {
-    private Handler mHandler;
+    private final Handler mHandler;
 
     public NotifCompact() {
         mHandler = new Handler();
@@ -43,13 +35,16 @@ public class NotifCompact {
         };
         AccountManagerFuture<Account[]> future = AccountManager.get(context).getAccountsByTypeAndFeatures(ACCOUNT_TYPE_GOOGLE, FEATURES_MAIL, null, null);
 
-        Account[] accounts = null;
+        Account[] accounts;
         try {
             accounts = future.getResult();
             if (accounts != null && accounts.length > 0) {
+                NotificationInfo notif;
                 for (Account account : accounts) {
                     String selectedAccount = account.name;
-                    return queryLabels(selectedAccount, context);
+                    notif = queryLabels(selectedAccount, context);
+                    if (notif != null)
+                        return notif;
                 }
             }
 
@@ -63,17 +58,25 @@ public class NotifCompact {
     // TODO: Doesn't seem to get my unread mails in my inbox
     private NotificationInfo queryLabels(String selectedAccount, Context context) {
         Log.d("Gmail - " + selectedAccount);
+
+        NotificationInfo notificationInfo = null;
+
         Cursor labelsCursor = context.getContentResolver().query(GmailContract.Labels.getLabelsUri(selectedAccount), null, null, null, null);
+        assert labelsCursor != null;
         labelsCursor.moveToFirst();
         do {
             String name = labelsCursor.getString(labelsCursor.getColumnIndex(GmailContract.Labels.CANONICAL_NAME));
             int unread = labelsCursor.getInt(labelsCursor.getColumnIndex(GmailContract.Labels.NUM_UNREAD_CONVERSATIONS));// here's the value you need
             if (name.equals(GmailContract.Labels.LabelCanonicalNames.CANONICAL_NAME_INBOX) && unread > 0) {
                 Log.d("Gmail - " + name + "-" + unread);
-                return new NotificationInfo(context, R.drawable.stat_notify_gmail);
+                notificationInfo = new NotificationInfo(context, R.drawable.stat_notify_gmail);
+                break;
             }
         } while (labelsCursor.moveToNext());
-        return null;
+
+        labelsCursor.close();
+
+        return notificationInfo;
     }
 
 
@@ -93,6 +96,7 @@ public class NotifCompact {
         try {
             Uri uriSMSURI = Uri.parse("content://sms/inbox");
             cur = context.getContentResolver().query(uriSMSURI, null, "read = 0", null, null);
+            assert cur != null;
             Log.d("SMS - " + cur.getCount());
             if (cur.getCount() > 0) {
                 return new NotificationInfo(context, R.drawable.stat_notify_messages);
@@ -115,14 +119,16 @@ public class NotifCompact {
         final String[] selectionArgs = null;
         final String sortOrder = null;
         Cursor cursor = null;
+        //noinspection TryFinallyCanBeTryWithResources
         try {
             cursor = context.getContentResolver().query(CallLog.Calls.CONTENT_URI, projection, selection, selectionArgs, sortOrder);
-            if (cursor.getCount() > 0) {
+            if ((cursor != null ? cursor.getCount() : 0) > 0) {
                 return new NotificationInfo(context, R.drawable.stat_notify_missed_call);
             }
         } catch (Exception ex) {
             Log.e("ERROR: " + ex.toString());
         } finally {
+            assert cursor != null;
             cursor.close();
         }
 

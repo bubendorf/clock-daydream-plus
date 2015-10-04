@@ -5,17 +5,10 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
 
-/**
- * NotificationInfo.java
- *
- * @author eMan s.r.o.
- * @project clock-daydream-plus
- * @package cz.mpelant.ca.mlaflamme.clocktime.notification
- * @since 9/1/13
- */
 public class NotificationInfo {
     Drawable mDrawable;
     String mId;
@@ -24,7 +17,7 @@ public class NotificationInfo {
 
         Context remoteCtx = ctx.createPackageContext(pkg, 0);
         try {
-            mDrawable = remoteCtx.getResources().getDrawable(notification.icon);
+            mDrawable = ContextCompat.getDrawable(remoteCtx, notification.icon);
         }catch (Resources.NotFoundException ignored){
 
         }
@@ -36,7 +29,7 @@ public class NotificationInfo {
     }
     public NotificationInfo(Context ctx, int iconResId){
         mId="notificationInternal"+iconResId;
-        mDrawable=ctx.getResources().getDrawable(iconResId);
+        mDrawable=ContextCompat.getDrawable(ctx, iconResId);
     }
 
     public Drawable getDrawable() {
@@ -60,9 +53,8 @@ public class NotificationInfo {
 
         NotificationInfo that = (NotificationInfo) o;
 
-        if (!mId.equals(that.mId)) return false;
+        return mId.equals(that.mId);
 
-        return true;
     }
 
     @Override

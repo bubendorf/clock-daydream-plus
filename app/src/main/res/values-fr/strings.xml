@@ -14,7 +14,7 @@
      limitations under the License.
  -->
 
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
 
     <!-- Label shown on launcher icon -->
@@ -59,29 +59,23 @@
     <string name="screensaver_settings" msgid="7013450738357352801">"Paramètres de l\'écran de veille interactif"</string>
     <!-- Title for check box to pick intensity of display diminuation during dream mode -->
     <string name="night_mode_title">Mode nuit</string>
-    <!-- Describes intensity of display diminuation during dream mode -->
-    <string name="night_mode_summary">Affichage très faible (pour les pièces sombre)</string>
 
     <!-- Description of field showing the next alarm time in the clock page, for accessibility. -->
     <string name="next_alarm_description">Prochaine alarme : <xliff:g id="alarm_time" example="Wed 8:00am">%s</xliff:g></string>
-
-    <!--  -->
-
-    <string name="tip_unread_gmail">Aide : cherche et affiche les messages non lus dans Gmail (tag \"is:unread\")</string>
     <string name="notification_icons">Icônes de notification</string>
-    <string name="show_unread_gmail_icon">Icône de messages Gmail non lus</string>
-    <string name="gmail">Gmail</string>
-    <string name="show_unread_texts_icon">Icône de messages SMS non lus</string>
-    <string name="sms">SMS</string>
-    <string name="show_missed_calls_icon">Icône d\'appels manqués</string>
-    <string name="calls">Appels</string>
+    <string name="show_unread_gmail_icon" tools:ignore="UnusedResources">Icône de messages Gmail non lus</string>
+    <string name="gmail" tools:ignore="UnusedResources">Gmail</string>
+    <string name="show_unread_texts_icon" tools:ignore="UnusedResources">Icône de messages SMS non lus</string>
+    <string name="sms" tools:ignore="UnusedResources">SMS</string>
+    <string name="show_missed_calls_icon" tools:ignore="UnusedResources">Icône d\'appels manqués</string>
+    <string name="calls" tools:ignore="UnusedResources">Appels</string>
     <string name="hide_this_app_from_the_launcher">Cacher l\'icône des applications</string>
     <string name="hide_icon">Cacher l\'icône</string>
     <string name="about">À propos</string>
     <string name="restart_required">Il est peut-être nécessaire de redémarrer votre appareil pour que cette action prenne effet</string>
     <string name="action_not_available_in_this_android">Cette action n\'est pas disponible sur cette version d\'Android</string>
     <!-- v1.2 -->
-    <string name="battery_full">Chargé</string>
+    <string name="battery_full" tools:ignore="UnusedResources">Chargé</string>
     <string name="battery_charging">Chargement</string>
     <string name="_usb_">" (USB)"</string>
     <string name="_ac_">" (CA)"</string>

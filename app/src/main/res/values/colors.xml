@@ -21,8 +21,6 @@
     <color name="blackish">#ff1c1e20</color>
     <!-- Transparent background for use in the footer. 80% opacity. The color must remain the same as "blackish" above. -->
     <color name="blackish_trans">#cc1c1e20</color>
-    <color name="transparent">#00000000</color>
-    <color name="transparent_white">#66ffffff</color>
     <color name="clock_red">#ff4444</color>
     <color name="clock_white">#ffffff</color>
     <color name="clock_gray">#80ffffff</color>

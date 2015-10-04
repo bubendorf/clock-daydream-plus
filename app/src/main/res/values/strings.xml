@@ -83,22 +83,19 @@
     <string name="screensaver_settings">Dream settings</string>
     <!-- Title for check box to pick intensity of display diminuation during dream mode -->
     <string name="night_mode_title">Night mode</string>
-    <!-- Describes intensity of display diminuation during dream mode -->
-    <string name="night_mode_summary">Very dim display (for dark rooms)</string>
 
     <!-- Description of field showing the next alarm time in the clock page, for accessibility. -->
     <string name="next_alarm_description">Next alarm: <xliff:g id="alarm_time" example="Wed 8:00am">%s</xliff:g></string>
 
     <!--  -->
 
-    <string name="tip_unread_gmail">Tip: Search your Gmail for \"is:unread\" to display unread emails</string>
     <string name="notification_icons">Notification icons</string>
-    <string name="show_unread_gmail_icon">Show unread Gmail icon</string>
-    <string name="gmail">Gmail</string>
-    <string name="show_unread_texts_icon">Show unread texts icon</string>
-    <string name="sms">SMS</string>
-    <string name="show_missed_calls_icon">Show missed calls icon</string>
-    <string name="calls">Calls</string>
+    <string name="show_unread_gmail_icon" tools:ignore="UnusedResources">Show unread Gmail icon</string>
+    <string name="gmail" tools:ignore="UnusedResources">Gmail</string>
+    <string name="show_unread_texts_icon" tools:ignore="UnusedResources">Show unread texts icon</string>
+    <string name="sms" tools:ignore="UnusedResources">SMS</string>
+    <string name="show_missed_calls_icon" tools:ignore="UnusedResources">Show missed calls icon</string>
+    <string name="calls" tools:ignore="UnusedResources">Calls</string>
     <string name="hide_this_app_from_the_launcher">Hide this app from the launcher</string>
     <string name="hide_icon">Hide icon</string>
     <string name="about">About</string>

@@ -1,11 +1,8 @@
 
 package ca.mlaflamme.clocktime;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
@@ -14,13 +11,9 @@ import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 public class ClockActivity extends BaseScreenOnActivity {
     private static final int SCREENSAVER_DELAY = 1000 * 30;
     public static final String TAG = "ClockActivity";
-    private View mDigitalClock;
-    private View mAnalogClock;
     private TextView mDate;
     private TextView mNextAlarm;
     private final Handler mHandler = new Handler();
@@ -37,20 +30,20 @@ public class ClockActivity extends BaseScreenOnActivity {
     
 
     private void setClockStyle() {
-        Utils.setClockStyle(this, mDigitalClock, mAnalogClock, ScreensaverSettingsActivity.KEY_CLOCK_STYLE);
+        String style = Utils.getClockStyle(this);
+        Utils.setAnalogOrDigitalView(this.getWindow(), style, true);
     }
 
     // TODO: It doesn't detect cable plugged in and out
     @Override
     public void onResume() {
-        setContentView(R.layout.desk_clock_saver);
+        setClockStyle();
 
-        Utils.resizeContent((ViewGroup) findViewById(R.id.main_clock));
+        View mainClockFrame = findViewById(R.id.main_clock_frame);
 
+        Utils.resizeContent((ViewGroup) mainClockFrame);
 
-        mDigitalClock = findViewById(R.id.digital_clock);
-        mAnalogClock = findViewById(R.id.analog_clock);
-        ((View)mAnalogClock.getParent().getParent()).setOnLongClickListener(new OnLongClickListener() {
+        ((View)mainClockFrame.getParent().getParent()).setOnLongClickListener(new OnLongClickListener() {
 
             @Override
             public boolean onLongClick(View v) {
@@ -61,7 +54,7 @@ public class ClockActivity extends BaseScreenOnActivity {
         mDate = (TextView) findViewById(R.id.date);
         mNextAlarm = (TextView) findViewById(R.id.nextAlarm);
 
-        setClockStyle();
+
         updateViews();
 
 
@@ -119,4 +112,6 @@ public class ClockActivity extends BaseScreenOnActivity {
         });
         return super.onCreateOptionsMenu(menu);
     }
+
+
 }

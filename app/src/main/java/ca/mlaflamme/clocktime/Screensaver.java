@@ -32,8 +32,7 @@ public class Screensaver extends DreamService {
     static final boolean DEBUG = BuildConfig.DEBUG;
     static final String TAG = "DeskClock/Screensaver";
 
-    private View mContentView, mSaverView;
-    private View mAnalogClock, mDigitalClock;
+    private View mSaverView;
 
     private final Handler mHandler = new Handler();
 
@@ -56,6 +55,7 @@ public class Screensaver extends DreamService {
     @Override
     public void onDestroy() {
         super.onDestroy();
+
         mMoveSaverRunnable.unregister();
     }
 
@@ -104,7 +104,9 @@ public class Screensaver extends DreamService {
     }
 
     private void setClockStyle() {
-        Utils.setClockStyle(this, mDigitalClock, mAnalogClock, ScreensaverSettingsActivity.KEY_CLOCK_STYLE);
+        String style = Utils.getClockStyle(this);
+        Utils.setAnalogOrDigitalView(this.getWindow(), style, false);
+
         mSaverView = findViewById(R.id.main_clock);
 
         Utils.resizeContent((ViewGroup) mSaverView);
@@ -114,13 +116,10 @@ public class Screensaver extends DreamService {
     private void layoutClockSaver() {
         if (getWindow() == null)// fix for a weird fc
             return;
-        setContentView(R.layout.desk_clock_saver);
-        mDigitalClock = findViewById(R.id.digital_clock);
-        mAnalogClock = findViewById(R.id.analog_clock);
         setClockStyle();
         if (mSaverView == null)// fix for a weird fc
             return;
-        mContentView = (View) mSaverView.getParent();
+        View mContentView = (View) mSaverView.getParent();
         mSaverView.setAlpha(0);
         if (Build.VERSION.SDK_INT >= 19) {
             Utils.hideSystemUiAndRetry(mContentView);
@@ -129,7 +128,7 @@ public class Screensaver extends DreamService {
                 ScreensaverSettingsActivity.KEY_SLIDE_EFFECT,
                 ScreensaverSettingsActivity.KEY_SLIDE_EFFECT_DEFAULT);
         mMoveSaverRunnable.setSlideEffect(useSlideEffect);
-
+        mMoveSaverRunnable.setNotificationReceiver(getApplicationContext());
         mMoveSaverRunnable.registerViews(mContentView, mSaverView);
         mHandler.post(mMoveSaverRunnable);
     }

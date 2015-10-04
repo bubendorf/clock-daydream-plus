@@ -23,46 +23,12 @@
 -->
 <resources>
 
-    <dimen name="time_margin_right">8dip</dimen>
-    <dimen name="time_margin_bottom">8dip</dimen>
-    <dimen name="time_margin_top">16dip</dimen>
-    <!-- Analog clock size in the the screen saver -->
     <dimen name="analog_clock_diameter">236dip</dimen>
-    <dimen name="actionbar_tab_padding">0dip</dimen>
-    <dimen name="actionbar_title_font_size">22sp</dimen>
     <dimen name="big_font_size">10mm</dimen>
-    <dimen name="widget_big_font_size">80dp</dimen>
-    <dimen name="small_font_size">48sp</dimen>
-    <dimen name="medium_font_size">60dp</dimen>
-    <dimen name="widget_medium_font_size">48dp</dimen>
     <dimen name="label_font_size">1.5mm</dimen>
     <dimen name="ampm_font_size">3mm</dimen>
-    <dimen name="header_font_size">24sp</dimen>
-    <dimen name="body_font_size">18sp</dimen>
-    <dimen name="button_font_size">24sp</dimen>
-    <dimen name="timer_label_font_size">24sp</dimen>
-    <dimen name="dialog_button_font_size">14sp</dimen>
-    <dimen name="alarm_label_size">12sp</dimen>
-    <dimen name="dialpad_font_size">48sp</dimen>
-    <dimen name="dialpad_font_size_ampm">24sp</dimen>
-    <dimen name="city_name_font_size">24sp</dimen>
-    <dimen name="city_time_font_size">14sp</dimen>
-    <dimen name="tablet_dialpad_font_size">60sp</dimen>
-    <dimen name="tablet_dialpad_font_size_ampm">30sp</dimen>
-    <dimen name="screensaver_margin">16dip</dimen>
-    <dimen name="digital_margin_bottom">4dip</dimen>
     <dimen name="notif_size">24dp</dimen>
     <dimen name="notif_margin">5dp</dimen>
     <dimen name="clock_padding">0.8mm</dimen>
-
-    <!-- Size of notification text (see TextAppearance.StatusBar.EventContent) -->
-    <dimen name="notification_text_size">14dp</dimen>
-    <!-- Size of notification text titles (see TextAppearance.StatusBar.EventContent.Title) -->
-    <dimen name="notification_title_text_size">18dp</dimen>
-    <!-- Size of smaller notification text (see TextAppearance.StatusBar.EventContent.Line2, Info, Time) -->
-    <dimen name="notification_subtext_size">12dp</dimen>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
 
 </resources>

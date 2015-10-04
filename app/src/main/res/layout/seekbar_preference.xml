@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@android:id/widget_frame"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -17,7 +18,8 @@
         android:textColor="#ffffff"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textStyle="normal"
-        android:typeface="sans" >
+        android:typeface="sans"
+        tools:ignore="RtlHardcoded">
     </TextView>
 
     <LinearLayout
@@ -38,7 +40,8 @@
             android:id="@+id/seekBarPrefValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="5dp">
+            android:paddingLeft="5dp"
+            tools:ignore="RtlHardcoded,RtlSymmetry">
         </TextView>
 
     </LinearLayout>
@@ -50,7 +53,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/summaryAndUnits" >
+        android:layout_below="@+id/summaryAndUnits"
+        tools:ignore="RtlHardcoded">
     </LinearLayout>
 
 </RelativeLayout>

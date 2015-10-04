@@ -5,14 +5,11 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.TimeInterpolator;
-import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -20,10 +17,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 import ca.mlaflamme.clocktime.notification.NotifCompact;
-import ca.mlaflamme.clocktime.notification.NotificationInfo;
 import ca.mlaflamme.clocktime.notification.NotificationLayout;
-
-import java.util.List;
 
 /**
  * Runnable for use with screensaver and dream, to move the clock every minute.
@@ -83,6 +77,9 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
         mAdjustBrightness = adjFactor;
     }
 
+    @SuppressWarnings({"UnusedParameters", "EmptyMethod"})
+    public void setNotificationReceiver(Context context) {}
+
     public void registerViews(View contentView, View saverView) {
         mContentView = contentView;
         mDate = (TextView) contentView.findViewById(R.id.date);
@@ -115,7 +112,6 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
     // TODO: accellerate frequency 1h before wakeup alarm
     private void handleLightSensorChanges(float[] values) {
         float luxLight = values[0];
-        int currentBrightness = 255;
         // Do something with this sensor data.
 
         if (luxLight <= SensorManager.LIGHT_NO_MOON) {

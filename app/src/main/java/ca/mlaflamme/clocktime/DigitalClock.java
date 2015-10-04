@@ -20,11 +20,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.database.ContentObserver;
-import android.graphics.Typeface;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
@@ -34,7 +31,6 @@ import android.widget.TextView;
 
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
-import java.util.TimeZone;
 
 /**
  * Displays the time
@@ -45,13 +41,13 @@ public class DigitalClock extends LinearLayout {
     private final static String HOURS = "h";
     private final static String MINUTES = ":mm";
     private final String mAmString, mPmString;
+    private final static boolean lIVE = true;
 
     private Calendar mCalendar;
     private String mHoursFormat;
     private TextView mTimeDisplayHours, mTimeDisplayMinutes;
     private TextView mAmPm;
     private ContentObserver mFormatChangeObserver;
-    private boolean mLive = true;
     private boolean mAttached;
 
 
@@ -60,7 +56,7 @@ public class DigitalClock extends LinearLayout {
     private final BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (mLive && intent.getAction().equals(
+            if (intent.getAction().equals(
                     Intent.ACTION_TIMEZONE_CHANGED)) {
                 mCalendar = Calendar.getInstance();
             }
@@ -127,7 +123,7 @@ public class DigitalClock extends LinearLayout {
         if (mAttached) return;
         mAttached = true;
 
-        if (mLive) {
+        if (lIVE) {
             /* monitor time ticks, time changed, timezone */
             IntentFilter filter = new IntentFilter();
             filter.addAction(Intent.ACTION_TIME_TICK);
@@ -151,7 +147,7 @@ public class DigitalClock extends LinearLayout {
         if (!mAttached) return;
         mAttached = false;
 
-        if (mLive) {
+        if (lIVE) {
             getContext().unregisterReceiver(mIntentReceiver);
         }
         getContext().getContentResolver().unregisterContentObserver(
@@ -159,7 +155,7 @@ public class DigitalClock extends LinearLayout {
     }
 
     private void updateTime() {
-        if (mLive) {
+        if (lIVE) {
             mCalendar.setTimeInMillis(System.currentTimeMillis());
         }
 

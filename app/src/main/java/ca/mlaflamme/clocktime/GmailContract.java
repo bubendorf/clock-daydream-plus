@@ -219,6 +219,7 @@ public final class GmailContract {
          *
          * <p>Type: TEXT</p>
          */
+        @SuppressWarnings("JavadocReference")
         public static final String URI = "labelUri";
 
         /**
