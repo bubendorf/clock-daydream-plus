@@ -55,6 +55,8 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
     private NotificationReceiver mNotificationReceiver;
     private Sensor mLight;
     private boolean mInitSensor;
+    private String mDateFormat;
+    private String mDateFormatForAccessibility;
 
     private boolean mUseAutoBrightness = false;
     private float mAdjustBrightness;
@@ -105,6 +107,8 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
         mSensorManager = (SensorManager) mContentView.getContext().getSystemService(Context.SENSOR_SERVICE);
         mLight = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
 
+        mDateFormat = mContentView.getContext().getString(R.string.abbrev_wday_month_day_no_year);
+        mDateFormatForAccessibility = mContentView.getContext().getString(R.string.full_wday_month_day_no_year);
 
         handleUpdate();
     }
@@ -291,7 +295,7 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
     private void handleUpdate() {
         try {
             Utils.setAlarmTextView(mDate.getContext(), mNextAlarm);
-            Utils.setDateTextView(mDate.getContext(), mDate);
+            Utils.setDateTextView(mDate, mDateFormat, mDateFormatForAccessibility);
 
             if (isPrefEnabled(ScreensaverSettingsActivity.KEY_BATTERY, true)) {
                 mBattery.setVisibility(View.VISIBLE);

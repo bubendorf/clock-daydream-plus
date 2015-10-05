@@ -40,8 +40,6 @@ public class ScreensaverActivity extends BaseScreenOnActivity {
     private View mContentView, mSaverView;
     private final Handler mHandler = new Handler();
     private final ScreensaverMoveSaverRunnable mMoveSaverRunnable;
-    private String mDateFormat;
-    private String mDateFormatForAccessibility;
 
     public ScreensaverActivity() {
         mMoveSaverRunnable = new ScreensaverMoveSaverRunnable(mHandler);
@@ -71,9 +69,6 @@ public class ScreensaverActivity extends BaseScreenOnActivity {
     @Override
     public void onResume() {
         super.onResume();
-
-        mDateFormat = getString(R.string.abbrev_wday_month_day_no_year);
-        mDateFormatForAccessibility = getString(R.string.full_wday_month_day_no_year);
 
         boolean useSlideEffect = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(
                 ScreensaverSettingsActivity.KEY_SLIDE_EFFECT, false);
@@ -135,14 +130,11 @@ public class ScreensaverActivity extends BaseScreenOnActivity {
         mMoveSaverRunnable.registerViews(mContentView, mSaverView);
 
         Utils.hideSystemUiAndRetry(mContentView);
-        Utils.updateDate(mDateFormat, mDateFormatForAccessibility, mContentView);
         Utils.refreshAlarm(ScreensaverActivity.this, mContentView);
     }
 
     @Override
     protected void updateViews() {
-        Utils.updateDate(mDateFormat, mDateFormatForAccessibility, mContentView);
-        Utils.refreshAlarm(ScreensaverActivity.this, mContentView);
     }
 
     @Override

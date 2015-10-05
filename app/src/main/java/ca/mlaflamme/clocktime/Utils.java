@@ -41,7 +41,6 @@ import android.provider.Settings;
 import android.service.dreams.DreamService;
 import android.service.notification.StatusBarNotification;
 import android.text.TextUtils;
-import android.text.format.DateFormat;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +48,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -296,17 +297,17 @@ public class Utils {
 
     /** Clock views can call this to refresh their date. **/
     public static void updateDate(String dateFormat, String dateFormatForAccessibility, View clock) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(System.currentTimeMillis());
-
-        CharSequence newDate = DateFormat.format(dateFormat, cal);
-        TextView dateDisplay;
-        dateDisplay = (TextView) clock.findViewById(R.id.date);
-        if (dateDisplay != null) {
-            dateDisplay.setVisibility(View.VISIBLE);
-            dateDisplay.setText(newDate);
-            dateDisplay.setContentDescription(DateFormat.format(dateFormatForAccessibility, cal));
-        }
+//        Calendar cal = Calendar.getInstance();
+//        cal.setTimeInMillis(System.currentTimeMillis());
+//
+//        CharSequence newDate = DateFormat.format(dateFormat, cal);
+//        TextView dateDisplay;
+//        dateDisplay = (TextView) clock.findViewById(R.id.date);
+//        if (dateDisplay != null) {
+//            dateDisplay.setVisibility(View.VISIBLE);
+//            dateDisplay.setText(newDate);
+//            dateDisplay.setContentDescription(DateFormat.format(dateFormatForAccessibility, cal));
+//        }
     }
 
     @SuppressWarnings("deprecation")
@@ -320,8 +321,11 @@ public class Utils {
         }
     }
 
-    public static void setDateTextView(Context context, TextView dateView) {
-        dateView.setText(DateFormat.getDateFormat(context).format(new Date()));
+    public static void setDateTextView(TextView dateView,
+                                       String dateFormat, String dateFormatForAccessibility) {
+        Date date = new Date();
+        dateView.setText(new SimpleDateFormat(dateFormat).format(date));
+        dateView.setContentDescription(new SimpleDateFormat(dateFormatForAccessibility).format(date));
     }
 
     public static void setBatteryStatus(Context context, TextView batteryView) {

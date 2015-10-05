@@ -2,6 +2,7 @@
 package ca.mlaflamme.clocktime;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,13 +26,21 @@ public class ClockActivity extends BaseScreenOnActivity {
             overridePendingTransition(R.anim.undim, R.anim.dim);
         }
     };
-
-
+    private String mDateFormat;
+    private String mDateFormatForAccessibility;
     
 
     private void setClockStyle() {
         String style = Utils.getClockStyle(this);
         Utils.setAnalogOrDigitalView(this.getWindow(), style, true);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mDateFormat = getString(R.string.abbrev_wday_month_day_no_year);
+        mDateFormatForAccessibility = getString(R.string.full_wday_month_day_no_year);
     }
 
     // TODO: It doesn't detect cable plugged in and out
@@ -78,7 +87,7 @@ public class ClockActivity extends BaseScreenOnActivity {
     @Override
     protected void updateViews() {
         Utils.setAlarmTextView(this, mNextAlarm);
-        Utils.setDateTextView(this, mDate);
+        Utils.setDateTextView(mDate, mDateFormat, mDateFormatForAccessibility);
     }
 
     // TODO: Menu icon? Should I refresh the style?

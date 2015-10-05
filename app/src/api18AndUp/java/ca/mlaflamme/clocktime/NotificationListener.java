@@ -9,10 +9,6 @@ import android.service.notification.StatusBarNotification;
 import android.text.TextUtils;
 
 public class NotificationListener extends NotificationListenerService {
-    // TODO: I think the bad stuff is here!!!
-    //public static NotificationListener instance;
-
-
     private static final String TAG = NotificationListener.class.getClass().getSimpleName();
     public static final String ACTION_NLS_CONTROL = "ca.mlaflamme.clocktime.NOTIFICATION_LISTENER_SERVICE";
     public static final String ACTION_NLS_RESPONSE = "ca.mlaflamme.clocktime.NOTIFICATION_LISTENER";

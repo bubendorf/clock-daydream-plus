@@ -184,7 +184,7 @@ public class ScreensaverSettingsActivity extends PreferenceActivity implements P
             listPref.setEntryValues(newEntryValues);
         }
 
-        // TODO: this thing drains my battery!!!
+        // TODO: this thing drains my battery!!! Changed a lot the NotificationListener... let's see...
         private void setNotificationListener() {
             Preference pref;
             pref = findPreference(KEY_NOTIF_LISTENER);
