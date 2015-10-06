@@ -4,11 +4,10 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
     defaultConfig {
-        applicationId "ca.mlaflamme.clocktime"
+        applicationId 'ca.mlaflamme.clocktime'
         minSdkVersion 17
         targetSdkVersion 23
-        versionName '1.4'
-        versionCode 11
+        versionName '1.6'
     }
     buildTypes {
         release {
@@ -19,17 +18,13 @@ android {
     productFlavors {
         api17Only {
             minSdkVersion 17
-            applicationId 'ca.mlaflamme.clocktime'
-            targetSdkVersion 17
-            versionCode 11
-            versionName '1.4'
+            targetSdkVersion 23
+            versionCode 1700160
         }
         api18AndUp {
             minSdkVersion 18
-            applicationId 'ca.mlaflamme.clocktime'
             targetSdkVersion 23
-            versionCode 11
-            versionName '1.4'
+            versionCode 1800160
         }
     }
 }

@@ -20,6 +20,7 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.service.dreams.DreamService;
@@ -30,8 +31,8 @@ import android.view.ViewGroup;
 @TargetApi(17)
 public class Screensaver extends DreamService {
     static final boolean DEBUG = BuildConfig.DEBUG;
-    static final String TAG = "DeskClock/Screensaver";
-
+    private final static String TAG = Utils.class.getName();
+    private static final String PARAM_DAYDREAM_MODE = "screensaver_mode";
     private View mSaverView;
 
     private final Handler mHandler = new Handler();
@@ -87,6 +88,9 @@ public class Screensaver extends DreamService {
 
             Intent intent = new Intent(this, ScreensaverActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            Bundle b = new Bundle();
+            b.putBoolean(PARAM_DAYDREAM_MODE, true);
+            intent.putExtras(b);
             startActivity(intent);
             finish();
         } else {

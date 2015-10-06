@@ -16,11 +16,7 @@
 
 package ca.mlaflamme.clocktime;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -32,36 +28,31 @@ import android.view.WindowManager;
 
 public class ScreensaverActivity extends BaseScreenOnActivity {
     static final boolean DEBUG = BuildConfig.DEBUG;
-    static final String TAG = "DeskClock/ScreensaverAc";
+    private final static String TAG = Utils.class.getName();
+    private static final String ACTION_CHARGING = "ca.mlaflamme.clocktime.CHARGING";
+    private static final String ACTION_NOT_CHARGING = "ca.mlaflamme.clocktime.NOT_CHARGING";
+    private static final String PARAM_DAYDREAM_MODE = "screensaver_mode";
 
     // This value must match android:defaultValue of
     // android:key="screensaver_clock_style" in preferences_1_1.xml  static final String DEFAULT_CLOCK_STYLE = "digital";
 
-    private View mContentView, mSaverView;
+    private View mSaverView;
     private final Handler mHandler = new Handler();
     private final ScreensaverMoveSaverRunnable mMoveSaverRunnable;
+    boolean mDaydreamMode = false;
 
     public ScreensaverActivity() {
         mMoveSaverRunnable = new ScreensaverMoveSaverRunnable(mHandler);
     }
 
-    /**
-     * <p>If the charging is over, for the activity to finish.</p>
-     */
-    public class PowerConnectionReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
-            boolean isNotCharging = status == BatteryManager.BATTERY_STATUS_NOT_CHARGING;
-
-            if (isNotCharging)
-                finish();
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Bundle b = getIntent().getExtras();
+
+        if (b != null)
+            mDaydreamMode = b.getBoolean(PARAM_DAYDREAM_MODE);
 
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
     }
@@ -122,19 +113,27 @@ public class ScreensaverActivity extends BaseScreenOnActivity {
 
     private void layoutClockSaver() {
         setClockStyle();
-        mContentView = (View) mSaverView.getParent();
-        mContentView.forceLayout();
+        View contentView = (View) mSaverView.getParent();
+        contentView.forceLayout();
         mSaverView.forceLayout();
         mSaverView.setAlpha(0);
 
-        mMoveSaverRunnable.registerViews(mContentView, mSaverView);
+        mMoveSaverRunnable.registerViews(contentView, mSaverView);
 
-        Utils.hideSystemUiAndRetry(mContentView);
-        Utils.refreshAlarm(ScreensaverActivity.this, mContentView);
+        Utils.hideSystemUiAndRetry(contentView);
+        Utils.refreshAlarm(ScreensaverActivity.this, contentView);
     }
 
     @Override
     protected void updateViews() {
+        Log.d(TAG, "updateViews");
+
+        if (mDaydreamMode && !getIsPluggedIn()) {
+            Log.d(TAG, "Finishing because unplugged");
+            finish();
+        }
+
+        mMoveSaverRunnable.handleUpdate();
     }
 
     @Override

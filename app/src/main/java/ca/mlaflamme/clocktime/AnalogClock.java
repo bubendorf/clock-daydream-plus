@@ -39,6 +39,7 @@ import java.util.GregorianCalendar;
  * minutes.
  */
 public class AnalogClock extends View {
+    private final static String TAG = Utils.class.getName();
     private Calendar mCalendar;
 
     private final Drawable mHourHand;

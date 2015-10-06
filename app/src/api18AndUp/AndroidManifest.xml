@@ -81,10 +81,8 @@
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
             android:excludeFromRecents="true"
             android:taskAffinity=""
-            android:theme="@android:style/Theme.NoTitleBar">
-            <intent-filter>
-                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
-            </intent-filter>
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:launchMode="singleTop">
         </activity>
         <activity android:name=".ClockActivity">
             <intent-filter>

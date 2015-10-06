@@ -21,7 +21,7 @@
 package ca.mlaflamme.clocktime;
 
 public class Log {
-    public final static String LOGTAG = "AlarmClock";
+    public final static String LOGTAG = "clocktime";
 
     /** This must be false for production.  If true, turns on logging,
      test code, etc. */

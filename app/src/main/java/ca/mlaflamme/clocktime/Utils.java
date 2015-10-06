@@ -48,7 +48,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -310,7 +309,6 @@ public class Utils {
 //        }
     }
 
-    @SuppressWarnings("deprecation")
     public static void setAlarmTextView(Context context, TextView alarm) {
         String nextAlarm = Settings.System.getString(context.getContentResolver(), Settings.System.NEXT_ALARM_FORMATTED);
         if (nextAlarm==null || nextAlarm.isEmpty()) {
@@ -341,10 +339,6 @@ public class Utils {
         boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING || status == BatteryManager.BATTERY_STATUS_FULL;
 
         // How are we charging?
-        int chargePlug = batteryStatus.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
-        boolean usbCharge = chargePlug == BatteryManager.BATTERY_PLUGGED_USB;
-        boolean acCharge = chargePlug == BatteryManager.BATTERY_PLUGGED_AC;
-
         int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
         int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
 
@@ -356,10 +350,6 @@ public class Utils {
         } else {
             if (isCharging) {
                 text += context.getString(R.string.battery_charging);
-                if (usbCharge)
-                    text += context.getString(R.string._usb_);
-                if (acCharge)
-                    text += context.getString(R.string._ac_);
                 text += ", ";
             }
             text += (int)batteryPct + "%";

@@ -3,9 +3,11 @@ package ca.mlaflamme.clocktime.notification;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerFuture;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.provider.CallLog;
 import android.view.View;
@@ -113,6 +115,7 @@ public class NotifCompact {
 
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     public NotificationInfo checkMissedCalls(Context context) {
         final String[] projection = null;
         final String selection = CallLog.Calls.TYPE + "=" + CallLog.Calls.MISSED_TYPE + " AND " + CallLog.Calls.IS_READ + "=0";

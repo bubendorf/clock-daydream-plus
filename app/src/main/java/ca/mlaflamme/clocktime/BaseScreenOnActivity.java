@@ -28,7 +28,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 public abstract class BaseScreenOnActivity extends Activity {
-    static final String TAG = "BaseScreenOnActivity";
+    private final static String TAG = Utils.class.getName();
 
     private PendingIntent mQuarterlyIntent;
     private boolean mPluggedIn = true;
@@ -36,14 +36,20 @@ public abstract class BaseScreenOnActivity extends Activity {
     private final BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+
             boolean changed = intent.getAction().equals(Intent.ACTION_TIME_CHANGED)
                     || intent.getAction().equals(Intent.ACTION_TIMEZONE_CHANGED);
+
             if (intent.getAction().equals(Intent.ACTION_POWER_CONNECTED)) {
+                Log.v("ACTION_POWER_CONNECTED");
                 mPluggedIn = true;
                 setWakeLock();
+                changed = true;
             } else if (intent.getAction().equals(Intent.ACTION_POWER_DISCONNECTED)) {
+                Log.v("ACTION_POWER_DISCONNECTED");
                 mPluggedIn = false;
                 setWakeLock();
+                changed = true;
             } else if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
                 finish();
             } else if (intent.getAction().equals(Utils.ACTION_ON_QUARTER_HOUR) || changed) {
@@ -58,6 +64,8 @@ public abstract class BaseScreenOnActivity extends Activity {
     };
 
     protected abstract void updateViews();
+
+    protected boolean getIsPluggedIn() { return mPluggedIn; }
 
     @Override
     public void onStart() {

@@ -104,11 +104,9 @@
      <!-- v1.2 -->
     <string name="battery_full">Charged</string>
     <string name="battery_charging">Charging</string>
-    <string name="_usb_">" (USB)"</string>
-    <string name="_ac_">" (AC)"</string>
     <string name="battery_status_summary">Show battery status</string>
     <string name="battery_status">Battery status</string>
-    <string name="slide_effect_summary">Will slide the clock on screen to prevent damaging it</string>
+    <string name="slide_effect_summary">Will slide the clock on screen. Otherwise will disappear and reappear at different places.</string>
     <string name="slide_effect">Use slide effect</string>
     <string name="adjust_brightness">Adjust brightness</string>
     <string name="brightness">Brightness</string>

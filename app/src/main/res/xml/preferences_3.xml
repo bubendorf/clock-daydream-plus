@@ -28,7 +28,7 @@
             android:summary="@string/battery_status_summary"
             android:title="@string/battery_status"/>
         <CheckBoxPreference
-            android:defaultValue="true"
+            android:defaultValue="false"
             android:key="slide"
             android:summary="@string/slide_effect_summary"
             android:title="@string/slide_effect"/>

@@ -77,8 +77,6 @@
     <!-- v1.2 -->
     <string name="battery_full" tools:ignore="UnusedResources">Chargé</string>
     <string name="battery_charging">Chargement</string>
-    <string name="_usb_">" (USB)"</string>
-    <string name="_ac_">" (CA)"</string>
     <string name="battery_status_summary">Afficher l\'état de la batterie</string>
     <string name="battery_status">Batterie</string>
     <string name="adjust_brightness">Ajuster la luminosité</string>
@@ -90,7 +88,7 @@
     <string name="enable_loc_listener_tip">Sélectionnez Horloge time si vous voulez voir les nofitications dans l\'écran de veille</string>
     <string name="force_rotation">Forcer l\'orientation automatique</string>
     <string name="force_rotation_summary">Toujours permettre l\'orientation automatique</string>
-    <string name="slide_effect_summary">Déplacer l\'horloge à l\'écran pour ne pas l\'endomager</string>
+    <string name="slide_effect_summary">Déplacer l\'horloge à l\'écran. Sinon elle disparait et apparait constemment.</string>
     <string name="slide_effect">Effet de déplacement de l\'horloge</string>
     <string name="misc">Divers</string>
     <string name="light_sensor">Luminosité automatique</string>

@@ -23,6 +23,7 @@ import android.text.format.DateFormat;
  * The Alarms provider supplies info about Alarm Clock settings
  */
 public class Alarms {
+    private final static String TAG = Utils.class.getName();
     /**
      * @return true if clock is set to 24-hour mode
      */

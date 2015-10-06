@@ -24,6 +24,7 @@ import android.widget.TextView;
  * Displays text with no padding at the top.
  */
 public class FitRobotoTextView extends TextView {
+    private final static String TAG = Utils.class.getName();
     private static final float NORMAL_FONT_PADDING_TOP_RATIO = 0.2f;
     private static final float NORMAL_FONT_PADDING_BOTTOM_RATIO = 0.23f;
 

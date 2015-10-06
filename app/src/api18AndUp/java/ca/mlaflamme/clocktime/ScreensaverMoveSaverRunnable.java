@@ -286,13 +286,9 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
         }
         else
             mSizeRatio = 1;
-
-
     }
 
-
-
-    private void handleUpdate() {
+    public void handleUpdate() {
         try {
             Utils.setAlarmTextView(mDate.getContext(), mNextAlarm);
             Utils.setDateTextView(mDate, mDateFormat, mDateFormatForAccessibility);

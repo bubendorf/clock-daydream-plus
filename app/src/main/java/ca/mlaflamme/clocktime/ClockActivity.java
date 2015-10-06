@@ -13,8 +13,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class ClockActivity extends BaseScreenOnActivity {
+    private final static String TAG = Utils.class.getName();
     private static final int SCREENSAVER_DELAY = 1000 * 30;
-    public static final String TAG = "ClockActivity";
     private TextView mDate;
     private TextView mNextAlarm;
     private final Handler mHandler = new Handler();
@@ -95,6 +95,7 @@ public class ClockActivity extends BaseScreenOnActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuItem item;
 
+        // TODO: bring the alarm clock activity if possible
         final Intent alarmIntent = Utils.getAlarmPackage(this);
         if (alarmIntent != null) {
             item = menu.add("Alarms").setIcon(R.drawable.ic_action_alarm);

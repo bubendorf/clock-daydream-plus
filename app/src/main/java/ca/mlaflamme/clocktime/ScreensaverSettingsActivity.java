@@ -32,7 +32,7 @@ import static java.lang.System.arraycopy;
  * Settings for the Alarm Clock Dream (cz.mpelant.ca.mlaflamme.clocktime.Screensaver).
  */
 public class ScreensaverSettingsActivity extends PreferenceActivity implements Preference.OnPreferenceChangeListener {
-
+    private final static String TAG = Utils.class.getName();
     static final String KEY_CLOCK_STYLE = "screensaver_clock_style";
     static final String KEY_CLOCK_SIZE = "screensaver_clock_size";
     static final String KEY_LANDSCAPE_BIGGER = "landscape_bigger";
@@ -54,7 +54,7 @@ public class ScreensaverSettingsActivity extends PreferenceActivity implements P
     static final String KEY_HIDE_ACTIVITY = "hide_activity";
     static final String KEY_BATTERY = "battery";
     static final String KEY_SLIDE_EFFECT = "slide";
-    static final boolean KEY_SLIDE_EFFECT_DEFAULT = true;
+    static final boolean KEY_SLIDE_EFFECT_DEFAULT = false;
     static final String KEY_ABOUT = "about";
     static final long TIP_DELAY = 1000 * 3600 * 24; // 24h
     public static final int REQUEST_CODE_NOTIF = 1;

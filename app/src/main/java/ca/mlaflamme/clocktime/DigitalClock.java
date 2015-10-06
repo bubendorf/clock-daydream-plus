@@ -36,7 +36,7 @@ import java.util.Calendar;
  * Displays the time
  */
 public class DigitalClock extends LinearLayout {
-
+    private final static String TAG = Utils.class.getName();
     private final static String HOURS_24 = "kk";
     private final static String HOURS = "h";
     private final static String MINUTES = ":mm";

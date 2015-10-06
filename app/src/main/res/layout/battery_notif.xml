@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/clock_gray"
-        style="@style/label_not_caps"
+        style="@style/label"
         android:singleLine="true" />
 
     <ca.mlaflamme.clocktime.notification.NotificationLayout
