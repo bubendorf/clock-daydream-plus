@@ -64,6 +64,7 @@
         </activity>
         <activity
             android:name=".ScreensaverActivity"
+            android:exported="true"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
             android:excludeFromRecents="true"
             android:taskAffinity=""
