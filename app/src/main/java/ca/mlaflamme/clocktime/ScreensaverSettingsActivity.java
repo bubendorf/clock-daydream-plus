@@ -35,6 +35,8 @@ public class ScreensaverSettingsActivity extends PreferenceActivity implements P
     private final static String TAG = Utils.class.getName();
     static final String KEY_CLOCK_STYLE = "screensaver_clock_style";
     static final String KEY_CLOCK_SIZE = "screensaver_clock_size";
+    static final String KEY_CLOCK_COLOR = "screensaver_clock_color";
+    static final String KEY_ALARM_COLOR = "screensaver_alarm_color";
     static final String KEY_LANDSCAPE_BIGGER = "landscape_bigger";
     static final boolean KEY_LANDSCAPE_BIGGER_DEFAULT = false;
     //    static final String KEY_NIGHT_MODE = "screensaver_night_mode";

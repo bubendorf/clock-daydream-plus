@@ -79,6 +79,40 @@
         <item>2xlarge</item>
     </string-array>
 
+    <!-- Header for a Clock Dream Setting -->
+    <string name="clock_color">Color</string>
+
+    <!--
+    Entries listed in the ListPreference when invoking the clock color
+    preference.
+-->
+    <string-array name="clock_color_entries">
+        <item>White</item>
+        <item>Gray</item>
+        <item>Red</item>
+        <item>Orange</item>
+        <item>Blue</item>
+        <item>Green</item>
+        <item>Yellow</item>
+    </string-array>
+
+    <!--
+         Values that are retrieved from the ListPreference. These must match
+         the clock_style_entries above.
+    -->
+    <array name="clock_color_values" translatable="false">
+        <item>@color/clock_white</item>
+        <item>@color/clock_gray</item>
+        <item>@color/clock_red</item>
+        <item>@color/clock_orange</item>
+        <item>@color/clock_blue</item>
+        <item>@color/clock_green</item>
+        <item>@color/clock_yellow</item>
+    </array>
+
+    <!-- Header for a Clock Dream Setting -->
+    <string name="alarm_color">Alarm Color</string>
+
     <!-- Label for the screen saver activity displayed on-screen when that activity must be represented to the user. -->
     <string name="screensaver_settings">Dream settings</string>
     <!-- Title for check box to pick intensity of display diminuation during dream mode -->
