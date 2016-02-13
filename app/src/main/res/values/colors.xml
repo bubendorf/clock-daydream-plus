@@ -16,7 +16,6 @@
 -->
 
 <resources>
-
     <!-- If this color is changed or no longer used as the primary background, ensure that blackish_trans is changed as well. -->
     <color name="blackish">#ff1c1e20</color>
     <!-- Transparent background for use in the footer. 80% opacity. The color must remain the same as "blackish" above. -->
@@ -24,5 +23,8 @@
     <color name="clock_red">#ff4444</color>
     <color name="clock_white">#ffffff</color>
     <color name="clock_gray">#80ffffff</color>
-
+    <color name="clock_orange">#ffa500</color>
+    <color name="clock_blue">#0000ff</color>
+    <color name="clock_green">#008000</color>
+    <color name="clock_yellow">#ffff00</color>
 </resources>
