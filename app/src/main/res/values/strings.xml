@@ -100,15 +100,15 @@
          Values that are retrieved from the ListPreference. These must match
          the clock_style_entries above.
     -->
-    <array name="clock_color_values" translatable="false">
-        <item>@color/clock_white</item>
-        <item>@color/clock_gray</item>
-        <item>@color/clock_red</item>
-        <item>@color/clock_orange</item>
-        <item>@color/clock_blue</item>
-        <item>@color/clock_green</item>
-        <item>@color/clock_yellow</item>
-    </array>
+    <string-array name="clock_color_values" translatable="false">
+        <item>clock_white</item>
+        <item>clock_gray</item>
+        <item>clock_red</item>
+        <item>clock_orange</item>
+        <item>clock_blue</item>
+        <item>clock_green</item>
+        <item>clock_yellow</item>
+    </string-array>
 
     <!-- Header for a Clock Dream Setting -->
     <string name="alarm_color">Alarm Color</string>

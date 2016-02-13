@@ -22,7 +22,7 @@
     <!-- Default clock style. -->
     <string name="default_clock_style">digital2</string>
     <string name="default_clock_size">medium</string>
-    <color name="default_clock_color">@color/clock_white</color>
+    <string name="default_clock_color">clock_white</string>
     <!-- Alarm time color. -->
-    <color name="default_alarm_color">@color/clock_white</color>
+    <string name="default_alarm_color">clock_red</string>
 </resources>

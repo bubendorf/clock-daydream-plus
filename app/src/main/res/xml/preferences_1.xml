@@ -40,7 +40,7 @@
         android:title="@string/clock_size"/>
 
     <ListPreference
-        android:defaultValue="@color/default_clock_color"
+        android:defaultValue="@string/default_clock_color"
         android:dialogTitle="@string/clock_color"
         android:entries="@array/clock_color_entries"
         android:entryValues="@array/clock_color_values"
@@ -49,7 +49,7 @@
         android:title="@string/clock_color"/>
 
     <ListPreference
-        android:defaultValue="@color/default_alarm_color"
+        android:defaultValue="@string/default_alarm_color"
         android:dialogTitle="@string/alarm_color"
         android:entries="@array/clock_color_entries"
         android:entryValues="@array/clock_color_values"
