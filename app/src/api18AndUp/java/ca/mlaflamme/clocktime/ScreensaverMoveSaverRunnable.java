@@ -291,7 +291,7 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
     public void handleUpdate() {
         try {
             Utils.setAlarmTextView(mDate.getContext(), mNextAlarm);
-            Utils.setDateTextView(mDate, mDateFormat, mDateFormatForAccessibility);
+            Utils.setDateTextView(, mDate, mDateFormat, mDateFormatForAccessibility);
 
             if (isPrefEnabled(ScreensaverSettingsActivity.KEY_BATTERY, true)) {
                 mBattery.setVisibility(View.VISIBLE);

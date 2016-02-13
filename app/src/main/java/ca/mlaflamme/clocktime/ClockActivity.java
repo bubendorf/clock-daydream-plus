@@ -87,7 +87,7 @@ public class ClockActivity extends BaseScreenOnActivity {
     @Override
     protected void updateViews() {
         Utils.setAlarmTextView(this, mNextAlarm);
-        Utils.setDateTextView(mDate, mDateFormat, mDateFormatForAccessibility);
+        Utils.setDateTextView(this, mDate, mDateFormat, mDateFormatForAccessibility);
     }
 
     // TODO: Menu icon? Should I refresh the style?

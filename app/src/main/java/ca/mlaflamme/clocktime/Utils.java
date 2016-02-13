@@ -316,14 +316,20 @@ public class Utils {
         } else {
             alarm.setVisibility(View.VISIBLE);
             alarm.setText(nextAlarm);
+
+            int color = getColorFromPreference(context, ScreensaverSettingsActivity.KEY_ALARM_COLOR);
+            alarm.setTextColor(color);
         }
     }
 
-    public static void setDateTextView(TextView dateView,
+    public static void setDateTextView(Context context, TextView dateView,
                                        String dateFormat, String dateFormatForAccessibility) {
         Date date = new Date();
         dateView.setText(new SimpleDateFormat(dateFormat).format(date));
         dateView.setContentDescription(new SimpleDateFormat(dateFormatForAccessibility).format(date));
+
+        int color = getColorFromPreference(context, ScreensaverSettingsActivity.KEY_ALARM_COLOR);
+        dateView.setTextColor(color);
     }
 
     public static void setBatteryStatus(Context context, TextView batteryView) {
@@ -552,6 +558,12 @@ public class Utils {
 
         timeDisplayMinutes.setTypeface(robotoThin);
         timeDisplayAmPm.setTypeface(robotoRegular);
+
+        int color = getColorFromPreference(context, ScreensaverSettingsActivity.KEY_CLOCK_COLOR);
+
+        timeDisplayHours.setTextColor(color);
+        timeDisplayMinutes.setTextColor(color);
+        timeDisplayAmPm.setTextColor(color);
     }
 
     public static void setTimeFont(TextView timeDisplayHours, TextView timeDisplayMinutes, TextView timeDisplayAmPm, String style) {
@@ -568,6 +580,20 @@ public class Utils {
 
         timeDisplayMinutes.setTypeface(robotoThin);
         timeDisplayAmPm.setTypeface(robotoRegular);
+
+        int color = getColorFromPreference(context, ScreensaverSettingsActivity.KEY_CLOCK_COLOR);
+
+        timeDisplayHours.setTextColor(color);
+        timeDisplayMinutes.setTextColor(color);
+        timeDisplayAmPm.setTextColor(color);
+    }
+
+    private static int getColorFromPreference(Context context, String key) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        String value = pref.getString(key, "");
+
+        int colorId = context.getResources().getIdentifier(value, "color", context.getPackageName());
+        return context.getResources().getColor(colorId);
     }
 
     public static void setBrightness(Window window, View saverView,
