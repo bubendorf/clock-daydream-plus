@@ -317,7 +317,7 @@ public class Utils {
             alarm.setVisibility(View.VISIBLE);
             alarm.setText(nextAlarm);
 
-            int color = getColorFromPreference(context, ScreensaverSettingsActivity.KEY_ALARM_COLOR);
+            int color = getColorFromPreference(context, ScreensaverSettingsActivity.KEY_ALARM_COLOR, R.string.default_alarm_color);
             alarm.setTextColor(color);
         }
     }
@@ -328,7 +328,7 @@ public class Utils {
         dateView.setText(new SimpleDateFormat(dateFormat).format(date));
         dateView.setContentDescription(new SimpleDateFormat(dateFormatForAccessibility).format(date));
 
-        int color = getColorFromPreference(context, ScreensaverSettingsActivity.KEY_ALARM_COLOR);
+        int color = getColorFromPreference(context, ScreensaverSettingsActivity.KEY_ALARM_COLOR, R.string.default_alarm_color);
         dateView.setTextColor(color);
     }
 
@@ -559,7 +559,7 @@ public class Utils {
         timeDisplayMinutes.setTypeface(robotoThin);
         timeDisplayAmPm.setTypeface(robotoRegular);
 
-        int color = getColorFromPreference(context, ScreensaverSettingsActivity.KEY_CLOCK_COLOR);
+        int color = getColorFromPreference(context, ScreensaverSettingsActivity.KEY_CLOCK_COLOR, R.string.default_clock_color);
 
         timeDisplayHours.setTextColor(color);
         timeDisplayMinutes.setTextColor(color);
@@ -581,16 +581,16 @@ public class Utils {
         timeDisplayMinutes.setTypeface(robotoThin);
         timeDisplayAmPm.setTypeface(robotoRegular);
 
-        int color = getColorFromPreference(context, ScreensaverSettingsActivity.KEY_CLOCK_COLOR);
+        int color = getColorFromPreference(context, ScreensaverSettingsActivity.KEY_CLOCK_COLOR, R.string.default_clock_color );
 
         timeDisplayHours.setTextColor(color);
         timeDisplayMinutes.setTextColor(color);
         timeDisplayAmPm.setTextColor(color);
     }
 
-    private static int getColorFromPreference(Context context, String key) {
+    private static int getColorFromPreference(Context context, String key, int defaultValue) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        String value = pref.getString(key, "");
+        String value = pref.getString(key, context.getResources().getString(defaultValue) );
 
         int colorId = context.getResources().getIdentifier(value, "color", context.getPackageName());
         return context.getResources().getColor(colorId);
