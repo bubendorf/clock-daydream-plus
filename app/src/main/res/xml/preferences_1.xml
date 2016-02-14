@@ -49,6 +49,15 @@
         android:title="@string/clock_color"/>
 
     <ListPreference
+        android:defaultValue="@string/default_date_color"
+        android:dialogTitle="@string/clock_color"
+        android:entries="@array/clock_color_entries"
+        android:entryValues="@array/clock_color_values"
+        android:summary="%s"
+        android:key="screensaver_date_color"
+        android:title="@string/date_color"/>
+
+    <ListPreference
         android:defaultValue="@string/default_alarm_color"
         android:dialogTitle="@string/alarm_color"
         android:entries="@array/clock_color_entries"

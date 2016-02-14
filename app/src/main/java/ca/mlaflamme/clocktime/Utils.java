@@ -328,7 +328,7 @@ public class Utils {
         dateView.setText(new SimpleDateFormat(dateFormat).format(date));
         dateView.setContentDescription(new SimpleDateFormat(dateFormatForAccessibility).format(date));
 
-        int color = getColorFromPreference(context, ScreensaverSettingsActivity.KEY_ALARM_COLOR, R.string.default_alarm_color);
+        int color = getColorFromPreference(context, ScreensaverSettingsActivity.KEY_DATE_COLOR, R.string.default_date_color);
         dateView.setTextColor(color);
     }
 

@@ -112,6 +112,7 @@
 
     <!-- Header for a Clock Dream Setting -->
     <string name="alarm_color">Alarm Color</string>
+    <string name="date_color">Date Color</string>
 
     <!-- Label for the screen saver activity displayed on-screen when that activity must be represented to the user. -->
     <string name="screensaver_settings">Dream settings</string>
