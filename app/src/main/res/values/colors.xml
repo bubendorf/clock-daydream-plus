@@ -27,4 +27,5 @@
     <color name="clock_blue">#0000ff</color>
     <color name="clock_green">#008000</color>
     <color name="clock_yellow">#ffff00</color>
+    <color name="clock_black">#000000</color>
 </resources>

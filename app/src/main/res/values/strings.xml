@@ -94,6 +94,7 @@
         <item>Blue</item>
         <item>Green</item>
         <item>Yellow</item>
+        <item>Black/Hide</item>
     </string-array>
 
     <!--
@@ -108,6 +109,7 @@
         <item>clock_blue</item>
         <item>clock_green</item>
         <item>clock_yellow</item>
+        <item>clock_black</item>
     </string-array>
 
     <!-- Header for a Clock Dream Setting -->
