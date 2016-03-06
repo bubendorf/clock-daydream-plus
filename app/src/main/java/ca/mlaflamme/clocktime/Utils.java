@@ -225,7 +225,7 @@ public class Utils {
         TextView timeDisplayHours = (TextView)digitalClock.findViewById(R.id.timeDisplayHours);
         TextView timeDisplayMinutes = (TextView)digitalClock.findViewById(R.id.timeDisplayMinutes);
         TextView timeAmPm = (TextView)digitalClock.findViewById(R.id.am_pm);
-        Utils.setTimeFont(timeDisplayHours, timeDisplayMinutes, timeAmPm);
+        Utils.setTimeFont(timeDisplayHours, timeDisplayMinutes, timeAmPm, style);
 
     }
 
@@ -290,6 +290,11 @@ public class Utils {
                 nextAlarmView.setText(context.getString(R.string.control_set_alarm_with_existing, nextAlarm));
                 nextAlarmView.setContentDescription(context.getResources().getString(R.string.next_alarm_description, nextAlarm));
                 nextAlarmView.setVisibility(View.VISIBLE);
+
+                Paint paint = new Paint();
+                int color = getColorFromPreference(context, ScreensaverSettingsActivity.KEY_ALARM_COLOR, R.string.default_alarm_color);
+                paint.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP));
+                nextAlarmView.setLayerType(View.LAYER_TYPE_HARDWARE, paint);
             } else nextAlarmView.setVisibility(View.GONE);
         }
     }
@@ -319,12 +324,22 @@ public class Utils {
 
             int color = getColorFromPreference(context, ScreensaverSettingsActivity.KEY_ALARM_COLOR, R.string.default_alarm_color);
             alarm.setTextColor(color);
+
+
+            Paint paint = new Paint();
+            paint.setColor(Color.WHITE);
+            color = Color.argb(0xff, Color.red(color), Color.green(color), Color.blue(color));
+            paint.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.MULTIPLY));
+            paint.setAlpha(0xff);
+            paint.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP));
+            alarm.setLayerType(View.LAYER_TYPE_HARDWARE, paint);
         }
     }
 
     public static void setDateTextView(Context context, TextView dateView,
                                        String dateFormat, String dateFormatForAccessibility) {
         Date date = new Date();
+
         dateView.setText(new SimpleDateFormat(dateFormat).format(date));
         dateView.setContentDescription(new SimpleDateFormat(dateFormatForAccessibility).format(date));
 
@@ -436,12 +451,10 @@ public class Utils {
     }
 
 
-    public float getSizeRatio(Context context) {
+    public static float getSizeRatio(Context context, String key, String def_value) {
         float resizeRatio;
 
-        String size = PreferenceManager.getDefaultSharedPreferences(context).getString(
-                ScreensaverSettingsActivity.KEY_CLOCK_SIZE,
-                ScreensaverSettingsActivity.SIZE_DEFAULT);
+        String size = PreferenceManager.getDefaultSharedPreferences(context).getString(key, def_value);
 
         switch (size) {
             case CLOCK_SIZE_MEDIUM:
@@ -472,30 +485,11 @@ public class Utils {
         float resizeRatio;
         int orientation = parent.getResources().getConfiguration().orientation;
 
-        String size = PreferenceManager.getDefaultSharedPreferences(parent.getContext()).getString(
-                ScreensaverSettingsActivity.KEY_CLOCK_SIZE,
-                ScreensaverSettingsActivity.SIZE_DEFAULT);
-
         boolean landscapeBigger = PreferenceManager.getDefaultSharedPreferences(parent.getContext()).getBoolean(
                 ScreensaverSettingsActivity.KEY_LANDSCAPE_BIGGER,
                 ScreensaverSettingsActivity.KEY_LANDSCAPE_BIGGER_DEFAULT);
 
-        switch (size) {
-            case CLOCK_SIZE_MEDIUM:
-                resizeRatio = (float)1.75;
-                break;
-            case CLOCK_SIZE_LARGE:
-                resizeRatio = (float)2.25;
-                break;
-            case CLOCK_SIZE_XLARGE:
-                resizeRatio = (float)4.5;
-                break;
-            case CLOCK_SIZE_2XLARGE:
-                resizeRatio = (float)6.75;
-                break;
-            default:
-                resizeRatio = 1;
-        }
+        resizeRatio = getSizeRatio(parent.getContext(), ScreensaverSettingsActivity.KEY_CLOCK_SIZE, ScreensaverSettingsActivity.SIZE_DEFAULT);
 
         if (orientation == Configuration.ORIENTATION_LANDSCAPE && landscapeBigger)
             resizeRatio *= 1.5;
@@ -540,7 +534,14 @@ public class Utils {
         }
     }
 
-    public static void setTimeFont(TextView timeDisplayHours, TextView timeDisplayMinutes, TextView timeDisplayAmPm) {
+    public static void resizeTextView(TextView mDateView, String key, String default_value) {
+
+        float ratio = getSizeRatio(mDateView.getContext(), key, default_value);
+
+        mDateView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mDateView.getTextSize() * ratio);
+    }
+
+   /* public static void setTimeFont(TextView timeDisplayHours, TextView timeDisplayMinutes, TextView timeDisplayAmPm) {
         Context context = timeDisplayHours.getContext();
 
         final Typeface robotoThin = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Thin.ttf");
@@ -564,7 +565,7 @@ public class Utils {
         timeDisplayHours.setTextColor(color);
         timeDisplayMinutes.setTextColor(color);
         timeDisplayAmPm.setTextColor(color);
-    }
+    }*/
 
     public static void setTimeFont(TextView timeDisplayHours, TextView timeDisplayMinutes, TextView timeDisplayAmPm, String style) {
         Context context = timeDisplayHours.getContext();
