@@ -168,16 +168,16 @@ public class ScreensaverSettingsActivity extends PreferenceActivity implements P
 
             switch (screenSize) {
                 case Configuration.SCREENLAYOUT_SIZE_SMALL:
-                    nbEntries = 2;
-                    break;
-                case Configuration.SCREENLAYOUT_SIZE_NORMAL:
-                    nbEntries = 3;
-                    break;
-                case Configuration.SCREENLAYOUT_SIZE_LARGE:
                     nbEntries = 4;
                     break;
-                default:
+                case Configuration.SCREENLAYOUT_SIZE_NORMAL:
                     nbEntries = 5;
+                    break;
+                case Configuration.SCREENLAYOUT_SIZE_LARGE:
+                    nbEntries = 6;
+                    break;
+                default:
+                    nbEntries = 7;
             }
 
             CharSequence[] newEntries = new CharSequence[nbEntries];

@@ -60,6 +60,8 @@
      preference.
 -->
     <string-array name="clock_size_entries">
+        <item>Tiny</item>
+        <item>Smaller</item>
         <item>Small</item>
         <item>Medium</item>
         <item>Large</item>
@@ -72,6 +74,8 @@
          the clock_style_entries above.
     -->
     <string-array name="clock_size_values" translatable="false">
+        <item>tiny</item>
+        <item>smaller</item>
         <item>small</item>
         <item>medium</item>
         <item>large</item>

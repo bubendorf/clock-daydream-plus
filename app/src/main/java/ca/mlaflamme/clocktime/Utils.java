@@ -85,6 +85,9 @@ public class Utils {
     public static final String CLOCK_TYPE_DIGITAL = "digital";
     public static final String CLOCK_TYPE_ANALOG = "analog";
 
+
+    public static final String CLOCK_SIZE_TINY = "tiny";
+    public static final String CLOCK_SIZE_SMALLER = "smaller";
     public static final String CLOCK_SIZE_SMALL = "small";
     public static final String CLOCK_SIZE_MEDIUM = "medium";
     public static final String CLOCK_SIZE_LARGE = "large";
@@ -457,6 +460,15 @@ public class Utils {
         String size = PreferenceManager.getDefaultSharedPreferences(context).getString(key, def_value);
 
         switch (size) {
+            case CLOCK_SIZE_TINY:
+                resizeRatio = (float)1;
+                break;
+            case CLOCK_SIZE_SMALLER:
+                resizeRatio = (float)1.25;
+                break;
+            case CLOCK_SIZE_SMALL:
+                resizeRatio = (float)1.50;
+                break;
             case CLOCK_SIZE_MEDIUM:
                 resizeRatio = (float)1.75;
                 break;
