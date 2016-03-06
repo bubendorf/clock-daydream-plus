@@ -20,69 +20,84 @@
    <!-- <ca.mlaflamme.clocktime.preference.AdmobPreference
         android:key="ad1"
         clockns:adUnitIdString="ca-app-pub-3940256099942544/6300978111"/>-->
+    <PreferenceCategory
+        android:title="@string/clock_settings_title"
+        android:key="pref_clock_title">
 
-    <ListPreference
-        android:defaultValue="@string/default_clock_style"
-        android:dialogTitle="@string/clock_style"
-        android:entries="@array/clock_style_entries2"
-        android:entryValues="@array/clock_style_values2"
-        android:summary="%s"
-        android:key="screensaver_clock_style"
-        android:title="@string/clock_style"/>
+        <ListPreference
+            android:defaultValue="@string/default_clock_style"
+            android:dialogTitle="@string/clock_style"
+            android:entries="@array/clock_style_entries2"
+            android:entryValues="@array/clock_style_values2"
+            android:summary="%s"
+            android:key="screensaver_clock_style"
+            android:title="@string/clock_style"/>
 
-    <ListPreference
-        android:defaultValue="@string/default_clock_size"
-        android:dialogTitle="@string/clock_size"
-        android:entries="@array/clock_size_entries"
-        android:entryValues="@array/clock_size_values"
-        android:summary="%s"
-        android:key="screensaver_clock_size"
-        android:title="@string/clock_size"/>
+        <ListPreference
+            android:defaultValue="@string/default_clock_size"
+            android:dialogTitle="@string/clock_size"
+            android:entries="@array/clock_size_entries"
+            android:entryValues="@array/clock_size_values"
+            android:summary="%s"
+            android:key="screensaver_clock_size"
+            android:title="@string/clock_size"/>
 
-    <ListPreference
-        android:defaultValue="@string/default_clock_color"
-        android:dialogTitle="@string/clock_color"
-        android:entries="@array/clock_color_entries"
-        android:entryValues="@array/clock_color_values"
-        android:summary="%s"
-        android:key="screensaver_clock_color"
-        android:title="@string/clock_color"/>
+        <ListPreference
+            android:defaultValue="@string/default_clock_color"
+            android:dialogTitle="@string/clock_color"
+            android:entries="@array/clock_color_entries"
+            android:entryValues="@array/clock_color_values"
+            android:summary="%s"
+            android:key="screensaver_clock_color"
+            android:title="@string/clock_color"/>
+    </PreferenceCategory>
 
-    <ListPreference
-        android:defaultValue="@string/default_date_color"
-        android:dialogTitle="@string/clock_color"
-        android:entries="@array/clock_color_entries"
-        android:entryValues="@array/clock_color_values"
-        android:summary="%s"
-        android:key="screensaver_date_color"
-        android:title="@string/date_color"/>
+    <PreferenceCategory
+        android:title="@string/date_clock_settings_title"
+        android:key="pref_date_clock_title">
 
-    <ListPreference
-        android:defaultValue="@string/default_date_clock_size"
-        android:dialogTitle="@string/clock_size"
-        android:entries="@array/clock_size_entries"
-        android:entryValues="@array/clock_size_values"
-        android:summary="%s"
-        android:key="screensaver_date_size"
-        android:title="@string/date_clock_size"/>
+        <ListPreference
+            android:defaultValue="@string/default_date_color"
+            android:dialogTitle="@string/clock_color"
+            android:entries="@array/clock_color_entries"
+            android:entryValues="@array/clock_color_values"
+            android:summary="%s"
+            android:key="screensaver_date_color"
+            android:title="@string/date_color"/>
 
-    <ListPreference
-        android:defaultValue="@string/default_alarm_color"
-        android:dialogTitle="@string/alarm_color"
-        android:entries="@array/clock_color_entries"
-        android:entryValues="@array/clock_color_values"
-        android:summary="%s"
-        android:key="screensaver_alarm_color"
-        android:title="@string/alarm_color"/>
+        <ListPreference
+            android:defaultValue="@string/default_date_clock_size"
+            android:dialogTitle="@string/clock_size"
+            android:entries="@array/clock_size_entries"
+            android:entryValues="@array/clock_size_values"
+            android:summary="%s"
+            android:key="screensaver_date_size"
+            android:title="@string/date_clock_size"/>
+    </PreferenceCategory>
 
-    <ListPreference
-        android:defaultValue="@string/default_alarm_clock_size"
-        android:dialogTitle="@string/clock_size"
-        android:entries="@array/clock_size_entries"
-        android:entryValues="@array/clock_size_values"
-        android:summary="%s"
-        android:key="screensaver_alarm_size"
-        android:title="@string/alarm_clock_size"/>
+    <PreferenceCategory
+        android:title="@string/alarm_clock_settings_title"
+        android:key="pref_alarm_clock_title">
+
+        <ListPreference
+            android:defaultValue="@string/default_alarm_color"
+            android:dialogTitle="@string/alarm_color"
+            android:entries="@array/clock_color_entries"
+            android:entryValues="@array/clock_color_values"
+            android:summary="%s"
+            android:key="screensaver_alarm_color"
+            android:title="@string/alarm_color"/>
+
+        <ListPreference
+            android:defaultValue="@string/default_alarm_clock_size"
+            android:dialogTitle="@string/clock_size"
+            android:entries="@array/clock_size_entries"
+            android:entryValues="@array/clock_size_values"
+            android:summary="%s"
+            android:key="screensaver_alarm_size"
+            android:title="@string/alarm_clock_size"/>
+
+    </PreferenceCategory>
 
     <CheckBoxPreference
         android:defaultValue="false"
