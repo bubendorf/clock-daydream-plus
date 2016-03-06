@@ -546,13 +546,20 @@ public class Utils {
         }
     }
 
-    public static void resizeTextView(TextView mDateView, String key, String default_value) {
+    public static void resizeTextView(TextView mTextView, String key, String default_value) {
 
-        float ratio = getSizeRatio(mDateView.getContext(), key, default_value);
+        float ratio = getSizeRatio(mTextView.getContext(), key, default_value);
 
-        mDateView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mDateView.getTextSize() * ratio);
+        mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextView.getTextSize() * ratio);
     }
 
+    public static void setTextViewFont(TextView mTextView, String key, String defaultValue){
+
+        String font = PreferenceManager.getDefaultSharedPreferences(mTextView.getContext()).getString(key, defaultValue);
+
+        mTextView.setTypeface(Utils.getTypeface(mTextView.getContext(), font));
+
+    }
    /* public static void setTimeFont(TextView timeDisplayHours, TextView timeDisplayMinutes, TextView timeDisplayAmPm) {
         Context context = timeDisplayHours.getContext();
 
@@ -582,23 +589,33 @@ public class Utils {
     public static void setTimeFont(TextView timeDisplayHours, TextView timeDisplayMinutes, TextView timeDisplayAmPm, String style) {
         Context context = timeDisplayHours.getContext();
 
-        final Typeface robotoThin = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Thin.ttf");
-        final Typeface robotoBold = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Bold.ttf");
-        final Typeface robotoRegular = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Regular.ttf");
-
         if (style.equals(Utils.CLOCK_TYPE_DIGITAL))
-            timeDisplayHours.setTypeface(robotoBold);
+            timeDisplayHours.setTypeface(getTypeface(context, "fonts/Roboto-Bold.ttf") );
         else
-            timeDisplayHours.setTypeface(robotoThin);
+            timeDisplayHours.setTypeface(getTypeface(context, "fonts/Roboto-Thin.ttf") );
 
-        timeDisplayMinutes.setTypeface(robotoThin);
-        timeDisplayAmPm.setTypeface(robotoRegular);
+        timeDisplayMinutes.setTypeface(getTypeface(context, "fonts/Roboto-Thin.ttf"));
+        timeDisplayAmPm.setTypeface(getTypeface(context, "fonts/Roboto-Regular.ttf"));
 
         int color = getColorFromPreference(context, ScreensaverSettingsActivity.KEY_CLOCK_COLOR, R.string.default_clock_color );
 
         timeDisplayHours.setTextColor(color);
         timeDisplayMinutes.setTextColor(color);
         timeDisplayAmPm.setTextColor(color);
+    }
+
+    public static Typeface getTypeface(Context context, String key) {
+        Typeface font;
+
+        try {
+            font = Typeface.createFromAsset(context.getAssets(), key);
+        }catch(RuntimeException e){
+            font = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Regular.ttf");
+
+            android.util.Log.w(TAG, "getTypeface: asset " + key + " not found, default: \"fonts/Roboto-Regular.ttf\" used");
+        }
+
+        return font;
     }
 
     private static int getColorFromPreference(Context context, String key, int defaultValue) {

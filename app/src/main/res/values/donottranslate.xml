@@ -28,9 +28,60 @@
     <!-- Alarm time color. -->
     <string name="default_alarm_color">clock_red</string>
     <string name="default_alarm_clock_size">tiny</string>
+    <string name="default_alarm_clock_font">fonts/Roboto-Regular.ttf</string>
 
     <!-- Date color -->
     <string name="default_date_color">clock_white</string>
     <string name="default_date_clock_size">tiny</string>
+    <string name="default_date_clock_font">fonts/Roboto-Regular.ttf</string>
+
+    <!--
+   Values that are retrieved from the ListPreference. These must match
+   the clock_style_entries above.
+-->
+    <string-array name="font_values" translatable="false">
+        <item>fonts/Roboto-Thin.ttf</item>
+        <item>fonts/Roboto-Bold.ttf</item>
+        <item>fonts/Roboto-Regular.ttf</item>
+    </string-array>
+
+    <!--
+     Values that are retrieved from the ListPreference. These must match
+     the clock_style_entries above.
+-->
+    <string-array name="clock_style_values2" translatable="false">
+        <item>analog</item>
+        <item>digital</item>
+        <item>digital2</item>
+    </string-array>
+
+    <!--
+      Values that are retrieved from the ListPreference. These must match
+      the clock_style_entries above.
+ -->
+    <string-array name="clock_size_values" translatable="false">
+        <item>tiny</item>
+        <item>smaller</item>
+        <item>small</item>
+        <item>medium</item>
+        <item>large</item>
+        <item>xlarge</item>
+        <item>2xlarge</item>
+    </string-array>
+
+    <!--
+       Values that are retrieved from the ListPreference. These must match
+       the clock_style_entries above.
+  -->
+    <string-array name="clock_color_values" translatable="false">
+        <item>clock_white</item>
+        <item>clock_gray</item>
+        <item>clock_red</item>
+        <item>clock_orange</item>
+        <item>clock_blue</item>
+        <item>clock_green</item>
+        <item>clock_yellow</item>
+        <item>clock_black</item>
+    </string-array>
 
 </resources>

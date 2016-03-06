@@ -42,16 +42,6 @@
         <item>Digital</item>
     </string-array>
 
-    <!--
-         Values that are retrieved from the ListPreference. These must match
-         the clock_style_entries above.
-    -->
-    <string-array name="clock_style_values2" translatable="false">
-        <item>analog</item>
-        <item>digital</item>
-        <item>digital2</item>
-    </string-array>
-
     <!-- Header for a Clock Dream Setting -->
     <string name="clock_size">Size</string>
 
@@ -69,19 +59,6 @@
         <item>2X-Large</item>
     </string-array>
 
-    <!--
-         Values that are retrieved from the ListPreference. These must match
-         the clock_style_entries above.
-    -->
-    <string-array name="clock_size_values" translatable="false">
-        <item>tiny</item>
-        <item>smaller</item>
-        <item>small</item>
-        <item>medium</item>
-        <item>large</item>
-        <item>xlarge</item>
-        <item>2xlarge</item>
-    </string-array>
 
     <!-- Header for a Clock Dream Setting -->
     <string name="clock_settings_title">Clock Settings</string>
@@ -102,23 +79,9 @@
         <item>Black/Hide</item>
     </string-array>
 
-    <!--
-         Values that are retrieved from the ListPreference. These must match
-         the clock_style_entries above.
-    -->
-    <string-array name="clock_color_values" translatable="false">
-        <item>clock_white</item>
-        <item>clock_gray</item>
-        <item>clock_red</item>
-        <item>clock_orange</item>
-        <item>clock_blue</item>
-        <item>clock_green</item>
-        <item>clock_yellow</item>
-        <item>clock_black</item>
-    </string-array>
+
 
     <!-- Header for a Clock Dream Setting -->
-
     <string name="alarm_clock_settings_title">Alarm Settings</string>
     <string name="alarm_color">Alarm Color</string>
     <string name="alarm_clock_size">Alarm Size</string>
@@ -127,6 +90,15 @@
     <string name="date_clock_settings_title">Date Settings</string>
     <string name="date_color">Date Color</string>
     <string name="date_clock_size">Date Size</string>
+
+
+    <string name="fonts_selection_label">Style</string>
+
+    <string-array name="font_labels" translatable="false">
+        <item>Roboto-Thin</item>
+        <item>Roboto-Bold</item>
+        <item>Roboto-Regular</item>
+    </string-array>
 
     <!-- Label for the screen saver activity displayed on-screen when that activity must be represented to the user. -->
     <string name="screensaver_settings">Dream settings</string>

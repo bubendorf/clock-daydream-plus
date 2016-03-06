@@ -27,8 +27,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import static ca.mlaflamme.clocktime.Utils.resizeTextView;
-
 public class ScreensaverActivity extends BaseScreenOnActivity {
     static final boolean DEBUG = BuildConfig.DEBUG;
     private final static String TAG = Utils.class.getName();
@@ -110,10 +108,13 @@ public class ScreensaverActivity extends BaseScreenOnActivity {
 
         // Change Date Size
         TextView mDateView = (TextView) findViewById(R.id.date);
-        TextView mAlarmView = (TextView) findViewById(R.id.nextAlarm);
+        Utils.resizeTextView(mDateView, ScreensaverSettingsActivity.KEY_DATE_SIZE, getString(R.string.default_date_clock_size));
+        Utils.setTextViewFont(mDateView, ScreensaverSettingsActivity.KEY_DATE_FONT, getString(R.string.default_date_clock_font));
 
-        resizeTextView(mDateView, ScreensaverSettingsActivity.KEY_DATE_SIZE, getString(R.string.default_date_clock_size));
-        resizeTextView(mAlarmView, ScreensaverSettingsActivity.KEY_ALARM_SIZE, getString(R.string.default_alarm_clock_size));
+        // Change Alarm Size
+        TextView mAlarmView = (TextView) findViewById(R.id.nextAlarm);
+        Utils.resizeTextView(mAlarmView, ScreensaverSettingsActivity.KEY_ALARM_SIZE, getString(R.string.default_alarm_clock_size));
+        Utils.setTextViewFont(mAlarmView, ScreensaverSettingsActivity.KEY_ALARM_FONT, getString(R.string.default_alarm_clock_font));
 
         Utils.resizeContent((ViewGroup) mSaverView);
 

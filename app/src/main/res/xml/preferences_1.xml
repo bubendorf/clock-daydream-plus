@@ -73,6 +73,15 @@
             android:summary="%s"
             android:key="screensaver_date_size"
             android:title="@string/date_clock_size"/>
+
+        <ListPreference
+            android:defaultValue="@string/default_date_clock_font"
+            android:dialogTitle="@string/fonts_selection_label"
+            android:entries="@array/font_labels"
+            android:entryValues="@array/font_values"
+            android:summary="%s"
+            android:key="screensaver_date_font"
+            android:title="@string/fonts_selection_label"/>
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -96,6 +105,15 @@
             android:summary="%s"
             android:key="screensaver_alarm_size"
             android:title="@string/alarm_clock_size"/>
+
+        <ListPreference
+            android:defaultValue="@string/default_alarm_clock_font"
+            android:dialogTitle="@string/fonts_selection_label"
+            android:entries="@array/font_labels"
+            android:entryValues="@array/font_values"
+            android:summary="%s"
+            android:key="screensaver_alarm_font"
+            android:title="@string/fonts_selection_label"/>
 
     </PreferenceCategory>
 
