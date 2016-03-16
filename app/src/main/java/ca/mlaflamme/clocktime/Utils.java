@@ -649,6 +649,9 @@ public class Utils {
         int auto_brightness_adj = PreferenceManager.getDefaultSharedPreferences(saverView.getContext()).getInt(
                 ScreensaverSettingsActivity.KEY_BRIGHTNESS_AUTO_ADJ,
                 ScreensaverSettingsActivity.KEY_BRIGHTNESS_AUTO_ADJ_DEFAULT);
+        int min_brightness_adj = PreferenceManager.getDefaultSharedPreferences(saverView.getContext()).getInt(
+                ScreensaverSettingsActivity.KEY_BRIGHTNESS_MIN_ADJ,
+                ScreensaverSettingsActivity.KEY_BRIGHTNESS_MIN_ADJ_DEFAULT);
         boolean useAutoBrightness = PreferenceManager.getDefaultSharedPreferences(saverView.getContext()).getBoolean(
                 ScreensaverSettingsActivity.KEY_BRIGHTNESS_AUTO,
                 ScreensaverSettingsActivity.KEY_BRIGHTNESS_AUTO_DEFAULT);
@@ -675,7 +678,7 @@ public class Utils {
             Utils.dimView(brightness, saverView);
 
             if (useAutoBrightness)
-                moveSaverRunnable.setAutoBrightness(true, (float)auto_brightness_adj / 100);
+                moveSaverRunnable.setAutoBrightness(true, (float)auto_brightness_adj / 100, (float)min_brightness_adj / 100);
         }
     }
 

@@ -55,6 +55,7 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
 
     private boolean mUseAutoBrightness = false;
     private float mAdjustBrightness;
+    private float mMinBrightness;
 
     public ScreensaverMoveSaverRunnable(Handler handler) {
         mHandler = handler;
@@ -74,9 +75,10 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
         mSlideEffect = useSlideEffect;
     }
 
-    public void setAutoBrightness(boolean useAutoBrightness, float adjFactor) {
+    public void setAutoBrightness(boolean useAutoBrightness, float adjFactor, float minBrightness) {
         mUseAutoBrightness = useAutoBrightness;
         mAdjustBrightness = adjFactor;
+        mMinBrightness = minBrightness;
     }
 
     @SuppressWarnings({"UnusedParameters", "EmptyMethod"})
@@ -146,6 +148,11 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
         }
 
         mNextAlpha *= mAdjustBrightness;
+
+        if(mNextAlpha < mMinBrightness){
+            mNextAlpha = mMinBrightness;
+            Log.v("onSensorChanged -> mNextAlpha: " + mNextAlpha + " mMinBrightness: " + mMinBrightness);
+        }
 
         Log.v("onSensorChanged -> luxLight: " + luxLight + " mNextAlpha: " + mNextAlpha);
     }

@@ -139,6 +139,15 @@
         clockns:mode="brightness"/>
 
     <ca.mlaflamme.clocktime.preference.SeekBarPreference
+        android:defaultValue="10"
+        android:key="min_brightness_adj"
+        android:max="100"
+        android:summary="@string/min_brightness_fine_adj_summary"
+        android:title="@string/min_brightness_fine_adj"
+        clockns:min="0"
+        clockns:unitsRight="%"/>
+
+    <ca.mlaflamme.clocktime.preference.SeekBarPreference
         android:defaultValue="100"
         android:key="auto_brightness_adj"
         android:max="200"

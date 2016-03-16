@@ -50,7 +50,9 @@ public class ScreensaverSettingsActivity extends PreferenceActivity implements P
     static final String KEY_BRIGHTNESS = "brightness";
     static final int BRIGHTNESS_DEFAULT = 192;
     static final int BRIGHTNESS_MAX = 255;
+    static final String KEY_BRIGHTNESS_MIN_ADJ = "min_brightness_adj";
     static final String KEY_BRIGHTNESS_AUTO_ADJ = "auto_brightness_adj";
+    static final int KEY_BRIGHTNESS_MIN_ADJ_DEFAULT = 0;
     static final int KEY_BRIGHTNESS_AUTO_ADJ_DEFAULT = 100;
     static final String SIZE_DEFAULT = "medium";
     static final String KEY_NOTIF_LISTENER = "notif_listener";
@@ -103,10 +105,11 @@ public class ScreensaverSettingsActivity extends PreferenceActivity implements P
         }
 
         private void setAutoBrightnessCheckbox() {
-            final Preference pref_auto_bright, pref_adjust_bright, pref_adjust_bright_auto;
+            final Preference pref_auto_bright, pref_adjust_bright, pref_adjust_bright_auto, pref_adjust_min_bright;
             pref_auto_bright = findPreference(KEY_BRIGHTNESS_AUTO);
             pref_adjust_bright = findPreference(KEY_BRIGHTNESS);
             pref_adjust_bright_auto = findPreference(KEY_BRIGHTNESS_AUTO_ADJ);
+            pref_adjust_min_bright = findPreference(KEY_BRIGHTNESS_MIN_ADJ);
 
             if (pref_auto_bright != null) {
                 CheckBoxPreference check = (CheckBoxPreference) pref_auto_bright;
@@ -127,6 +130,7 @@ public class ScreensaverSettingsActivity extends PreferenceActivity implements P
                 }
                 else {
                     screen.removePreference(pref_adjust_bright_auto);
+                    screen.removePreference(pref_adjust_min_bright);
                 }
 
 
@@ -140,9 +144,11 @@ public class ScreensaverSettingsActivity extends PreferenceActivity implements P
                             if (check.isChecked()) {
                                 screen.removePreference(pref_adjust_bright);
                                 screen.addPreference(pref_adjust_bright_auto);
+                                screen.addPreference(pref_adjust_min_bright);
                             }
                             else {
                                 screen.removePreference(pref_adjust_bright_auto);
+                                screen.removePreference(pref_adjust_min_bright);
                                 screen.addPreference(pref_adjust_bright);
                             }
 
