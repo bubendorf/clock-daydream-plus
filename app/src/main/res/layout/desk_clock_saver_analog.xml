@@ -16,7 +16,7 @@
 -->
 
 <!-- Special "screen saver mode" with just the time/date on black. -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/desk_clock_saver"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -25,6 +25,8 @@
     android:orientation="vertical"
     android:gravity="center"
     ads:ignore="Overdraw">
+
+    <include layout="@layout/background"/>
 
     <!-- Extra layout to let the clock float in the window -->
     <LinearLayout
@@ -39,4 +41,4 @@
 
         <include layout="@layout/battery_notif" />
     </LinearLayout>
-</LinearLayout>
+</FrameLayout>

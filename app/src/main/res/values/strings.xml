@@ -64,6 +64,11 @@
     <string name="clock_settings_title">Clock Settings</string>
     <string name="clock_color">Color</string>
 
+
+    <!-- Select background image -->
+    <string name="background_image">Background Image</string>
+    <string name="wakeup_image">Wakeup Image</string>
+
     <!--
     Entries listed in the ListPreference when invoking the clock color
     preference.
@@ -130,6 +135,8 @@
     <string name="slide_effect_summary">Will slide the clock on screen. Otherwise will disappear and reappear at different places.</string>
     <string name="slide_effect">Use slide effect</string>
     <string name="adjust_brightness">Adjust brightness</string>
+    <string name="adjust_background_brightness">Adjust brightness</string>
+    <string name="background_brightness">Brightness</string>
     <string name="brightness">Brightness</string>
     <string name="min_brightness_fine_adj">Minimal brightness</string>
     <string name="min_brightness_fine_adj_summary">Enforce a minimal brightness in automatic brightness mode</string>

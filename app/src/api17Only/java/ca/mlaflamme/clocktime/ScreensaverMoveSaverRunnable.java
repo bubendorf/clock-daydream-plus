@@ -15,6 +15,7 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.ImageView;
 import android.widget.TextView;
 import ca.mlaflamme.clocktime.notification.NotifCompact;
 import ca.mlaflamme.clocktime.notification.NotificationLayout;
@@ -34,9 +35,10 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
 
     static boolean mSlideEffect = true;
 
-    private View mContentView, mSaverView;
+    private View mContentView, mSaverView, mBackgroundView;
     private TextView mDate;
     private TextView mBattery;
+    private ImageView mBackground;
     private NotificationLayout mNotifLayout;
     private View mTest;
     private TextView mNextAlarm;
@@ -87,6 +89,7 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
     public void registerViews(View contentView, View saverView) {
         mContentView = contentView;
         mDate = (TextView) contentView.findViewById(R.id.date);
+        mBackground = (ImageView) contentView.findViewById(R.id.background);
         mBattery = (TextView) contentView.findViewById(R.id.battery);
         mNotifLayout = (NotificationLayout) contentView.findViewById(R.id.notifLayout);
         mNextAlarm = (TextView) contentView.findViewById(R.id.nextAlarm);
@@ -171,7 +174,6 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
             mSensorManager.registerListener(this, mLight, SensorManager.SENSOR_DELAY_NORMAL);
             mInitSensor = true;
         }
-
 
         final float xrange = mContentView.getWidth() - mSaverView.getWidth();
         final float yrange = mContentView.getHeight() - mSaverView.getHeight();
@@ -304,6 +306,9 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
         try {
             Utils.setAlarmTextView(mDate.getContext(), mNextAlarm);
             Utils.setDateTextView(mDate.getContext(), mDate, mDateFormat, mDateFormatForAccessibility);
+            Utils.setBackground(mDate.getContext(), mBackground,
+                    PreferenceManager.getDefaultSharedPreferences( mDate.getContext()).getString(
+                            ScreensaverSettingsActivity.KEY_PATH_BACKGROUND_IMAGE, "") );
 
             if (isPrefEnabled(ScreensaverSettingsActivity.KEY_BATTERY, true)) {
                 mBattery.setVisibility(View.VISIBLE);

@@ -31,6 +31,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
@@ -46,8 +47,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -315,6 +320,22 @@ public class Utils {
 //            dateDisplay.setText(newDate);
 //            dateDisplay.setContentDescription(DateFormat.format(dateFormatForAccessibility, cal));
 //        }
+    }
+
+    public static void setBackground(Context context, ImageView backgroundView, String imagePath){
+        if (!imagePath.isEmpty()){
+            try{
+                Uri imagePathUri = android.net.Uri.parse(imagePath);
+                int brightness = PreferenceManager.getDefaultSharedPreferences(context).getInt(
+                        ScreensaverSettingsActivity.KEY_BACKGROUND_BRIGHTNESS,
+                        ScreensaverSettingsActivity.BACKGROUND_BRIGHTNESS_DEFAULT);
+
+                backgroundView.setAlpha((float)brightness/100);
+                backgroundView.setImageURI(android.net.Uri.parse(imagePath));
+            }catch (Exception e){
+                Log.e("Cannot set background image",e);
+            }
+        }
     }
 
     public static void setAlarmTextView(Context context, TextView alarm) {

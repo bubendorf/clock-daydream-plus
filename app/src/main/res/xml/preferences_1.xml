@@ -50,6 +50,23 @@
             android:summary="%s"
             android:key="screensaver_clock_color"
             android:title="@string/clock_color"/>
+
+        <EditTextPreference
+            android:defaultValue=""
+            android:title="@string/background_image"
+            android:dialogTitle="@string/background_image"
+            android:key="screensaver_path_background_image"
+            android:layout_gravity="center_horizontal" />
+
+        <ca.mlaflamme.clocktime.preference.SeekBarPreference
+            android:defaultValue="30"
+            android:key="background_brightness"
+            android:max="100"
+            android:summary="@string/adjust_background_brightness"
+            android:title="@string/background_brightness"
+            clockns:min="0"
+            clockns:unitsRight="%"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory
