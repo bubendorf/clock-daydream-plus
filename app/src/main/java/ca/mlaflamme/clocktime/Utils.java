@@ -325,7 +325,6 @@ public class Utils {
     public static void setBackground(Context context, ImageView backgroundView, String imagePath){
         if (!imagePath.isEmpty()){
             try{
-                Uri imagePathUri = android.net.Uri.parse(imagePath);
                 int brightness = PreferenceManager.getDefaultSharedPreferences(context).getInt(
                         ScreensaverSettingsActivity.KEY_BACKGROUND_BRIGHTNESS,
                         ScreensaverSettingsActivity.BACKGROUND_BRIGHTNESS_DEFAULT);
@@ -338,9 +337,59 @@ public class Utils {
         }
     }
 
+    public static void setWakeupView(Context context, ImageView view, String imagePath){
+        float alpha = 0;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            AlarmManager alarmManager =( AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+            AlarmManager.AlarmClockInfo alarmClockInfo = alarmManager.getNextAlarmClock();
+
+            if(alarmClockInfo!=null){
+                SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+                int wakeupStartTime = pref.getInt(ScreensaverSettingsActivity.KEY_WAKEUP_START_TIME, 30) * 60;
+                int wakeupFullBrightnessTime = pref.getInt(ScreensaverSettingsActivity.KEY_WAKEUP_FULL_BRIGHTNESS_TIME, 5) * 60;
+
+                alpha = getWakeupAlpha(alarmClockInfo.getTriggerTime(), wakeupStartTime, wakeupFullBrightnessTime);
+            }
+        }
+        else{
+            //TODO: Calculate milliseconds with old ALARM content provider to support not updated androids
+            Log.w("Wakup animation is supported from SDK version 21 aka Lollipop");
+        }
+
+        if (!imagePath.isEmpty()){
+
+            try{
+                view.setAlpha(alpha);
+                view.setImageURI(android.net.Uri.parse(imagePath));
+            }catch (Exception e){
+                Log.e("Cannot set background image",e);
+            }
+        }
+    }
+
+    public static float getWakeupAlpha( long alarmTimeWallTime, int startInSeconds, int fullAlphaInSeconds ){
+        float alpha = 0;
+        Date currentTime = new Date();
+        long delta = alarmTimeWallTime - currentTime.getTime();
+        long deltaSeconds = delta/1000;
+
+        if(deltaSeconds < startInSeconds ){
+            if(deltaSeconds < fullAlphaInSeconds){
+                alpha = 1;
+            }
+            else {
+                alpha = 1 - (float) (deltaSeconds - fullAlphaInSeconds) / (startInSeconds - fullAlphaInSeconds);
+            }
+        }
+
+        return alpha;
+    }
+
     public static void setAlarmTextView(Context context, TextView alarm) {
         String nextAlarm = Settings.System.getString(context.getContentResolver(), Settings.System.NEXT_ALARM_FORMATTED);
-        if (nextAlarm==null || nextAlarm.isEmpty()) {
+
+        if(nextAlarm.isEmpty()){
             alarm.setVisibility(View.GONE);
         } else {
             alarm.setVisibility(View.VISIBLE);

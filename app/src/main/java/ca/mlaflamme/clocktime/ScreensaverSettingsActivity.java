@@ -48,6 +48,8 @@ public class ScreensaverSettingsActivity extends PreferenceActivity implements P
     static final String KEY_BACKGROUND_BRIGHTNESS = "background_brightness";
     static final int BACKGROUND_BRIGHTNESS_DEFAULT = 40;
     static final String KEY_PATH_WAKEUP_IMAGE = "screensaver_path_wakeup_image";
+    static final String KEY_WAKEUP_START_TIME = "wakeup_start_time";
+    static final String KEY_WAKEUP_FULL_BRIGHTNESS_TIME = "wakeup_full_brightness_time";
     //    static final String KEY_NIGHT_MODE = "screensaver_night_mode";
     static final String KEY_BRIGHTNESS_AUTO = "light_sensor";
     static final boolean KEY_BRIGHTNESS_AUTO_DEFAULT = false;

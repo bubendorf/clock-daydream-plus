@@ -15,4 +15,13 @@
         android:id="@+id/background"
         android:layout_gravity="center"
         android:cropToPadding="true" />
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scaleType="centerCrop"
+        android:gravity="center"
+        android:id="@+id/wakeupImage"
+        android:layout_gravity="center"
+        android:cropToPadding="true" />
 </FrameLayout>

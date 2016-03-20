@@ -66,6 +66,36 @@
             android:title="@string/background_brightness"
             clockns:min="0"
             clockns:unitsRight="%"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/wakeup_settings_title"
+        android:key="pref_wakeup_settings_title">
+
+        <EditTextPreference
+            android:defaultValue=""
+            android:title="@string/wakeup_image"
+            android:dialogTitle="@string/wakeup_image"
+            android:key="screensaver_path_wakeup_image"
+            android:layout_gravity="center_horizontal" />
+
+        <ca.mlaflamme.clocktime.preference.SeekBarPreference
+            android:defaultValue="30"
+            android:key="wakeup_start_time"
+            android:max="60"
+            android:summary="@string/adjust_wakeup_start_time"
+            android:title="@string/wakeup_start_time_title"
+            clockns:min="1"
+            clockns:unitsRight="min"/>
+
+        <ca.mlaflamme.clocktime.preference.SeekBarPreference
+            android:defaultValue="5"
+            android:key="wakeup_full_brightness_time"
+            android:max="20"
+            android:summary="@string/adjust_wakeup_full_brightness"
+            android:title="@string/wakeup_full_brightness_title"
+            clockns:min="0"
+            clockns:unitsRight="min"/>
 
     </PreferenceCategory>
 
