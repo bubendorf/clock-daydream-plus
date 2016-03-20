@@ -76,6 +76,7 @@
     <string-array name="clock_color_values" translatable="false">
         <item>clock_white</item>
         <item>clock_gray</item>
+        <item>clock_coral_red</item>
         <item>clock_red</item>
         <item>clock_orange</item>
         <item>clock_blue</item>
