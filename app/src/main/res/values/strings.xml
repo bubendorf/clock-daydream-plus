@@ -73,6 +73,8 @@
     <string name="adjust_wakeup_start_time">Time before the alarm, at which the screen starts to increase the brightness in minutes</string>
     <string name="wakeup_start_time_title">Light wakeup begin</string>
     <string name="wakeup_full_brightness_title">Light wakeup full brightness</string>
+    <string name="alarm_hide_until_hours_title">Hide alarms in far in the future</string>
+    <string name="alarm_hide_until_hours_summary">Hide alarms more than selected hours away. Set 0 to show all alarms.</string>
 
 
     <!--
@@ -143,7 +145,7 @@
     <string name="slide_effect">Use slide effect</string>
     <string name="adjust_brightness">Adjust brightness</string>
     <string name="adjust_background_brightness">Adjust brightness</string>
-    <string name="background_brightness">Brightness</string>
+    <string name="background_brightness">Background Brightness</string>
     <string name="brightness">Brightness</string>
     <string name="min_brightness_fine_adj">Minimal brightness</string>
     <string name="min_brightness_fine_adj_summary">Enforce a minimal brightness in automatic brightness mode</string>

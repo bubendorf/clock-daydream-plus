@@ -135,6 +135,15 @@
         android:title="@string/alarm_clock_settings_title"
         android:key="pref_alarm_clock_title">
 
+        <ca.mlaflamme.clocktime.preference.SeekBarPreference
+            android:defaultValue="14"
+            android:key="screensaver_alarm_hide_until_hours"
+            android:max="23"
+            android:summary="@string/alarm_hide_until_hours_summary"
+            android:title="@string/alarm_hide_until_hours_title"
+            clockns:min="0"
+            clockns:unitsRight="hours"/>
+
         <ListPreference
             android:defaultValue="@string/default_alarm_color"
             android:dialogTitle="@string/alarm_color"

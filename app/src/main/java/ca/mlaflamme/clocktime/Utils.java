@@ -388,8 +388,22 @@ public class Utils {
 
     public static void setAlarmTextView(Context context, TextView alarm) {
         String nextAlarm = Settings.System.getString(context.getContentResolver(), Settings.System.NEXT_ALARM_FORMATTED);
+        long nextAlarmTime = 0;
 
-        if(nextAlarm.isEmpty()){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            AlarmManager alarmManager =( AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+            AlarmManager.AlarmClockInfo alarmClockInfo = alarmManager.getNextAlarmClock();
+
+            if(alarmClockInfo!=null){
+                nextAlarmTime = alarmClockInfo.getTriggerTime();
+            }
+        }
+
+        long currentTime = new Date().getTime();
+        long timeUntilShowUp = PreferenceManager.getDefaultSharedPreferences(context).getInt(ScreensaverSettingsActivity.KEY_ALARM_HIDE_UNTIL_HOURS, 14) * 60 * 60;
+        long delta = (nextAlarmTime - currentTime )/1000;
+
+        if(nextAlarm == null || nextAlarm.isEmpty() || delta > timeUntilShowUp && timeUntilShowUp != 0){
             alarm.setVisibility(View.GONE);
         } else {
             alarm.setVisibility(View.VISIBLE);

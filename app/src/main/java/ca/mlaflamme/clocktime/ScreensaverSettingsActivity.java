@@ -36,6 +36,7 @@ public class ScreensaverSettingsActivity extends PreferenceActivity implements P
     static final String KEY_ALARM_COLOR = "screensaver_alarm_color";
     static final String KEY_ALARM_SIZE = "screensaver_alarm_size";
     static final String KEY_ALARM_FONT = "screensaver_alarm_font";
+    static final String KEY_ALARM_HIDE_UNTIL_HOURS = "screensaver_alarm_hide_until_hours";
     static final String KEY_CLOCK_STYLE = "screensaver_clock_style";
     static final String KEY_CLOCK_SIZE = "screensaver_clock_size";
     static final String KEY_CLOCK_COLOR = "screensaver_clock_color";
