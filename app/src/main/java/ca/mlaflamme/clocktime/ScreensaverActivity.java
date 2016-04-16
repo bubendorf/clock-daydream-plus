@@ -101,6 +101,7 @@ public class ScreensaverActivity extends BaseScreenOnActivity {
     }
 
     private void setClockStyle() {
+
         String style = Utils.getClockStyle(this);
         Utils.setAnalogOrDigitalView(this.getWindow(), style, false);
 
@@ -137,7 +138,6 @@ public class ScreensaverActivity extends BaseScreenOnActivity {
 
     @Override
     protected void updateViews() {
-        Log.d(TAG, "updateViews");
 
         if (mDaydreamMode && !getIsPluggedIn()) {
             Log.d(TAG, "Finishing because unplugged");

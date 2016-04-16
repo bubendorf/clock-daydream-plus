@@ -31,6 +31,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.BatteryManager;
@@ -323,6 +324,13 @@ public class Utils {
     }
 
     public static void setBackground(Context context, ImageView backgroundView, String imagePath){
+
+        if(backgroundView != null) {
+            BitmapDrawable bd = (BitmapDrawable) backgroundView.getDrawable();
+            bd.getBitmap().recycle();
+            backgroundView.setImageBitmap(null);
+        }
+
         if (!imagePath.isEmpty()){
             try{
                 int brightness = PreferenceManager.getDefaultSharedPreferences(context).getInt(
@@ -330,6 +338,7 @@ public class Utils {
                         ScreensaverSettingsActivity.BACKGROUND_BRIGHTNESS_DEFAULT);
 
                 backgroundView.setAlpha((float)brightness/100);
+                // Todo: load image only once in memory instead of reloading it allways from imagePathUri
                 backgroundView.setImageURI(android.net.Uri.parse(imagePath));
             }catch (Exception e){
                 Log.e("Cannot set background image",e);
