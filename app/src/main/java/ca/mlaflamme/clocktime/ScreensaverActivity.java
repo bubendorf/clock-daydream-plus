@@ -16,11 +16,13 @@
 
 package ca.mlaflamme.clocktime;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -96,8 +98,9 @@ public class ScreensaverActivity extends BaseScreenOnActivity {
     }
 
     @Override
-    public void onUserInteraction() {
+    public boolean onTouchEvent(MotionEvent event){
         finish();
+        return true;
     }
 
     private void setClockStyle() {
@@ -106,6 +109,12 @@ public class ScreensaverActivity extends BaseScreenOnActivity {
         Utils.setAnalogOrDigitalView(this.getWindow(), style, false);
 
         mSaverView = findViewById(R.id.main_clock);
+        mSaverView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity( Utils.getAlarmPackage(v.getContext()));
+            }
+        });
 
         // Change Date Size
         TextView mDateView = (TextView) findViewById(R.id.date);
