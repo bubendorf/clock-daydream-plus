@@ -32,7 +32,17 @@ public class ClockActivity extends BaseScreenOnActivity {
 
     private void setClockStyle() {
         String style = Utils.getClockStyle(this);
-        Utils.setAnalogOrDigitalView(this.getWindow(), style, true);
+        Utils.setAnalogOrDigitalView(this.getWindow(), style, false);
+
+        // Change Date Size
+        TextView mDateView = (TextView) findViewById(R.id.date);
+        Utils.resizeTextView(mDateView, ScreensaverSettingsActivity.KEY_DATE_SIZE, getString(R.string.default_date_clock_size));
+        Utils.setTextViewFont(mDateView, ScreensaverSettingsActivity.KEY_DATE_FONT, getString(R.string.default_date_clock_font));
+
+        // Change Alarm Size
+        TextView mAlarmView = (TextView) findViewById(R.id.nextAlarm);
+        Utils.resizeTextView(mAlarmView, ScreensaverSettingsActivity.KEY_ALARM_SIZE, getString(R.string.default_alarm_clock_size));
+        Utils.setTextViewFont(mAlarmView, ScreensaverSettingsActivity.KEY_ALARM_FONT, getString(R.string.default_alarm_clock_font));
     }
 
     @Override
@@ -41,6 +51,8 @@ public class ClockActivity extends BaseScreenOnActivity {
 
         mDateFormat = getString(R.string.abbrev_wday_month_day_no_year);
         mDateFormatForAccessibility = getString(R.string.full_wday_month_day_no_year);
+
+        startScreenSaverRunnable.run();
     }
 
     // TODO: It doesn't detect cable plugged in and out
