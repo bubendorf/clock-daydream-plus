@@ -287,27 +287,6 @@ public class Utils {
         view.setLayerType(View.LAYER_TYPE_HARDWARE, paint);
     }
 
-    /** Clock views can call this to refresh their alarm to the next upcoming value. **/
-    @SuppressWarnings("deprecation")
-    public static void refreshAlarm(Context context, View clock) {
-        String nextAlarm = Settings.System.getString(context.getContentResolver(), Settings.System.NEXT_ALARM_FORMATTED);
-        TextView nextAlarmView;
-        nextAlarmView = (TextView) clock.findViewById(R.id.nextAlarm);
-
-        if (nextAlarmView != null) {
-            if (!TextUtils.isEmpty(nextAlarm)) {
-                nextAlarmView.setText(context.getString(R.string.control_set_alarm_with_existing, nextAlarm));
-                nextAlarmView.setContentDescription(context.getResources().getString(R.string.next_alarm_description, nextAlarm));
-                nextAlarmView.setVisibility(View.VISIBLE);
-
-                Paint paint = new Paint();
-                int color = getColorFromPreference(context, ScreensaverSettingsActivity.KEY_ALARM_COLOR, R.string.default_alarm_color);
-                paint.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP));
-                nextAlarmView.setLayerType(View.LAYER_TYPE_HARDWARE, paint);
-            } else nextAlarmView.setVisibility(View.GONE);
-        }
-    }
-
     /** Clock views can call this to refresh their date. **/
     public static void updateDate(String dateFormat, String dateFormatForAccessibility, View clock) {
 //        Calendar cal = Calendar.getInstance();

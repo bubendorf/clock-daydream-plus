@@ -133,7 +133,6 @@ public class ScreensaverActivity extends BaseScreenOnActivity {
         mMoveSaverRunnable.registerViews(contentView, mSaverView);
 
         Utils.hideSystemUiAndRetry(contentView);
-        Utils.refreshAlarm(ScreensaverActivity.this, contentView);
     }
 
     @Override
