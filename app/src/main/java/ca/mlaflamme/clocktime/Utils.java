@@ -17,6 +17,7 @@
 package ca.mlaflamme.clocktime;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -26,23 +27,23 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.service.dreams.DreamService;
 import android.service.notification.StatusBarNotification;
-import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,9 +52,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.net.URI;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -304,7 +303,7 @@ public class Utils {
 
     public static void setBackground(Context context, ImageView backgroundView, String imagePath){
 
-        if(backgroundView != null) {
+        if(backgroundView != null && backgroundView.getDrawable() != null) {
             BitmapDrawable bd = (BitmapDrawable) backgroundView.getDrawable();
             bd.getBitmap().recycle();
             backgroundView.setImageBitmap(null);
@@ -318,12 +317,41 @@ public class Utils {
 
                 backgroundView.setAlpha((float)brightness/100);
                 // Todo: load image only once in memory instead of reloading it allways from imagePathUri
-                backgroundView.setImageURI(android.net.Uri.parse(imagePath));
+                backgroundView.setImageURI(Uri.parse(new File(imagePath).toString()));
             }catch (Exception e){
                 Log.e("Cannot set background image",e);
             }
         }
     }
+
+
+    public static String getImagePath(Context context, Uri uri){
+        String path = "";
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = context.getContentResolver().query(uri, proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+    public static Intent createImagePickerIntent(){
+        Intent sIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        sIntent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        // special intent for Samsung file manager
+        sIntent.setType("image/*");
+        sIntent.setAction(Intent.ACTION_GET_CONTENT);
+
+        return Intent.createChooser(sIntent,"Select Picture");
+    }
+
 
     public static void setWakeupView(Context context, ImageView view, String imagePath){
         float alpha = 0;

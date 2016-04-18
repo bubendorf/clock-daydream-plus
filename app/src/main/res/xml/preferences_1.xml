@@ -51,7 +51,7 @@
             android:key="screensaver_clock_color"
             android:title="@string/clock_color"/>
 
-        <EditTextPreference
+        <Preference
             android:defaultValue=""
             android:title="@string/background_image"
             android:dialogTitle="@string/background_image"
@@ -72,7 +72,7 @@
         android:title="@string/wakeup_settings_title"
         android:key="pref_wakeup_settings_title">
 
-        <EditTextPreference
+        <Preference
             android:defaultValue=""
             android:title="@string/wakeup_image"
             android:dialogTitle="@string/wakeup_image"

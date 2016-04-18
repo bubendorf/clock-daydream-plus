@@ -16,7 +16,9 @@
 
 package ca.mlaflamme.clocktime;
 
+import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -74,7 +76,8 @@ public class ScreensaverSettingsActivity extends PreferenceActivity implements P
     static final String KEY_ABOUT = "about";
     static final long TIP_DELAY = 1000 * 3600 * 24; // 24h
     public static final int REQUEST_CODE_NOTIF = 1;
-
+    public static final int PICK_IMAGE_BACKGROUND_REQUEST = 2;
+    public static final int PICK_IMAGE_WAKEUP_REQUEST = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +94,8 @@ public class ScreensaverSettingsActivity extends PreferenceActivity implements P
 
     public static class ScreensaverPreferenceFragment extends PreferenceFragment
     {
+        public String image_background;
+        public String image_wakeup;
         @Override
         public void onCreate(final Bundle savedInstanceState)
         {
@@ -101,6 +106,29 @@ public class ScreensaverSettingsActivity extends PreferenceActivity implements P
             addPreferencesFromResource(R.xml.preferences_3);
 
             initPreferences();
+
+            image_background = findPreference(KEY_PATH_BACKGROUND_IMAGE).getSharedPreferences().getString(KEY_PATH_BACKGROUND_IMAGE,"");
+            image_wakeup = findPreference(KEY_PATH_BACKGROUND_IMAGE).getSharedPreferences().getString(KEY_PATH_WAKEUP_IMAGE,"");
+        }
+
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+            Context context = findPreference(KEY_PATH_WAKEUP_IMAGE).getContext();
+
+            if (resultCode == Activity.RESULT_OK) {
+                if (requestCode == PICK_IMAGE_BACKGROUND_REQUEST) {
+                    image_background = Utils.getImagePath(context, data.getData());
+                    Preference preference = findPreference(KEY_PATH_BACKGROUND_IMAGE);
+                    preference.getEditor().putString(KEY_PATH_BACKGROUND_IMAGE, image_background).commit();
+                }
+
+                if (requestCode == PICK_IMAGE_WAKEUP_REQUEST) {
+                    image_wakeup = Utils.getImagePath(context, data.getData());
+                    Preference preference = findPreference(KEY_PATH_WAKEUP_IMAGE);
+                    preference.getEditor().putString(KEY_PATH_WAKEUP_IMAGE, image_background).commit();
+                }
+            }
         }
 
         private void initPreferences() {
@@ -109,6 +137,26 @@ public class ScreensaverSettingsActivity extends PreferenceActivity implements P
             setNotificationListener();
             setHideActivityListener();
             setVersion();
+
+            Preference acctValue = (Preference)findPreference(KEY_PATH_BACKGROUND_IMAGE);
+            acctValue.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
+
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    startActivityForResult(Utils.createImagePickerIntent(), PICK_IMAGE_BACKGROUND_REQUEST);
+                    return false;
+                }
+            });
+
+            Preference acctValue2 = (Preference)findPreference(KEY_PATH_WAKEUP_IMAGE);
+            acctValue2.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
+
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    startActivityForResult(Utils.createImagePickerIntent(), PICK_IMAGE_WAKEUP_REQUEST);
+                    return false;
+                }
+            });
         }
 
         private void setAutoBrightnessCheckbox() {
