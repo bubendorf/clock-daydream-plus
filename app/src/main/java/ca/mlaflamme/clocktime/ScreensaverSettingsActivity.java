@@ -108,7 +108,7 @@ public class ScreensaverSettingsActivity extends PreferenceActivity implements P
             initPreferences();
 
             image_background = findPreference(KEY_PATH_BACKGROUND_IMAGE).getSharedPreferences().getString(KEY_PATH_BACKGROUND_IMAGE,"");
-            image_wakeup = findPreference(KEY_PATH_BACKGROUND_IMAGE).getSharedPreferences().getString(KEY_PATH_WAKEUP_IMAGE,"");
+            image_wakeup = findPreference(KEY_PATH_WAKEUP_IMAGE).getSharedPreferences().getString(KEY_PATH_WAKEUP_IMAGE,"");
         }
 
         @Override
@@ -126,7 +126,7 @@ public class ScreensaverSettingsActivity extends PreferenceActivity implements P
                 if (requestCode == PICK_IMAGE_WAKEUP_REQUEST) {
                     image_wakeup = Utils.getImagePath(context, data.getData());
                     Preference preference = findPreference(KEY_PATH_WAKEUP_IMAGE);
-                    preference.getEditor().putString(KEY_PATH_WAKEUP_IMAGE, image_background).commit();
+                    preference.getEditor().putString(KEY_PATH_WAKEUP_IMAGE, image_wakeup).commit();
                 }
             }
         }
