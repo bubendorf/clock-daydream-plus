@@ -5,10 +5,11 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.LinearLayout;
-import ca.mlaflamme.clocktime.R;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import ca.mlaflamme.clocktime.R;
 
 public class NotificationLayout extends LinearLayout {
     private Set<NotificationInfo> mNotificationInfos;
@@ -56,6 +57,14 @@ public class NotificationLayout extends LinearLayout {
         if (notif != null) {
             Log.d("notif", "Notif add");
             mTmpNotificationInfos.add(notif);
+        }
+    }
+
+    public void removeNotification(NotificationInfo notif) {
+
+        if (notif != null) {
+            Log.d("notif", "Notif remove");
+            mTmpNotificationInfos.remove(notif);
         }
     }
 

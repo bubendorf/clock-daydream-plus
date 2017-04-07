@@ -17,11 +17,14 @@
 package ca.mlaflamme.clocktime;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
-import android.content.*;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -778,7 +781,8 @@ public class Utils {
             Utils.dimView(brightness, saverView);
 
             if (useAutoBrightness)
-                moveSaverRunnable.setAutoBrightness(true, (float)auto_brightness_adj / 100, (float)min_brightness_adj / 100);
+//                moveSaverRunnable.setAutoBrightness(true, (float)auto_brightness_adj / 100, (float)min_brightness_adj / 100);
+                moveSaverRunnable.setAutoBrightness(true, (float)auto_brightness_adj / 100);
         }
     }
 

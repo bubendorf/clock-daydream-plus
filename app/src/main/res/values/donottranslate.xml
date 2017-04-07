@@ -27,12 +27,12 @@
 
     <!-- Alarm time color. -->
     <string name="default_alarm_color">clock_red</string>
-    <string name="default_alarm_clock_size">tiny</string>
+    <string name="default_alarm_clock_size">smaller</string>
     <string name="default_alarm_clock_font">fonts/Roboto-Regular.ttf</string>
 
     <!-- Date color -->
     <string name="default_date_color">clock_white</string>
-    <string name="default_date_clock_size">tiny</string>
+    <string name="default_date_clock_size">smaller</string>
     <string name="default_date_clock_font">fonts/Roboto-Regular.ttf</string>
 
     <!--

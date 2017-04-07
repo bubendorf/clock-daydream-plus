@@ -27,7 +27,7 @@
     <dimen name="big_font_size">10mm</dimen>
     <dimen name="label_font_size">1.5mm</dimen>
     <dimen name="ampm_font_size">3mm</dimen>
-    <dimen name="notif_size">24dp</dimen>
+    <dimen name="notif_size">28dp</dimen>
     <dimen name="notif_margin">5dp</dimen>
     <dimen name="clock_padding">0.8mm</dimen>
 

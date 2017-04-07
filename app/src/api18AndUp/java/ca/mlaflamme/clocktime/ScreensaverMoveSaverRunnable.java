@@ -291,7 +291,7 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
     public void handleUpdate() {
         try {
             Utils.setAlarmTextView(mDate.getContext(), mNextAlarm);
-            Utils.setDateTextView(, mDate, mDateFormat, mDateFormatForAccessibility);
+            Utils.setDateTextView(mDate.getContext(), mDate, mDateFormat, mDateFormatForAccessibility);
 
             if (isPrefEnabled(ScreensaverSettingsActivity.KEY_BATTERY, true)) {
                 mBattery.setVisibility(View.VISIBLE);
@@ -328,6 +328,13 @@ public class ScreensaverMoveSaverRunnable implements Runnable, SensorEventListen
                 NotificationInfo notifInfo = Utils.getNotificationInfo(mContentView.getContext(), sbn);
                 if (notifInfo != null) {
                     mNotifLayout.addNotification(notifInfo);
+                    mNotifLayout.notifyDatasetChanged();
+                }
+            } else if(intent.hasExtra("notif_removed")) {
+                StatusBarNotification sbn = intent.getParcelableExtra("notif_removed");
+                NotificationInfo notifInfo = Utils.getNotificationInfo(mContentView.getContext(), sbn);
+                if (notifInfo != null) {
+                    mNotifLayout.removeNotification(notifInfo);
                     mNotifLayout.notifyDatasetChanged();
                 }
             }

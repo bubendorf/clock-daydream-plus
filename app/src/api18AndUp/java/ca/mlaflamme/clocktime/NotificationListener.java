@@ -27,19 +27,21 @@ public class NotificationListener extends NotificationListenerService {
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
-        broadcastNotification(sbn);
+        broadcastNotification(sbn, true);
     }
 
     @Override
-    public void onNotificationRemoved(StatusBarNotification sbn) {}
+    public void onNotificationRemoved(StatusBarNotification sbn) {
+        broadcastNotification(sbn, false);
+    }
 
-    private void broadcastNotification(StatusBarNotification sbn) {
+    private void broadcastNotification(StatusBarNotification sbn, boolean adding) {
         if (mBroadcastNotifications) {
             boolean sendit = Utils.isInterestingNotification(sbn);
 
             if (sendit) {
                 Intent i = new Intent(ACTION_NLS_RESPONSE);
-                i.putExtra("notif_new", sbn);
+                i.putExtra(adding ? "notif_new" : "notif_removed", sbn);
                 sendBroadcast(i);
             }
         }
@@ -48,7 +50,7 @@ public class NotificationListener extends NotificationListenerService {
     private void broadcastExistentNotifications() {
         StatusBarNotification[] notifs = getActiveNotifications();
         for (StatusBarNotification notif : notifs)
-            broadcastNotification(notif);
+            broadcastNotification(notif, true);
     }
 
     @Override
